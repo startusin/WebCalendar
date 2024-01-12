@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('calendar_id')->references('id')->on('users');
+            $table->foreignId('calendar_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->string('short_description');
             $table->longText('description');
