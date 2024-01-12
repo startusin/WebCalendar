@@ -1,0 +1,217 @@
+body{
+    color: #e18830;
+    background-color: antiquewhite;
+
+}
+.container{
+    max-width: 550px;
+    width: 100%;
+}
+.calendar .day:not(.prev-date,.nxt-date,.active,.tillCurrentDate,.futureDays):hover {
+    background: #ffffff;
+    border: 2px solid  #e18830;
+}
+.calendar #days .active {
+    background: #e18830;
+    color: #fff;
+}
+.event-time:hover:not(.btnDisable,.activeEvent-time) {
+    background: #e18830;
+    color: #fff;
+}
+.calendar #days .today::after {
+    background:  #e18830;
+}
+.btnDisable {
+    background: #d5d5d5;
+}
+.event-time {
+    border: 0;
+    color: #000000;
+    transition: width .3s,transform .3s;
+}
+
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #e18830;
+    --bs-btn-border-color: #e18830;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #e18830;
+    --bs-btn-hover-border-color: #e18830;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #e18830;
+    --bs-btn-active-border-color: #e18830;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #e18830;
+    --bs-btn-disabled-border-color: #e18830;
+}
+
+.calendar .day:not(.prev-date,.nxt-date,.tillCurrentDate,.futureDays) {
+    background: #ffffff;
+    color: #020202;
+    border-radius: 10%;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.my-header{
+    max-width: 550px;
+    width: 100%;
+    padding: 0;
+}
+
+.action {
+    color: #000;
+    background-color: #e3ac6f;
+    margin: 1px;
+    padding: 15px 8px 5px 8px;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.action:hover {
+    cursor: pointer;
+    background-color: #e18830;
+    margin: 1px;
+    font-size: 18px;
+    transform: scale(1.1);
+    color: #ffffff;
+    border-radius: 2px;
+}
+
+.navigation-language{
+    margin-top: 10px;
+}
+.language {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #000000;
+}
+
+.language::before {
+    content: "";
+    width: 54px;
+    height: 27px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    transition: background-color 0.3s;
+}
+
+.language:hover::before {
+    background-color: #e18830;
+    cursor: pointer;
+}
+.language:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+/*PRODUCTS*/
+.products{
+    max-width: 550px;
+    width: 100%;
+    padding: 0;
+}
+.calendar {
+    max-width: 550px;
+    width: 100%;
+}
+
+button{
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+}
+.product {
+    border-radius: 10px;
+    background-color: #fff;
+    max-width: 550px;
+    width:100%;
+    padding: 0 10px 0 10px;
+}
+.product-price, .product-title {
+    margin-top: 10px;
+}
+.product-price{
+    color: #000000;
+    font-weight: bold;
+}
+
+.product-title {
+    font-size: 18px;
+}
+
+.product-description {
+    color: #000000;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.white-circle {
+    color: #000;
+    background-color: #e5e7eb;
+    border-radius: 30%;
+    padding: 5px;
+    margin: 3px;
+}
+
+.product {
+    transition: background-color 0.1s ease;
+}
+
+.product:hover {
+    background-color: #e18830;
+}
+
+.product:hover .product-description {
+    transition: color 0.1s ease;
+    color: #ffffff;
+}
+
+.product:hover .product-title {
+    transition: color 0.1s ease;
+    color: #000;
+}
+
+.product:hover .product-price {
+    transition: color 0.1s ease;
+    color: #ffffff;
+}
+
+.product:hover .white-circle {
+    transition: color 0.1s ease, background-color 0.1s ease, border-radius 0.1s ease, padding 0.1s ease, margin 0.1s ease;
+    color: #000;
+    background-color: #e5e7eb;
+    border-radius: 30%;
+    padding: 5px;
+    margin: 3px;
+}
+
+.IdCounter {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    font-size: 14px;
+}
+.sub-title-text{
+    padding: 5px;
+    color: #000000;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sub-title{
+    padding: 0;
+}
