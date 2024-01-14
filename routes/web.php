@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-    Route::get('/', function () {
-        return view('index');
-    });
+    Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
     Route::group(['middleware' => 'auth'], function (){
-
         Route::group(['prefix' => 'user', 'middleware' => 'admin'], function () {
             Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.user.index');
             Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('admin.user.create');
@@ -29,9 +26,8 @@ use Illuminate\Support\Facades\Route;
             Route::delete('delete/{user}', [\App\Http\Controllers\UserController::class, 'delete'])->name('admin.user.delete');
         });
 
-        Route::group(['middleware' => 'customer'], function (){
-
-            Route::group(['prefix' => 'slots'], function (){
+        Route::group(['middleware' => 'customer'], function () {
+            Route::group(['prefix' => 'slots'], function () {
                 Route::get('', [\App\Http\Controllers\SlotController::class, 'index'])->name('customer.slot.index');
                 Route::get('show/{id}', [\App\Http\Controllers\SlotController::class, 'show'])->name('customer.slot.show');
                 Route::get('create', [\App\Http\Controllers\SlotController::class, 'create'])->name('customer.slot.create');
@@ -64,6 +60,6 @@ use Illuminate\Support\Facades\Route;
 
         });
     });
+
     Auth::routes();
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
