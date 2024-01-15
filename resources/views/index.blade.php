@@ -23,34 +23,26 @@
             </div>
         </div>
 
-        <div data-bs-toggle="calendar" id="exampleCalendar" data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
+        <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar" data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
 
-        <div id="hjsCalendar"></div>
 
-        <div class="col-12" id="rightContent" style="margin-top: 20px; text-align: center;">
-            <div class="fw-bold justify-content-center d-flex py-5" id="today-date">
-                <div id="event-day">Friday</div>
-                <div id="event-date">, February 16</div>
-            </div>
-            <div class="text-center">
-                <div class="events me-4 row gx-2 d-flex flex-wrap" id="meeting_daily_timings">
-                    @foreach($slots as $slot)
-                        <button class="event-time meeting d-inline-block w-auto">
-                            {{ $slot->start_date->format('h:i') }} - {{ $slot->end_date->format('h:i') }} {{ $slot->language }}
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+{{--        <div class="col-12" id="rightContent" style="margin-top: 20px; text-align: center;">--}}
+{{--            <div class="fw-bold justify-content-center d-flex py-5" id="today-date">--}}
+{{--                <div id="event-day">Friday</div>--}}
+{{--                <div id="event-date">, February 16</div>--}}
+{{--            </div>--}}
+{{--            <div class="text-center">--}}
+{{--                <div class="events me-4 row gx-2 d-flex flex-wrap" id="meeting_daily_timings">--}}
+{{--                    @foreach($slots as $slot)--}}
+{{--                        <button class="event-time meeting d-inline-block w-auto">--}}
+{{--                            {{ $slot->start_date->format('h:i') }} - {{ $slot->end_date->format('h:i') }} {{ $slot->language }}--}}
+{{--                        </button>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
-        <div class="d-flex sub-title mt-3 mb-2">
-            <div class="IdCounter">
-               2
-            </div>
-            <div class="sub-title-text">
-                Indiques vos dates et holralres
-            </div>
-        </div>
+
 
         <div class="products d-flex flex-wrap justify-content-center mt-3">
             @foreach($products as $product)

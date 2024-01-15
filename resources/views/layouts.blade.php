@@ -33,15 +33,13 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-popover@0.0.4/src/jquery-popover.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="{{ asset('assets/js/hjsCalendar.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.bs.calendar.min.js') }}"></script>
 <script>
-    hjsCalendar(function (confirmTime) {
-        alert(confirmTime)
-    });
 
     $('#exampleCalendar').bsCalendar({
         width: '100%',
+        showTodayHeader:false,
+
         formatEvent:function (event) {
             const startTime = new Date(event.start).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
             const endTime = new Date(event.end).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -52,6 +50,8 @@
         },
     });
 </script>
+<script src="{{asset('assets/js/custom.js')}}"></script>
+
 </body>
 </html>
 

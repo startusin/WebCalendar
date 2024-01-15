@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    let array  = [];
+
     $(document).on('click', '.showUser', function () {
         let route = $(this).data('route');
 
@@ -60,5 +62,16 @@ $(document).ready(function () {
                 $('#slotEndDate').text(moment(response.end_date).format('YYYY-MM-DD HH:mm:ss'));
             }
         })
+    });
+
+    $(document).on('click', '.event-time', function () {
+        a = array.indexOf($(this).data('id'));
+        console.log(a);
+        if (array.indexOf($(this).data('id')) < 0) {
+            array.push($(this).data('id'));
+        } else {
+            array.splice(array.indexOf($(this).data('id')), 1);
+        }
+        console.log(array);
     });
 });

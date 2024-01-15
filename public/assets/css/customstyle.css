@@ -215,3 +215,42 @@ button{
 .sub-title{
     padding: 0;
 }
+
+
+
+
+.bootstrap-calendar-day {
+    margin: 5px;
+    border-radius: 10%;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 12px;
+}
+
+.active{
+    background-color: #e18830;
+    color: #fff;
+}
+
+.bootstrap-calendar-day:hover {
+   border: 1px solid #e18830;
+}
+
+
+
+.btn-link {
+    --bs-btn-color: #e18830;
+}
+
+.btn-link:hover {
+    color: #e18830;
+}
+.event-time{
+    font-size: 12px;
+}
+
+
+.js-events {
+    overflow-y: auto;
+    max-height: 400px;
+}
