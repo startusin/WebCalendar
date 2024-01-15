@@ -23,6 +23,8 @@
             </div>
         </div>
 
+        <div data-bs-toggle="calendar" id="exampleCalendar" data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
+
         <div id="hjsCalendar"></div>
 
         <div class="col-12" id="rightContent" style="margin-top: 20px; text-align: center;">

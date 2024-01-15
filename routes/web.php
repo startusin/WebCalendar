@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+    Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
     Route::group(['middleware' => 'auth'], function (){
         Route::group(['prefix' => 'user', 'middleware' => 'admin'], function () {
