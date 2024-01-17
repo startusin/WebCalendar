@@ -1,6 +1,6 @@
 @extends('layouts')
 @section('content')
-    <div class="container">
+    <div class="container MyContainer">
     <div class="row justify-content-center">
         <header class="d-flex my-header mb-5">
             <div class="d-flex navigation-action col-8">
@@ -24,24 +24,6 @@
         </div>
 
         <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar" data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
-
-
-{{--        <div class="col-12" id="rightContent" style="margin-top: 20px; text-align: center;">--}}
-{{--            <div class="fw-bold justify-content-center d-flex py-5" id="today-date">--}}
-{{--                <div id="event-day">Friday</div>--}}
-{{--                <div id="event-date">, February 16</div>--}}
-{{--            </div>--}}
-{{--            <div class="text-center">--}}
-{{--                <div class="events me-4 row gx-2 d-flex flex-wrap" id="meeting_daily_timings">--}}
-{{--                    @foreach($slots as $slot)--}}
-{{--                        <button class="event-time meeting d-inline-block w-auto">--}}
-{{--                            {{ $slot->start_date->format('h:i') }} - {{ $slot->end_date->format('h:i') }} {{ $slot->language }}--}}
-{{--                        </button>--}}
-{{--                    @endforeach--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
 
 
         <div class="products d-flex flex-wrap justify-content-center mt-3">

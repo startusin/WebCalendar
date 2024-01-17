@@ -1,6 +1,24 @@
 $(document).ready(function () {
     let array  = [];
 
+    let htmlCard1 = '<div class="col-12">' +
+        '<label for="exampleInputEmail1" class="form-label text-label">Numero de carte</label>' +
+        '<input type="text" class="form-control" placeholder="1234 1234 1234 1234" aria-describedby="basic-addon1">' +
+        '</div>' +
+        '<div class="row mt-2">' +
+        '<div class="col-6">' +
+        '<label for="exampleInputEmail1" class="form-label text-label">Expiration</label>' +
+        '<input type="text" class="form-control" placeholder="MM/YY" aria-describedby="basic-addon1">' +
+        '</div>' +
+        '<div class="col-6">' +
+        '<label for="exampleInputEmail1" class="form-label text-label">CVC</label>' +
+        '<input type="text" class="form-control" placeholder="CVC" aria-describedby="basic-addon1">' +
+        '</div>' +
+        '</div>';
+
+    $('.generate-payments').html(htmlCard1);
+
+
     $(document).on('click', '.showUser', function () {
         let route = $(this).data('route');
 
@@ -65,6 +83,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.event-time', function () {
+        console.log($(this).parent());
         a = array.indexOf($(this).data('id'));
         console.log(a);
         if (array.indexOf($(this).data('id')) < 0) {
@@ -73,5 +92,19 @@ $(document).ready(function () {
             array.splice(array.indexOf($(this).data('id')), 1);
         }
         console.log(array);
+    });
+
+
+
+
+    $(document).on('click', '.card-item', function () {
+
+
+
+        console.log(442);
+        console.log($(this).data('id'));
+        if ($(this).data('id') == 1) {
+            $('.generate-payments').html(htmlCard1);
+        }
     });
 });

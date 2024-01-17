@@ -3,7 +3,7 @@ body{
     background-color: antiquewhite;
 
 }
-.container{
+.MyContainer{
     max-width: 550px;
     width: 100%;
 }
@@ -253,4 +253,74 @@ button{
 .js-events {
     overflow-y: auto;
     max-height: 400px;
+}
+
+
+/*Purchase*/
+.PurchaseContainer{
+    max-width: 1350px;
+    width: 100%;
+}
+
+.all-purchase{
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+
+    font-size: 18px;
+}
+.product-item, .sous-total, .total {
+    padding: 15px;
+}
+.product-item:hover {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.product-item-count span {
+    background-color: #efefef;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: 600;
+
+    color: #000000;
+}
+.product-item-price span {
+    background-color: #efefef;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-weight: 600;
+
+}
+
+.total-item-price span {
+    color: #ffffff;
+    font-weight: 600;
+    background-color: #e18830;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.text-label{
+    font-weight: 600;
+    color: #545353;
+}
+.title-payment {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 600;
+
+}
+.products-items{
+
+}
+.card-items {
+    border-radius: 10px;
+    overflow-x: auto;
+    max-height: 100px;
+}
+.card-item {
+    border-radius: 10px;
+    height: 90px;
+    background-color: #ffffff;
+    margin-right: 10px;
 }
