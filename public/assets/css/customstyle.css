@@ -324,3 +324,31 @@ button{
     background-color: #ffffff;
     margin-right: 10px;
 }
+
+.reserve {
+    padding: 10px;
+    color: #000000;
+    background-color: #e18830;
+    border-radius: 10px 0 0 10px; /* top-right corner is 10px, others are 0 */
+}
+
+.total-sum-purchase {
+    background-color: #e18830;
+    padding: 10px;
+    border-radius: 0 10px 10px 0;
+    margin-left: 3px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.left-link-modifier {
+    color: #000000;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+label.error {
+    margin-top: -15px;
+}

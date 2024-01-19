@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->references('id')->on('products');
             $table->foreignId('booking_id')->references('id')->on('bookings');
-            $table->foreignId('promocode_id')->references('id')->on('promo_codes');
+            $table->foreignId('promocode_id')->nullable()->references('id')->on('promo_codes');
             $table->bigInteger('quantity')->default(1);
             $table->timestamps();
         });

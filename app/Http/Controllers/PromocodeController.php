@@ -17,6 +17,15 @@ class PromocodeController extends Controller
         $this->promoService = $promoService;
     }
 
+    public function checkPromocode(Request $request) {
+        $promo = $request->input('promo');
+        $product = $request->input('product');
+
+        return PromoCode::where('promocode', $promo)
+            ->where('product_id', $product)
+            ->first();
+    }
+
     public function index()
     {
         $promocodes = PromoCode::whereIn('product_id',Product::where('calendar_id', auth()->user()->id)->pluck('id'))

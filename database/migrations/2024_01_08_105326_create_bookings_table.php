@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
+            $table->string('company_name')->nullable();
+            $table->string('region')->nullable();
+            $table->string('street_name')->nullable();
+            $table->string('place')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('phone')->nullable();
             $table->json('stripe_data')->nullable();
             $table->timestamps();
         });
