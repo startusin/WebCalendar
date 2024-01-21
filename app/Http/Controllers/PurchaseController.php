@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AvailableSlot;
+use App\Models\CustomSlot;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
 use App\Models\Product;
@@ -14,7 +14,7 @@ class PurchaseController extends Controller
     {
         $data = $request->all();
         $calendarId = $data['calendarId'];
-        $slots = AvailableSlot::where('id', $data['slots'])->first();
+        $slots = CustomSlot::where('id', $data['slots'])->first();
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
 
         foreach ($products as &$product) {

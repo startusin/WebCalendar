@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Languages;
-use App\Models\AvailableSlot;
+use App\Models\CustomSlot;
 use App\Services\SlotService;
 use DateTime;
 use Illuminate\Http\Request;
@@ -21,14 +21,14 @@ class SlotController extends Controller
 
     public function index()
     {
-        $slots = AvailableSlot::where('calendar_id', auth()->id())
+        $slots = CustomSlot::where('calendar_id', auth()->id())
             ->get();
         return view('customer.slot.index', compact('slots'));
     }
 
     public function show($id)
     {
-        $slot = AvailableSlot::find($id);
+        $slot = CustomSlot::find($id);
         $slot['language'] = Languages::getStringLanguage($slot['language']);
         return $slot;
     }
@@ -58,14 +58,14 @@ class SlotController extends Controller
 
         $dateForCreate = $this->slotService->MakeSlotForCreate($data);
 
-        AvailableSlot::create($dateForCreate);
+        CustomSlot::create($dateForCreate);
 
         return redirect()->route('customer.slot.index');
     }
 
     public function edit($id)
     {
-        $slot = AvailableSlot::find($id);
+        $slot = CustomSlot::find($id);
         $languages = array_flip(Languages::getMyLanguages(auth()->user()->languages));
 
         return view('customer.slot.edit', compact('slot','languages'));
@@ -88,7 +88,7 @@ class SlotController extends Controller
         ])->validated();
 
         $dataForUpdate = $this->slotService->MakeSlotForUpdate($data);
-        $slot = AvailableSlot::findOrFail($data['slot_id']);
+        $slot = CustomSlot::findOrFail($data['slot_id']);
         $slot->update($dataForUpdate);
 
         return redirect()->route('customer.slot.index');
@@ -96,7 +96,7 @@ class SlotController extends Controller
 
     public function delete($id)
     {
-        $slot = AvailableSlot::find($id);
+        $slot = CustomSlot::find($id);
         $slot->delete();
         return redirect()->route('customer.slot.index');
     }

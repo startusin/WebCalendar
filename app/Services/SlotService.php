@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\AvailableSlot;
+use App\Models\CustomSlot;
 use DateTime;
 
 class SlotService

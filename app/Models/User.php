@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function slots(): HasMany
     {
-        return $this->hasMany(AvailableSlot::class, 'calendar_id', 'id');
+        return $this->hasMany(CustomSlot::class, 'calendar_id', 'id');
     }
 }
