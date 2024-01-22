@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('booking_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('products');
-            $table->foreignId('booking_id')->references('id')->on('bookings');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
+
             $table->foreignId('promocode_id')->nullable()->references('id')->on('promo_codes');
             $table->bigInteger('quantity')->default(1);
             $table->timestamps();

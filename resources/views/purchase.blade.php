@@ -7,7 +7,9 @@
 
             <div class="row">
 
-            <input name="slot_id" id="slot_id" value="{{$slots->id}}" hidden>
+                <input type="hidden" name="slots" id="slots" value="{{ json_encode($slots) }}">
+
+
             <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
             <div class="col-6">
                 <div class="sub-title-text mt-5 mb-3">

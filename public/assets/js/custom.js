@@ -1,5 +1,37 @@
 $(document).ready(function () {
-    var array  = [];
+    var array  = {};
+    let currentDate;
+
+    $(document).on('click', '.event-time', function () {
+        let dateFromClick = $(this).text();
+        let timestamp = $(this).data('id');
+        console.log(timestamp);
+
+        if (!array[currentDate]) {
+            array[currentDate] = {};
+        }
+        if (!array[currentDate]['dateSE']) {
+            array[currentDate]['dateSE'] = [];
+        }
+        console.log(array);
+        if (!array[currentDate]['timestamp']) {
+            array[currentDate]['timestamp'] = timestamp;
+        }
+        if (array[currentDate]['dateSE'].indexOf(dateFromClick) < 0)
+        {
+            array[currentDate]['dateSE'].push(dateFromClick);
+        } else {
+            array[currentDate]['dateSE'].splice(array[currentDate]['dateSE'].indexOf(dateFromClick), 1);
+            if (array[currentDate]['dateSE'].length <= 0) {
+                delete array[currentDate];
+            }
+        }
+        console.log(array);
+    });
+
+    $(document).on('click', '.bootstrap-calendar-day', function () {
+        currentDate = $(this).data('date');
+    });
 
     let htmlCard1 = '<div class="col-12">' +
         '<label for="exampleInputEmail1" class="form-label text-label">Numero de carte</label>' +
@@ -81,17 +113,7 @@ $(document).ready(function () {
         })
     });
 
-    $(document).on('click', '.event-time', function () {
-        console.log($(this).parent());
-        a = array.indexOf($(this).data('id'));
-        console.log(a);
-        if (array.indexOf($(this).data('id')) < 0) {
-            array.push($(this).data('id'));
-        } else {
-            array.splice(array.indexOf($(this).data('id')), 1);
-        }
-        console.log(array);
-    });
+
 
 
 
@@ -103,6 +125,7 @@ $(document).ready(function () {
             $('.generate-payments').html(htmlCard1);
         }
     });
+
 
 
 
@@ -145,8 +168,7 @@ $(document).ready(function () {
             let phoneName = $('#PhoneInput').val();
             let emailName = $('#EmailInput').val();
             let calendarId = $('#calendar_id').val();
-            let slotId = $('#slot_id').val();
-
+            let slotId = $('#slots').val();
             let csrfToken = $('meta[name="csrf-token"]').attr('content');
 
             let ProductQuantity = {}
@@ -173,7 +195,7 @@ $(document).ready(function () {
 
             var dataToSend = {
                 calendarId: calendarId,
-                slotId: slotId,
+                slots: slotId,
                 csrfToken: csrfToken,
                 firstName: firstName,
                 lastName: lastName,

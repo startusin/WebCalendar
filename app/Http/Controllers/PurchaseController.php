@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookedSlots;
 use App\Models\CustomSlot;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
@@ -13,8 +14,32 @@ class PurchaseController extends Controller
     public function index(Request $request)
     {
         $data = $request->all();
+
+        $slotsFront = [];
+
+        foreach ($data['slots'] as $key => $dateTime)
+        {
+            foreach ($dateTime['dateSE'] as $item) {
+
+                $StartEndDateTime = explode(" - ", $item);
+                $timeStamp = $dateTime['timestamp'];
+                $startSlot = new \DateTime("$key". "$StartEndDateTime[0]");
+                $endSlot = new \DateTime("$key". "$StartEndDateTime[0]");
+
+                $slotObject = [
+                    'startDateSlot' => $startSlot,
+                    'endDateSlot' => $endSlot,
+                    'timestamp' => $timeStamp
+                ];
+
+                $slotsFront[] = $slotObject;
+
+            }
+        }
         $calendarId = $data['calendarId'];
-        $slots = CustomSlot::where('id', $data['slots'])->first();
+
+        //$slots = CustomSlot::where('id', $data['slots'])->first();
+        $slots = $slotsFront[0];
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
 
         foreach ($products as &$product) {
@@ -32,6 +57,13 @@ class PurchaseController extends Controller
     public function makeSlot(Request $request)
     {
         $data = $request->all();
+        $data['slots'] = json_decode($data['slots']);
+
+        $bookedSlot = BookedSlots::create([
+            'start_date' => $data['slots']->startDateSlot->date,
+            'end_date' => $data['slots']->endDateSlot->date,
+            'timestamp' => $data['slots']->timestamp,
+        ]);
 
         $booking = Bookings::create([
             'first_name' => $data['firstName'],
@@ -43,7 +75,7 @@ class PurchaseController extends Controller
             'place' => $data['placeName'],
             'postal_code' => $data['postalCodeName'],
             'phone' => $data['phoneName'],
-            'slot_id' => $data['slotId']
+            'slot_id' => $bookedSlot['id']
         ]);
 
         foreach ($data['ProductQuantity'] as $id => $item) {

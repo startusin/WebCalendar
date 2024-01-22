@@ -47,7 +47,7 @@
 
             //return drawEvent(event);
             console.log(event);
-            return '<button class="event-time meeting d-inline-block w-auto event-item" data-id="' + event.id + '">' + startTime + ' - ' + endTime + '</button>'
+            return '<button class="event-time meeting d-inline-block w-auto event-item" data-id="' + event.timestamp + '">' + startTime + ' - ' + endTime + '</button>'
         },
     });
 </script>
