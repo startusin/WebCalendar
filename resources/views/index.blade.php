@@ -59,7 +59,7 @@
             <div class="col-6 left-link-modifier" style="width: 47.5%;">
                 Modifier la date consider
             </div>
-            <div  type="button" class="col-5 reserve text-start" style="width: 37%;"><i class="fa-solid fa-check"></i> Reserver</div>
+            <div  type="button" id="PurchaseButton"  class="col-5 reserve text-start disable_button" style="width: 37%;"><i class="fa-solid fa-check"></i> Reserver</div>
             <div class="col-1 total-sum-purchase" style="width: 13.5%;">
                 38$
             </div>

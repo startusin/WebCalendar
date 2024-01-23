@@ -352,3 +352,8 @@ button{
 label.error {
     margin-top: -15px;
 }
+
+.disable_button {
+    pointer-events: none;
+    opacity: 0.5;
+}

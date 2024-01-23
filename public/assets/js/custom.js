@@ -1,32 +1,70 @@
 $(document).ready(function () {
     var array  = {};
     let currentDate;
+    let dataIds = {};
+    function  EnabledOrDisabledButton()
+    {
+        let sumOfProduct = 0;
+        let myDiv = document.getElementById('PurchaseButton');
+
+        $('.up-card').each(function(index, element) {
+            let productId = $(element).find('.left-icon').data('id');
+
+            let currentValue = parseInt($(element).find('.count-of-product').text());
+            if (currentValue > 0){
+                dataIds[productId] = currentValue;
+            }
+            sumOfProduct+=currentValue;
+        });
+
+        if (Object.keys(array).length > 0 && sumOfProduct > 0){
+            if (myDiv.classList.contains('disable_button')) {
+                myDiv.classList.remove('disable_button');
+            }
+        }
+        if (Object.keys(array).length <= 0 || sumOfProduct <= 0){
+            if (!myDiv.classList.contains('disable_button')) {
+                myDiv.classList.add('disable_button');
+            }
+        }
+    }
 
     $(document).on('click', '.event-time', function () {
+
         let dateFromClick = $(this).text();
         let timestamp = $(this).data('id');
-        console.log(timestamp);
+        let language = $(this).data('language');
+        let startTime = $(this).data('start');
+        let endTime = $(this).data('end');
 
+        let itemObject = {
+            dateFromClick: dateFromClick,
+            timestamp: timestamp,
+            language: language,
+            startTime: startTime,
+            endTime: endTime
+        };
         if (!array[currentDate]) {
             array[currentDate] = {};
         }
-        if (!array[currentDate]['dateSE']) {
-            array[currentDate]['dateSE'] = [];
+        if (!array[currentDate]['objects']) {
+            array[currentDate]['objects'] = [];
         }
-        console.log(array);
-        if (!array[currentDate]['timestamp']) {
-            array[currentDate]['timestamp'] = timestamp;
-        }
-        if (array[currentDate]['dateSE'].indexOf(dateFromClick) < 0)
-        {
-            array[currentDate]['dateSE'].push(dateFromClick);
-        } else {
-            array[currentDate]['dateSE'].splice(array[currentDate]['dateSE'].indexOf(dateFromClick), 1);
-            if (array[currentDate]['dateSE'].length <= 0) {
+
+
+
+            let indexOfElement = array[currentDate]['objects'].findIndex(item => item.timestamp === timestamp && item.language === language);
+            if (indexOfElement<0){
+                array[currentDate]['objects'].push(itemObject);
+            } else {
+                array[currentDate]['objects'].splice(indexOfElement,1);
+            }
+            if (array[currentDate]['objects'].length<=0){
                 delete array[currentDate];
             }
-        }
-        console.log(array);
+            console.log("QQ="+indexOfElement);
+
+        EnabledOrDisabledButton();
     });
 
     $(document).on('click', '.bootstrap-calendar-day', function () {
@@ -130,16 +168,6 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.reserve', function () {
-        let dataIds = {};
-        $('.up-card').each(function(index, element) {
-            let productId = $(element).find('.left-icon').data('id');
-
-            let currentValue = parseInt($(element).find('.count-of-product').text());
-            if (currentValue > 0){
-                dataIds[productId] = currentValue;
-            }
-        });
-
         let currentUrl = window.location.href;
 
         let urlParts = currentUrl.split('/');
@@ -279,4 +307,44 @@ $(document).ready(function () {
         //     isPromocodeElement.html(htmlFalse);
         // }
     });
+
+
+
+
+    $(document).on('click', '.left-icon', function () {
+
+        let productId = $(this).data('id');
+        let maxQuantity = $(this).closest('.product-navigation').find('.count-of-product').data('max');
+        let currentValue = $(this).closest('.product-navigation').find('.count-of-product');
+        var newCount =  parseInt(currentValue.text()) + 1;
+        if (newCount <= maxQuantity) {
+            currentValue.text(newCount);
+        }
+        console.log(currentValue);
+        UpdateTotalValue();
+        EnabledOrDisabledButton();
+    });
+
+    $(document).on('click', '.right-icon', function () {
+        let productId = $(this).data('id');
+        let currentValue = $(this).closest('.product-navigation').find('.count-of-product');
+        var newCount =  parseInt(currentValue.text()) - 1;
+        if (newCount >= 0) {
+            currentValue.text(newCount);
+        }
+        UpdateTotalValue();
+        EnabledOrDisabledButton();
+
+    });
+
+    function UpdateTotalValue() {
+        let sum = 0;
+        $('.up-card').each(function(index, element) {
+            let priceItem = $(element).find('.product-price').data('price');
+
+            let currentValue = parseInt($(element).find('.count-of-product').text());
+            sum+= priceItem*currentValue;
+        });
+        console.log($('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"$"));
+    }
 });

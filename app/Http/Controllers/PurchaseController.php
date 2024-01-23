@@ -16,24 +16,18 @@ class PurchaseController extends Controller
         $data = $request->all();
 
         $slotsFront = [];
-
         foreach ($data['slots'] as $key => $dateTime)
         {
-            foreach ($dateTime['dateSE'] as $item) {
-
-                $StartEndDateTime = explode(" - ", $item);
-                $timeStamp = $dateTime['timestamp'];
-                $startSlot = new \DateTime("$key". "$StartEndDateTime[0]");
-                $endSlot = new \DateTime("$key". "$StartEndDateTime[0]");
-
-                $slotObject = [
-                    'startDateSlot' => $startSlot,
-                    'endDateSlot' => $endSlot,
-                    'timestamp' => $timeStamp
-                ];
-
-                $slotsFront[] = $slotObject;
-
+            foreach ($dateTime as $items) {
+                foreach ($items as $item) {
+                    $slotObject = [
+                        'startDateSlot' => new \DateTime($item['startTime']),
+                        'endDateSlot' => new \DateTime($item['endTime']),
+                        'timestamp' =>  $item['timestamp'],
+                        'language' => $item['language']
+                    ];
+                    $slotsFront[] = $slotObject;
+                }
             }
         }
         $calendarId = $data['calendarId'];
@@ -58,11 +52,11 @@ class PurchaseController extends Controller
     {
         $data = $request->all();
         $data['slots'] = json_decode($data['slots']);
-
         $bookedSlot = BookedSlots::create([
             'start_date' => $data['slots']->startDateSlot->date,
             'end_date' => $data['slots']->endDateSlot->date,
             'timestamp' => $data['slots']->timestamp,
+            'language' => $data['slots']->language,
         ]);
 
         $booking = Bookings::create([
