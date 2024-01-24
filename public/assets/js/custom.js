@@ -2,6 +2,15 @@ $(document).ready(function () {
     var array  = {};
     let currentDate;
     let dataIds = {};
+    let productIds = [];
+
+    $('.up-card').each(function(index, element) {
+        let productId = $(element).find('.left-icon').data('id');
+
+        productIds.push(productId);
+    });
+
+
     function  EnabledOrDisabledButton()
     {
         let sumOfProduct = 0;
@@ -29,8 +38,9 @@ $(document).ready(function () {
         }
     }
 
-    $(document).on('click', '.event-time', function () {
 
+
+    $(document).on('click', '.event-time', function () {
         let dateFromClick = $(this).text();
         let timestamp = $(this).data('id');
         let language = $(this).data('language');
@@ -50,9 +60,6 @@ $(document).ready(function () {
         if (!array[currentDate]['objects']) {
             array[currentDate]['objects'] = [];
         }
-
-
-
             let indexOfElement = array[currentDate]['objects'].findIndex(item => item.timestamp === timestamp && item.language === language);
             if (indexOfElement<0){
                 array[currentDate]['objects'].push(itemObject);
@@ -65,6 +72,41 @@ $(document).ready(function () {
             console.log("QQ="+indexOfElement);
 
         EnabledOrDisabledButton();
+
+        var params = {
+            startTime: startTime,
+            endTime: endTime,
+            productIds: productIds
+        };
+
+        $.ajax({
+            url: '/checkprice',
+            type: 'GET',
+            data: params,
+            success: function(response) {
+                console.log(response);
+                $('.up-card').each(function(index, element) {
+
+                    let productElement = $(element).find('.product-price');
+                    response.forEach(function (item){
+                       if (item.id == productElement.data('id')) {
+                           productElement.data("price", item.price);
+                           if (item['priceProduct_id']){
+                              productElement.attr("data-product-price-id", item['priceProduct_id']);
+                           } else {
+                               productElement.removeAttr('data-product-price-id');
+                           }
+                           productElement.text(item.price+"$");
+                       }
+                    });
+                    UpdateTotalValue();
+                });
+            },
+            error: function(error) {
+                console.error('Помилка при відправленні запиту:', error);
+            }
+        });
+
     });
 
     $(document).on('click', '.bootstrap-calendar-day', function () {
@@ -174,8 +216,18 @@ $(document).ready(function () {
 
         let lastPart = urlParts[urlParts.length - 1];
 
+        let productPriceId = [];
+        $('.up-card').each(function(index, element) {
 
-        let queryString = $.param({ slots: array, productIdsQuantity: dataIds, calendarId: lastPart });
+            let productElement = $(element).find('.product-price').data('product-price-id');
+            if (productElement!=undefined) {
+                productPriceId.push(productElement);
+            }
+
+        });
+
+
+        let queryString = $.param({ slots: array, productIdsQuantity: dataIds, productPriceId: productPriceId, calendarId: lastPart });
         console.log(queryString);
         window.location.href = '/purchase?' + queryString;
     });
@@ -206,7 +258,12 @@ $(document).ready(function () {
                 let productId = $(element).find('.prod-info').data('id');
                 let productQuantity = $(element).find('.prod-info').data('quantity');
                 let productPromo = $(element).find('.is-promocode').data('promo');
+                console.log("PROMP= "+productPromo);
+                let productPriceId = $(element).find('.prod-info').data('product-price-id');
                 console.log("id " +productId);
+                if (productPriceId === undefined) {
+                    productPriceId = null;
+                }
                 if (productPromo === undefined) {
                     productPromo = null;
                 }
@@ -215,7 +272,8 @@ $(document).ready(function () {
 
                 ProductQuantity[productId] = {
                     productQuantity : productQuantity,
-                    productPromo : productPromo
+                    productPromo : productPromo,
+                    productPriceId : productPriceId
                 };
 
             });
@@ -274,6 +332,11 @@ $(document).ready(function () {
 
         let queryString = $.param({ promo: enteredValue, product: productId });
 
+        let quantityObj = $currentInput.closest('.accordion-item').find('.prod-info');
+        let quantity = quantityObj.data('quantity');
+        let basePrice =  $currentInput.closest('.accordion-item').find('.prod-info').data('price');
+        let productInf = $currentInput.closest('.accordion-item').find('.product-item-price');
+
         $.ajax({
             url: '/checkPromocode',
             method: 'GET',
@@ -281,17 +344,24 @@ $(document).ready(function () {
             success: function(response) {
                 if (response && Object.keys(response).length > 0) {
                     isPromocodeElement.html(htmlTrue);
-                    isPromocodeElement.attr('data-promo', response.id);
-                    let productInf = $currentInput.closest('.accordion-item').find('.product-item-price');
-                    let quantityObj = $currentInput.closest('.accordion-item').find('.prod-info');
-                    let quantity = quantityObj.data('quantity');
 
-                    productInf.html("<span>" +(Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "$</span>");
-
+                    isPromocodeElement.removeData('promo');
+                    if (response.price > basePrice){
+                        productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
+                        console.log("Not Add");
+                    }
+                    else  {
+                        console.log("ADDPROMO");
+                        isPromocodeElement.data('promo', response.id);
+                        productInf.html("<span>" + (Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "$</span>");
+                    }
 
                 } else {
                     isPromocodeElement.html(htmlFalse);
-                    isPromocodeElement.removeAttr('data-promo');
+                    isPromocodeElement.removeData('promo');
+
+                    productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
+
                 }
             },
             error: function(error) {
@@ -299,13 +369,6 @@ $(document).ready(function () {
             }
         });
 
-        // if (enteredValue == '1') {
-        //     isPromocodeElement.html(htmlTrue);
-        //     console.log("TRUE");
-        // } else{
-        //     console.log("false");
-        //     isPromocodeElement.html(htmlFalse);
-        // }
     });
 
 
@@ -341,7 +404,7 @@ $(document).ready(function () {
         let sum = 0;
         $('.up-card').each(function(index, element) {
             let priceItem = $(element).find('.product-price').data('price');
-
+            console.log(priceItem);
             let currentValue = parseInt($(element).find('.count-of-product').text());
             sum+= priceItem*currentValue;
         });

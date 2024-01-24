@@ -32,7 +32,7 @@
                 <div class="product col-12 pt-2 pb-2 mt-1 mb-1">
                     <div class="up-card d-flex mb-3">
                         <div class="product-title col-6">{{ $product->title }}</div>
-                        <div class="product-price d-flex justify-content-end col-3" data-price="{{$product->price}}">{{ $product->price }}$</div>
+                        <div class="product-price d-flex justify-content-end col-3"  data-id="{{ $product->id }}" data-price="{{$product->price}}">{{ $product->price }}$</div>
                         <div class="product-navigation col-3 d-flex justify-content-center">
                             <div class="left-icon white-circle" data-id="{{ $product->id }}">
                                 <button >

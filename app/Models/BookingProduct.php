@@ -12,6 +12,7 @@ class BookingProduct extends Model
         'product_id',
         'booking_id',
         'quantity',
-        'promocode_id'
+        'promocode_id',
+        'sold_price'
     ];
 }

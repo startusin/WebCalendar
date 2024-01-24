@@ -93,7 +93,7 @@
                     @foreach($products as $product)
                             <div class="accordion-item">
                                 <div class="accordion-header d-block" id="flush-heading{{$product->id}}">
-                                    <div class="collapsed prod-info" data-id = "{{$product->id}}" data-quantity = {{$product->quantity}}  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$product->id}}" aria-expanded="false" aria-controls="flush-collapse{{$product->id}}">
+                                    <div class="collapsed prod-info" data-product-price-id ="{{$product->product_price_id}}" data-price="{{$product->price}}" data-id = "{{$product->id}}" data-quantity = {{$product->quantity}}  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$product->id}}" aria-expanded="false" aria-controls="flush-collapse{{$product->id}}">
                                         <div class="product-item d-flex">
                                             <div class="col-7 product-item-text">
                                                 {{$product->title}}
@@ -218,25 +218,3 @@
     </div>
 @endsection
 
-@push('js')
-{{--    <script type="text/javascript">--}}
-
-{{--        $(".submit-form").click(function(e){--}}
-{{--            e.preventDefault();--}}
-{{--            var data = 7;--}}
-{{--            console.log({{ route('makeSlot') }});--}}
-{{--        });--}}
-
-{{--        $.ajax.post({--}}
-{{--            type: 'post',--}}
-{{--            url: "{{ route('customer.slot.index') }}",--}}
-{{--            data: data,--}}
-{{--            headers: {--}}
-{{--                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-{{--            },--}}
-{{--            success: function(response){--}}
-{{--                alert(response.success);--}}
-{{--            },--}}
-{{--        });--}}
-{{--    </script>--}}
-@endpush

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
+    Route::get('/checkprice', [\App\Http\Controllers\PurchaseController::class, 'checkprice'])->name('checkprice');
     Route::get('/purchase', [\App\Http\Controllers\PurchaseController::class, 'index'])->name('purchase');
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
 
