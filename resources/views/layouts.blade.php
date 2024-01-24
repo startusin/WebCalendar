@@ -46,7 +46,6 @@
             const endTime = new Date(event.end).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
             //return drawEvent(event);
-            console.log(event);
             return '<button class="event-time meeting d-inline-block w-auto event-item" data-language = '+event.language+'  data-id = '+event.timestamp+'  data-start = '+event.start+' data-end='+event.end+'>'+ event.language+' ' + startTime + ' - ' + endTime + '</button>'
         },
     });

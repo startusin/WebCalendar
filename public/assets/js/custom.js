@@ -30,7 +30,10 @@ $(document).ready(function () {
                 console.log(selectTimeDate);
             }
         });
+        console.log("SetActive rememberdate ");
+        console.log(rememberDate);
 
+        console.log("Current date " + currentDate);
     }
     function AddAndRemoveDate() {
         let selectYearDate;
@@ -58,6 +61,7 @@ $(document).ready(function () {
             language: selectLanguage
         };
 
+        console.log("AddAndRemoveDate rememberdate ");
         console.log(rememberDate);
     }
 
@@ -70,6 +74,23 @@ $(document).ready(function () {
         $('.bootstrap-calendar-day').removeClass('active');
 
         setActive();
+    });
+
+    $(document).on('click', '.bootstrap-calendar-day', function () {
+        currentDate = $(this).data('date');
+        $('.event-time').each(function (index, element) {
+
+            let selectTimeDate = $(element).data('id');
+            let selectLanguage = $(element).data('language');
+
+            if (currentDate === rememberDate.date && selectLanguage == rememberDate.language && selectTimeDate == rememberDate.time) {
+                $(element).addClass('active');
+            }
+            if ($(element).hasClass('active')){
+                selectTimeDate = $(element).data('id');
+                console.log(selectTimeDate);
+            }
+        });
     });
     // $('.bootstrap-calendar-day').each(function(index, element) {
     //     // Отримуємо значення атрибута data-date
@@ -150,8 +171,6 @@ $(document).ready(function () {
             if (array[currentDate]['objects'].length<=0){
                 delete array[currentDate];
             }
-            console.log("QQ="+indexOfElement);
-
         EnabledOrDisabledButton();
 
         var params = {
@@ -165,7 +184,6 @@ $(document).ready(function () {
             type: 'GET',
             data: params,
             success: function(response) {
-                console.log(response);
                 $('.up-card').each(function(index, element) {
 
                     let productElement = $(element).find('.product-price');
@@ -191,10 +209,7 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('click', '.bootstrap-calendar-day', function () {
-        setActive();
-        currentDate = $(this).data('date');
-    });
+
 
     let htmlCard1 = '<div class="col-12">' +
         '<label for="exampleInputEmail1" class="form-label text-label">Numero de carte</label>' +
@@ -488,10 +503,9 @@ $(document).ready(function () {
         let sum = 0;
         $('.up-card').each(function(index, element) {
             let priceItem = $(element).find('.product-price').data('price');
-            console.log(priceItem);
             let currentValue = parseInt($(element).find('.count-of-product').text());
             sum+= priceItem*currentValue;
         });
-        console.log($('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"$"));
+        $('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"$");
     }
 });
