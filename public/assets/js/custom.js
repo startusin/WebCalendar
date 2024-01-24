@@ -4,6 +4,84 @@ $(document).ready(function () {
     let dataIds = {};
     let productIds = [];
 
+    let rememberDate = {};
+
+    function setActive() {
+        $('.bootstrap-calendar-day').each(function(index, element) {
+            let selectDate = $(element).data('date');
+
+            if (rememberDate.date === selectDate) {
+                if (!$(element).hasClass('active')) {
+                    $(element).addClass('active');
+                }
+            }
+        });
+
+        $('.event-time').each(function (index, element) {
+
+            let selectTimeDate = $(element).data('id');
+            let selectLanguage = $(element).data('language');
+
+            if (currentDate === rememberDate.date && selectLanguage == rememberDate.language && selectTimeDate == rememberDate.time) {
+                $(element).addClass('active');
+            }
+            if ($(element).hasClass('active')){
+                selectTimeDate = $(element).data('id');
+                console.log(selectTimeDate);
+            }
+        });
+
+    }
+    function AddAndRemoveDate() {
+        let selectYearDate;
+        $('.bootstrap-calendar-day').each(function(index, element) {
+            if ($(element).hasClass('active')) {
+                selectYearDate = $(element).data('date');
+            }
+        });
+
+        let selectTimeDate;
+        let selectLanguage;
+        $('.event-time').each(function (index, element) {
+            if ($(element).hasClass('active')){
+                selectTimeDate = $(element).data('id');
+                selectLanguage = $(element).data('language');
+                console.log(selectTimeDate);
+                console.log(selectLanguage);
+            }
+        });
+        rememberDate = {};
+
+        rememberDate = {
+            date: selectYearDate,
+            time: selectTimeDate,
+            language: selectLanguage
+        };
+
+        console.log(rememberDate);
+    }
+
+    $(document).on('click', '.btn-prev-month', function () {
+        $('.bootstrap-calendar-day').removeClass('active');
+
+        setActive();
+    });
+    $(document).on('click', '.btn-next-month', function () {
+        $('.bootstrap-calendar-day').removeClass('active');
+
+        setActive();
+    });
+    // $('.bootstrap-calendar-day').each(function(index, element) {
+    //     // Отримуємо значення атрибута data-date
+    //     var currentDate = $(element).data('date');
+    //
+    //     // Перевіряємо, чи поточна дата співпадає з визначеною
+    //     if (currentDate === '2024-01-15') {
+    //         // Додаємо клас "active"
+    //         $(element).addClass('active');
+    //     }
+    // });
+
     $('.up-card').each(function(index, element) {
         let productId = $(element).find('.left-icon').data('id');
 
@@ -41,6 +119,9 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.event-time', function () {
+        $('.event-time').removeClass('active');
+        $(this).addClass('active');
+        AddAndRemoveDate();
         let dateFromClick = $(this).text();
         let timestamp = $(this).data('id');
         let language = $(this).data('language');
@@ -109,7 +190,9 @@ $(document).ready(function () {
 
     });
 
+
     $(document).on('click', '.bootstrap-calendar-day', function () {
+        setActive();
         currentDate = $(this).data('date');
     });
 
@@ -210,6 +293,7 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.reserve', function () {
+        setActive();
         let currentUrl = window.location.href;
 
         let urlParts = currentUrl.split('/');

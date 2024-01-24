@@ -51,8 +51,9 @@
         },
     });
 </script>
-<script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('assets/js/сalendarProduct.js')}}"></script>
+<script src="{{asset('assets/js/custom.js')}}"></script>
+
 @stack('js')
 
 </body>
