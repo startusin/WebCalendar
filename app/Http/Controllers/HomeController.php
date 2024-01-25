@@ -53,7 +53,8 @@ class HomeController extends Controller
                 $availableSlots[] = [
                     'start' => $slot->start_date,
                     'end' => $slot->end_date,
-                    'timestamp' => $startDate->getTimestamp()
+                    'timestamp' => $startDate->getTimestamp(),
+                    'quantity' => $slot->attendee_qty
                 ];
             }
         }
@@ -62,7 +63,7 @@ class HomeController extends Controller
         $availableTime = ['from' => '08:00', 'to' => '20:00'];
         $excludingDays = ['saturday', 'sunday'];
         $intervalMinutes = 60;
-        $result = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $queriedSlots);
+        $result = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $queriedSlots, $user);
         $mergedSlots = array_merge($result, $availableSlots);
 
         usort($mergedSlots, function ($a, $b) {
@@ -78,7 +79,7 @@ class HomeController extends Controller
         return response()->json($finalSlots);
     }
 
-    private function generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $rewritingRules)
+    private function generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $rewritingRules, $user)
     {
         $result = [];
 
@@ -92,7 +93,6 @@ class HomeController extends Controller
         while ($currentDate <= $endDate) {
             $dayOfWeek = strtolower($currentDate->format('l'));
 
-            // Check if the current day is not in the excluding days list
             if (!in_array($dayOfWeek, $excludingDays)) {
                 $currentTime = clone $startTime;
 
@@ -122,7 +122,8 @@ class HomeController extends Controller
                         $result[] = [
                             'start' => $timeSlotStart->format('Y-m-d\TH:i:s.u\Z'),
                             'end' => $timeSlotEnd->format('Y-m-d\TH:i:s.u\Z'),
-                            'timestamp' => $timeSlotStart->getTimestamp()
+                            'timestamp' => $timeSlotStart->getTimestamp(),
+                            'quantity' => $user->settings->default_quantity??3
                         ];
                     }
 

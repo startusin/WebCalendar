@@ -105,6 +105,19 @@
                                 @enderror
                             </div>
 
+
+                            <div class="form-group">
+                                <label>Available</label>
+                                <select class="select2" name="is_available" style="width: 100%;">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                                @error('language')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
+
                             <input type="submit" class="btn btn-primary" value="Create">
                         </form>
                     </div>

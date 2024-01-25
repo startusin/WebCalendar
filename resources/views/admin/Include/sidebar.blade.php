@@ -45,6 +45,15 @@
                     </p>
                 </a>
             </li>
+
+                <li class="nav-item">
+                    <a href="{{route('calendarSettings.edit')}}" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>
+                            Settings
+                        </p>
+                    </a>
+                </li>
             @endif
         </ul>
 

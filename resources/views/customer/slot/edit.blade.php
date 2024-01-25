@@ -108,6 +108,17 @@
                                 @enderror
                             </div>
 
+                            <div class="form-group">
+                                <label>Available</label>
+                                <select class="select2" name="is_available" style="width: 100%;">
+                                    <option {{$slot->is_available == 0 ? 'selected': ''}} value="0">No</option>
+                                    <option {{$slot->is_available == 1 ? 'selected': ''}} value="1">Yes</option>
+                                </select>
+                                @error('language')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
                             <input type="submit" class="btn btn-primary" value="Edit">
                         </form>
                     </div>

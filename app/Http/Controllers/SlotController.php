@@ -50,6 +50,7 @@ class SlotController extends Controller
             "time_minute_start1" => ['required'],
             "time_hour_start2" => ['required'],
             "time_minute_start2" => ['required'],
+            'is_available' => ['required'],
             "language" => [
                 'required',
                 Rule::in($myLang),
@@ -81,6 +82,7 @@ class SlotController extends Controller
             "time_minute_start1" => ['required'],
             "time_hour_start2" => ['required'],
             "time_minute_start2" => ['required'],
+            "is_available" => ['required'],
             "language" => [
                 'required',
                 Rule::in($myLang),

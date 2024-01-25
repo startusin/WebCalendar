@@ -92,16 +92,7 @@ $(document).ready(function () {
             }
         });
     });
-    // $('.bootstrap-calendar-day').each(function(index, element) {
-    //     // Отримуємо значення атрибута data-date
-    //     var currentDate = $(element).data('date');
-    //
-    //     // Перевіряємо, чи поточна дата співпадає з визначеною
-    //     if (currentDate === '2024-01-15') {
-    //         // Додаємо клас "active"
-    //         $(element).addClass('active');
-    //     }
-    // });
+
 
     $('.up-card').each(function(index, element) {
         let productId = $(element).find('.left-icon').data('id');

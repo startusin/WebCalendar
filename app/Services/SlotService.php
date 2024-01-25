@@ -27,6 +27,7 @@ class SlotService
         $dataForCreate['attendee_qty'] = $data['quantity'];
         $dataForCreate['start_date'] = $dateTime1;
         $dataForCreate['end_date'] = $dateTime2;
+        $dataForCreate['is_available'] = $data['is_available'];
 
         return $dataForCreate;
     }
@@ -51,7 +52,7 @@ class SlotService
         $dataForUpdate['attendee_qty'] = $data['quantity'];
         $dataForUpdate['start_date'] = $dateTime1;
         $dataForUpdate['end_date'] = $dateTime2;
-
+        $dataForUpdate['is_available'] = $data['is_available'];
         return $dataForUpdate;
     }
 }

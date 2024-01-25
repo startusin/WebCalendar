@@ -48,7 +48,7 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'id' => ['required'],
             "calendar_id" => ['required', 'exists:users,id'],
             "title" => ['required', 'string'],

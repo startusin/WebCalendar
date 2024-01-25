@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
+    Route::get('/calendar/settings/edit', [App\Http\Controllers\CalendarSettingsController::class, 'edit'])->name('calendarSettings.edit');
+    Route::put('/calendar/settings/update', [App\Http\Controllers\CalendarSettingsController::class, 'update'])->name('calendarSettings.update');
+
     Route::get('/checkprice', [\App\Http\Controllers\PurchaseController::class, 'checkprice'])->name('checkprice');
     Route::get('/purchase', [\App\Http\Controllers\PurchaseController::class, 'index'])->name('purchase');
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
