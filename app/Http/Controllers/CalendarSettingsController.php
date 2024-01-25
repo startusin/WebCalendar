@@ -39,7 +39,7 @@ class CalendarSettingsController extends Controller
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
 
         if (isset($data['logo'])) {
-            if ($oldData['logo'] != null) {
+            if ($oldData !=null &&$oldData['logo'] != null) {
                 Storage::disk('public')->delete($oldData['logo']);
             }
             $data['logo'] = Storage::disk('public')->put('/images', $data['logo']);

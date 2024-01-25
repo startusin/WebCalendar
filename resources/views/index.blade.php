@@ -3,7 +3,7 @@
     <div class="container MyContainer">
     <div class="row justify-content-center">
         <header class="d-block my-header pb-4 mt-4 mb-3 text-center position-relative">
-            <img src="/demologo.png" class="calendar-logo" />
+            <img src="{{$logo!=null ? asset('storage/' . $logo): '/demologo.png' }}" class="calendar-logo" />
 
             <div class="dropdown language-selector-container position-absolute">
                 <a class="dropdown-toggle language-selector" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

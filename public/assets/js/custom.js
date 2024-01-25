@@ -6,6 +6,24 @@ $(document).ready(function () {
 
     let rememberDate = {};
 
+
+    function TotalSum() {
+        let sum = 0;
+        $('.prod-info').each(function(index, element) {
+            let selectQuantity = $(element).data('quantity');
+            let selectPrice = $(element).data('temp-price');
+            console.log("selectQuantity1"+selectQuantity);
+            console.log("selectPrice1"+selectPrice);
+            if (selectPrice===undefined){
+                selectPrice = $(element).data('price');
+            }
+            console.log("selectQuantity"+selectQuantity);
+            console.log("selectPrice"+selectPrice);
+            sum += selectQuantity * selectPrice;
+        });
+        $('.total-sum').text((Math.round((sum) * 100) / 100).toFixed(2)+"$");
+    }
+
     function setActive() {
         $('.bootstrap-calendar-day').each(function(index, element) {
             let selectDate = $(element).data('date');
@@ -439,19 +457,26 @@ $(document).ready(function () {
                     if (response.price > basePrice){
                         productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
                         console.log("Not Add");
+                        TotalSum();
                     }
                     else  {
+                        quantityObj.attr('data-temp-price', response.price);
+                        quantityObj.data('temp-price', response.price);
+                        console.log("QQQQQ= "+quantityObj.data('temp-price'));
+
                         console.log("ADDPROMO");
                         isPromocodeElement.data('promo', response.id);
                         productInf.html("<span>" + (Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "$</span>");
+                        TotalSum();
                     }
 
                 } else {
                     isPromocodeElement.html(htmlFalse);
                     isPromocodeElement.removeData('promo');
-
+                    quantityObj.removeAttr('data-temp-price');
+                    quantityObj.removeData('temp-price');
                     productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
-
+                    TotalSum();
                 }
             },
             error: function(error) {

@@ -132,11 +132,11 @@
                         </div>
                         <div class="col-4 text-end">
                             <div class="product-item-count d-inline-block">
-                                <span>{{$product->quantity}}</span>
+                                <span>{{$totalQuantity}}</span>
                             </div>
 
-                            <div class="total-item-price d-inline-block">
-                                <span>{{$product->quantity * $product->price}}$</span>
+                            <div class="product-item-price d-inline-block">
+                                <span style="background-color: #CCA646; color: white; font-weight: 600">{{$totalSum}}$</span>
                             </div>
                         </div>
 
@@ -147,8 +147,8 @@
                             Total
                         </div>
                         <div class="col-4 total-item-price text-end">
-                            <span>
-                            72$
+                            <span class="total-sum" style="background-color: #CCA646; color: white; font-weight: 600">
+                                {{$totalSum}}$
                             </span>
                         </div>
                         <div class="col-1 text-end"></div>

@@ -80,7 +80,13 @@ class PurchaseController extends Controller
                 }
             }
         }
-        return view('purchase', compact('calendarId','products','slots'));
+        $totalQuantity = 0;
+        $totalSum = 0;
+        foreach ($products as $item) {
+            $totalQuantity+= $item['quantity'];
+            $totalSum+= $item['quantity']*$item['price'];
+        }
+        return view('purchase', compact('calendarId','products','slots', 'totalQuantity', 'totalSum'));
     }
 
 

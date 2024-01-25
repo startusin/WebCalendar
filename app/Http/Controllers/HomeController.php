@@ -19,10 +19,15 @@ class HomeController extends Controller
         $products = $user->products;
         $slots = $user->slots;
 
+        $logo = null;
+        if (isset($user->settings['logo'])){
+            $logo = $user->settings['logo'];
+        }
         return view('index', [
             'products' => $products,
             'slots' => $slots,
             'user' => $user,
+            'logo' =>$logo
         ]);
     }
     /**
