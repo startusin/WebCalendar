@@ -98,12 +98,16 @@
                                             <div class="col-7 product-item-text">
                                                 {{$product->title}}
                                             </div>
-                                            <div class="col-2 product-item-count text-end">
-                                                <span>{{$product->quantity}}</span>
+                                            <div class="col-4 text-end">
+                                                <div class="product-item-count d-inline-block">
+                                                    <span>{{$product->quantity}}</span>
+                                                </div>
+
+                                                <div class="product-item-price d-inline-block">
+                                                    <span>{{$product->quantity * $product->price}}$</span>
+                                                </div>
                                             </div>
-                                            <div class="col-2 product-item-price text-end">
-                                                <span>{{$product->quantity * $product->price}}$</span>
-                                            </div>
+
                                             <div class="col-1 product-item-mo text-end">
                                                 <i class='fas fa-angle-down'></i>
                                             </div>
@@ -126,29 +130,28 @@
                         <div class="col-7 sous-total-item-text">
                             Sous total
                         </div>
-                        <div class="col-2 product-item-count text-end">
-                            <span>
-                                 2
-                             </span>
+                        <div class="col-4 text-end">
+                            <div class="product-item-count d-inline-block">
+                                <span>{{$product->quantity}}</span>
+                            </div>
+
+                            <div class="total-item-price d-inline-block">
+                                <span>{{$product->quantity * $product->price}}$</span>
+                            </div>
                         </div>
-                        <div class="col-2 total-item-price text-end">
-                            <span>
-                            72$
-                            </span>
-                        </div>
+
+                        <div class="col-1 text-end"></div>
                     </div>
                     <div class="total d-flex">
                         <div class="col-7 total-item-text">
                             Total
                         </div>
-                        <div class="col-2 total-item-count text-end">
-
-                        </div>
-                        <div class="col-2 total-item-price text-end">
+                        <div class="col-4 total-item-price text-end">
                             <span>
                             72$
                             </span>
                         </div>
+                        <div class="col-1 text-end"></div>
                     </div>
                 </div>
 
