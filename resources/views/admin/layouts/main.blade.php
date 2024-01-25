@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')}}">
     <!-- Tempusdominus Bootstrap 4 -->
@@ -28,7 +26,9 @@
     <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
+
     <link rel="stylesheet" href="{{asset('assets/css/custoadmin.css')}}">
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -146,7 +146,7 @@
 <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-
+<script src="https://kit.fontawesome.com/3f9b90c861.js" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function() {
         $('#summernote').summernote();

@@ -4,3 +4,8 @@
     border-radius: 10px;
     border: 1px solid silver;
 }
+
+[class*=sidebar-dark-] .nav-sidebar>.nav-item.menu-open>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item:hover>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link:focus {
+    background-color: rgb(175, 168, 168);
+    color: #0a0a0a;
+}

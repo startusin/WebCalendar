@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: white;">
     <!-- Brand Logo -->
 
 
@@ -11,7 +11,7 @@
             @if(auth()->user()->role == 'admin')
             <li class="nav-item">
                 <a href="{{route('admin.user.index')}}" class="nav-link">
-                    <i class="nav-icon far fa-image"></i>
+                    <i class="nav-icon fa-solid fa-users text-dark"></i>
                     <p>
                         Users
                     </p>
@@ -21,17 +21,17 @@
             @if(auth()->user()->role == 'customer')
             <li class="nav-item">
                 <a href="{{route('customer.slot.index')}}" class="nav-link">
-                    <i class="nav-icon far fa-image"></i>
-                    <p>
+                    <i class="nav-icon fa-solid fa-calendar-days text-dark"></i>
+                    <p class="text-dark">
                         Slot
                     </p>
                 </a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item ">
                 <a href="{{route('customer.product.index')}}" class="nav-link">
-                    <i class="nav-icon far fa-image"></i>
-                    <p>
+                    <i class="nav-icon fa-brands fa-product-hunt text-dark"></i>
+                    <p class="text-dark">
                         Product
                     </p>
                 </a>
@@ -39,8 +39,8 @@
 
             <li class="nav-item">
                 <a href="{{route('customer.promocode.index')}}" class="nav-link">
-                    <i class="nav-icon far fa-image"></i>
-                    <p>
+                    <i class="nav-icon fa-solid fa-money-bill text-dark"></i>
+                    <p class="text-dark">
                         Promocode
                     </p>
                 </a>
@@ -48,8 +48,8 @@
 
                 <li class="nav-item">
                     <a href="{{route('calendarSettings.edit')}}" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
+                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                        <p class="text-dark">
                             Settings
                         </p>
                     </a>
