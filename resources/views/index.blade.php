@@ -96,7 +96,7 @@
                         <div class="up-card d-flex mb-2">
                             <div class="col-9">
                                 @foreach($product['title'] as $key => $item)
-                                    @if(\Illuminate\Support\Facades\Session::get('locale') == $key)
+                                    @if(\Illuminate\Support\Facades\Cookie::get('locale') == $key)
                                         <div class="product-title">{{$item}}</div>
                                     @endif
                                 @endforeach
@@ -123,7 +123,7 @@
                         <div class="down-card">
 
                             @foreach($product['description'] as $key => $item)
-                                @if(\Illuminate\Support\Facades\Session::get('locale') == $key)
+                                @if(\Illuminate\Support\Facades\Cookie::get('locale')== $key)
                                     <div class="product-description">
                                         {{ $item }}
                                     </div>

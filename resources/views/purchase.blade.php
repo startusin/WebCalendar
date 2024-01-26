@@ -96,9 +96,16 @@
                                 <div class="accordion-header d-block" id="flush-heading{{$product->id}}">
                                     <div class="collapsed prod-info" data-product-price-id ="{{$product->product_price_id}}" data-price="{{$product->price}}" data-id = "{{$product->id}}" data-quantity = {{$product->quantity}}  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$product->id}}" aria-expanded="false" aria-controls="flush-collapse{{$product->id}}">
                                         <div class="product-item d-flex">
-                                            <div class="col-7 product-item-text">
-                                                {{$product->title}}
-                                            </div>
+
+                                            @foreach($product['title'] as $lg => $item)
+                                                @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
+                                                    <div class="col-7 product-item-text">
+                                                        {{$item}}
+                                                    </div>
+                                                @endif
+                                            @endforeach
+
+
                                             <div class="col-4 text-end">
                                                 <div class="product-item-count d-inline-block">
                                                     <span>{{$product->quantity}}</span>

@@ -44,11 +44,10 @@
                                         <tr>
                                             <td  class="col-1">{{$product->id}}</td>
                                             @foreach($product['title'] as $lg => $item)
-                                                @if($lg == \Illuminate\Support\Facades\Session::get('locale'))
+                                                @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
                                                     <td class='col-5'>{{ $item }}</td>
                                                 @endif
                                             @endforeach
-
                                             <td  class="col-1">{{$product->price}}</td>
                                             <td  class="col-1">{{$product->max_qty}}</td>
                                                 <td class="col-1">
