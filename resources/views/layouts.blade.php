@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/customstyle.css') }}">
     <title>Calendar</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
@@ -23,25 +28,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-popover@0.0.4/src/jquery-popover.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="{{ asset('assets/js/jquery.bs.calendar.min.js') }}"></script>
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
-    $('#exampleCalendar').bsCalendar({
-        width: '100%',
-        showTodayHeader:false,
-        showPopover:false,
 
-        formatEvent:function (event) {
-            const startTime = new Date(event.start).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            const qty = (event.limit - event.booked) < 0 ? 0 : (event.limit - event.booked);
-
-            //return drawEvent(event);
-            return '<button class="event-time meeting d-inline-block w-auto event-item ' + (qty <= 0 ? 'inactive' : '') + '" data-language = '+event.language+'  data-id = '+event.timestamp+' data-start = '+event.start+' data-end='+event.end+' data-available=' + qty + '>' +
-                '<img class="event-flag" src="/assets/flags/'+ event.language+'.png">' + startTime + '' +
-                '<div class="qty-inner"><i class="fa-regular fa-user attendee-icon"></i> <div class="qty-inner-text">' + qty +
-                '</div></div></button>'
-        },
-    });
-</script>
 <script src="{{asset('assets/js/сalendarProduct.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
 

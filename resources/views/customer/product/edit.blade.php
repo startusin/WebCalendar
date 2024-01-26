@@ -32,29 +32,25 @@
                             @error('custom_validation')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
-                            <div class="form-group">
-                                <label>Title</label>
-                                <input type="text" name="title" value="{{$product->title}}" class="form-control" required >
-                                @error('title')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
-                            </div>
 
+                            @foreach($product['title'] as $key => $value)
+                                <div class="form-group">
+                                    <label>Title {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <input type="text" name="{{$key}}_title" class="form-control" value="{{$value}}" required >
+                                </div>
+                            @endforeach
+                            @foreach($product['short_description'] as $key => $value)
+                                <div class="form-group">
+                                    <label for="description">Short Description  {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <textarea class="form-control" id="short_description" name="{{$key}}_short_description"  required>{{$value}}</textarea>
+                                </div>
+                            @endforeach
+                            @foreach($product['description'] as $key => $value)
                             <div class="form-group">
-                                <label for="description">Short Description</label>
-                                <textarea class="form-control"  id="short_description" name="short_description" required>{{$product->short_description}}</textarea>
-                                @error('short_description')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea class="form-control"  id="description" name="description" required>{{$product->description}}</textarea>
-                                @error('description')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                    <label for="description">Description  {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <textarea class="form-control" id="description" name="{{$key}}_description"  required>{{$value}}</textarea>
+                                </div>
+                            @endforeach
 
                             <div class="form-group">
                                 <label for="description">Price</label>

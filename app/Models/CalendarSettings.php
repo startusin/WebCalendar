@@ -16,5 +16,7 @@ class CalendarSettings extends Model
       'logo',
       'default_quantity',
       'brunch_text',
+      'banner',
+
     ];
 }

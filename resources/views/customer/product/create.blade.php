@@ -1,8 +1,6 @@
 @extends('admin.layouts.main')
 
 @section('content')
-
-
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -33,32 +31,26 @@
                             @error('custom_validation')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
+
+                            @foreach($langs as $key => $lang)
                             <div class="form-group">
-                                <label>Title</label>
-                                <input type="text" name="title" class="form-control" required >
-                                @error('title')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
+                                <label>Title {{$lang}}</label>
+                                <input type="text" name="{{$key}}_title" class="form-control" required >
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="description">Short Description  {{$lang}}</label>
+                                <textarea class="form-control" id="short_description" name="{{$key}}_short_description" required></textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="description">Short Description</label>
-                                <textarea class="form-control" id="short_description" name="short_description" required></textarea>
-                                @error('short_description')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <label for="description">Description  {{$lang}}</label>
+                                <textarea class="form-control" id="description" name="{{$key}}_description" required></textarea>
                             </div>
-
+                            @endforeach
                             <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea class="form-control" id="description" name="description" required></textarea>
-                                @error('description')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description">Price</label>
+                                <label for="description">Price  {{$lang}}</label>
                                 <input class="form-control" type="number" step="0.01"  name="price" required>
                                 @error('price')
                                 <div class="text-danger">{{ $message }}</div>

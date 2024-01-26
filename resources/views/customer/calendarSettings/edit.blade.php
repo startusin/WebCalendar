@@ -68,13 +68,28 @@
                                 @enderror
                             </div>
 
-                            <div class="myImage">
+                            <div class="myImage logoImage">
                                 <img src="{{ isset($settings['logo']) ? asset('storage/' . $settings['logo']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 
                             <div class="input-group mt-3 mb-3">
                                 <div class="custom-file">
-                                    <input type="file" name="logo" class="custom-file-input">
+                                    <input type="file" name="logo" id="logo" class="custom-file-input">
+                                    <label class="custom-file-label">File</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+
+
+                            <div class="myImage bannerImage">
+                                <img src="{{ isset($settings['banner']) ? asset('storage/' . $settings['banner']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
+                            </div>
+
+                            <div class="input-group mt-3 mb-3">
+                                <div class="custom-file">
+                                    <input type="file" name="banner" id="banner" class="custom-file-input">
                                     <label class="custom-file-label">File</label>
                                 </div>
                                 <div class="input-group-append">

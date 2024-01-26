@@ -43,7 +43,12 @@
                                     @foreach($products as $key => $product)
                                         <tr>
                                             <td  class="col-1">{{$product->id}}</td>
-                                            <td  class="col-5">{{$product->title}}</td>
+                                            @foreach($product['title'] as $lg => $item)
+                                                @if($lg == \Illuminate\Support\Facades\Session::get('locale'))
+                                                    <td class='col-5'>{{ $item }}</td>
+                                                @endif
+                                            @endforeach
+
                                             <td  class="col-1">{{$product->price}}</td>
                                             <td  class="col-1">{{$product->max_qty}}</td>
                                                 <td class="col-1">
@@ -76,7 +81,7 @@
                 <!-- /.row -->
 
             </div><!-- /.container-fluid -->
-            @include('customer.product.modals.showMyModal');
+            @include('customer.product.modals.showMyModal')
         </section>
         <!-- /.content -->
     </div>

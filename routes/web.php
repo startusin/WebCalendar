@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+    Route::get("/locale/{lange}", [\App\Http\Controllers\LocalizationController::class, 'setLang'])->name('setLang');
+
+
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 

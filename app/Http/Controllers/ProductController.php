@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Languages;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::where('calendar_id', auth()->user()->id)->get();
+
         return view('customer.product.index', compact('products'));
     }
 
@@ -22,41 +24,96 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('customer.product.create');
+        $langs = Languages::getMyLanguages(auth()->user()->languages);
+
+        return view('customer.product.create',compact('langs'));
     }
 
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
-            "calendar_id" => ['required', 'exists:users,id'],
-            "title" => ['required', 'string'],
-            "short_description" => ['required', 'string'],
-            "description" => ['required', 'string'],
-            "price" => ['required', 'numeric'],
-            "max_qty" => ['required', 'numeric'],
-        ])->validated();
+        $data = $request->all();
+        $TitleL = [];
+        $ShortDL = [];
+        $DescriptL = [];
 
-        Product::create($data);
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'title') !== false) {
+                $LangKey = explode("_", $key);
+                $TitleL[$LangKey[0]] = $value;
+            }
+            if (strpos($key, 'description') !== false) {
+                $LangKey = explode("_", $key);
+                $DescriptL[$LangKey[0]] = $value;
+            }
+            if (strpos($key, 'short_description') !== false) {
+                $LangKey = explode("_", $key);
+                $ShortDL[$LangKey[0]] = $value;
+            }
+        }
+
+        $objToCreate = null;
+        $objToCreate['calendar_id'] = $data['calendar_id'];
+        $objToCreate['price'] = $data['price'];
+        $objToCreate['max_qty'] = $data['max_qty'];
+        $objToCreate['description'] = $DescriptL;
+        $objToCreate['short_description'] = $ShortDL;
+        $objToCreate['title'] = $TitleL;
+
+        Product::create($objToCreate);
         return redirect()->route('customer.product.index');
     }
 
     public function edit(int $id)
     {
+        $langs = Languages::getMyLanguages(auth()->user()->languages);
+
         $product = Product::findOrFail($id);
-        return view('customer.product.edit', compact('product'));
+
+        return view('customer.product.edit', compact('product', 'langs'));
     }
 
     public function update(Request $request)
     {
-        $data = Validator::make($request->all(), [
-            'id' => ['required'],
-            "calendar_id" => ['required', 'exists:users,id'],
-            "title" => ['required', 'string'],
-            "short_description" => ['required', 'string'],
-            "description" => ['required', 'string'],
-            "price" => ['required', 'numeric'],
-            "max_qty" => ['required', 'numeric'],
-        ])->validated();
+//        $data = Validator::make($request->all(), [
+//            'id' => ['required'],
+//            "calendar_id" => ['required', 'exists:users,id'],
+//            "title" => ['required', 'string'],
+//            "short_description" => ['required', 'string'],
+//            "description" => ['required', 'string'],
+//            "price" => ['required', 'numeric'],
+//            "max_qty" => ['required', 'numeric'],
+//        ])->validated();
+        $data = $request->all();
+
+
+
+        $TitleL = [];
+        $ShortDL = [];
+        $DescriptL = [];
+
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'title') !== false) {
+                $LangKey = explode("_", $key);
+                $TitleL[$LangKey[0]] = $value;
+            }
+            if (strpos($key, 'description') !== false) {
+                $LangKey = explode("_", $key);
+                $DescriptL[$LangKey[0]] = $value;
+            }
+            if (strpos($key, 'short_description') !== false) {
+                $LangKey = explode("_", $key);
+                $ShortDL[$LangKey[0]] = $value;
+            }
+        }
+
+
+        $objToCreate = null;
+        $objToCreate['calendar_id'] = $data['calendar_id'];
+        $objToCreate['price'] = $data['price'];
+        $objToCreate['max_qty'] = $data['max_qty'];
+        $objToCreate['description'] = $DescriptL;
+        $objToCreate['short_description'] = $ShortDL;
+        $objToCreate['title'] = $TitleL;
 
         $product = Product::find($data['id']);
 
@@ -64,7 +121,7 @@ class ProductController extends Controller
         {
             abort(404);
         }
-        $product->update($data);
+        $product->update($objToCreate);
         return redirect()->route('customer.product.index');
     }
 

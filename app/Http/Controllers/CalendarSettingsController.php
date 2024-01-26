@@ -35,7 +35,8 @@ class CalendarSettingsController extends Controller
             'secondary_color' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
-            'default_quantity' => ['numeric']
+            'default_quantity' => ['numeric'],
+            'banner' => ['file']
         ])->validated();
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
@@ -49,6 +50,14 @@ class CalendarSettingsController extends Controller
             $data['logo'] = $oldData['logo'];
             var_dump($data['logo']);
         }
+        if (isset($data['banner'])) {
+            if ($oldData !=null &&$oldData['banner'] != null) {
+                Storage::disk('public')->delete($oldData['banner']);
+            }
+            $data['banner'] = Storage::disk('public')->put('/images', $data['banner']);
+        } elseif ( $oldData!=null &&$oldData['banner'] != null) {
+            $data['banner'] = $oldData['banner'];
+        }
 
         CalendarSettings::updateOrCreate([
             'calendar_id' => auth()->user()->id
@@ -58,8 +67,9 @@ class CalendarSettingsController extends Controller
             'brunch_text' =>$data['brunch_text'],
             'secondary_color' =>$data['secondary_color'],
             'bg_color' => $data['bg_color'],
-            'logo' => $data['logo']??null,
-             'default_quantity' => $data['default_quantity']
+            'logo' => $data['logo'] ?? null,
+            'default_quantity' => $data['default_quantity'],
+            'banner' => $data['banner'] ?? null,
         ]);
 
         return redirect()->route('calendarSettings.edit');

@@ -22,4 +22,9 @@ class Product extends Model
     {
         return $this->hasMany(PromoCode::class,'product_id','id');
     }
+    protected $casts = [
+        'description' => 'array',
+        'short_description' => 'array',
+        'title' => 'array',
+    ];
 }

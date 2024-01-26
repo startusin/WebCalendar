@@ -11,6 +11,7 @@ use App\Models\CalendarSettings;
 use App\Models\CustomSlot;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
@@ -26,15 +27,23 @@ class HomeController extends Controller
         $slots = $user->slots;
 
         $logo = null;
+        $banner = null;
         if (isset($user->settings['logo'])){
             $logo = $user->settings['logo'];
         }
+        if (isset($user->settings['banner'])){
+            $banner = $user->settings['banner'];
+        }
+        $locale = Cookie::get('locale');
+
         return view('index', [
             'brunches' => $brunches,
             'products' => $products,
             'slots' => $slots,
             'user' => $user,
-            'logo' => $logo
+            'logo' => $logo,
+            'banner' => $banner,
+            'locale' => $locale
         ]);
     }
     /**
