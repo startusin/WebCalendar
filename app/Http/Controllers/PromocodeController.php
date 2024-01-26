@@ -23,7 +23,7 @@ class PromocodeController extends Controller
 
         return PromoCode::where('promocode', $promo)
             ->where('product_id', $product)
-            ->first();
+            ->firstOrFail();
     }
 
     public function index()
@@ -58,6 +58,7 @@ class PromocodeController extends Controller
 
         $dataForCreate = $this->promoService->MakePromoForCreateOrUpdate($data);
         PromoCode::create($dataForCreate);
+
         return redirect()->route('customer.promocode.index');
     }
 

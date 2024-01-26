@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class BookedSlots extends Model
 {
     use HasFactory;
+
     protected $fillable = [
       'start_date',
       'end_date',
       'timestamp',
       'language',
+      'calendar_id',
     ];
 
     protected $casts = [

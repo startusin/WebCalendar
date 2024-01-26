@@ -8,43 +8,53 @@
         <ul class="pt-3 nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
-            @if(auth()->user()->role == 'admin')
-            <li class="nav-item">
-                <a href="{{route('admin.user.index')}}" class="nav-link">
-                    <i class="nav-icon fa-solid fa-users text-dark"></i>
-                    <p>
-                        Users
-                    </p>
-                </a>
-            </li>
+            @if (auth()->user()->role == 'admin')
+                <li class="nav-item">
+                    <a href="{{route('admin.user.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-users text-dark"></i>
+                        <p>
+                            Users
+                        </p>
+                    </a>
+                </li>
             @endif
-            @if(auth()->user()->role == 'customer')
-            <li class="nav-item">
-                <a href="{{route('customer.slot.index')}}" class="nav-link">
-                    <i class="nav-icon fa-solid fa-calendar-days text-dark"></i>
-                    <p class="text-dark">
-                        Slot
-                    </p>
-                </a>
-            </li>
 
-            <li class="nav-item ">
-                <a href="{{route('customer.product.index')}}" class="nav-link">
-                    <i class="nav-icon fa-brands fa-product-hunt text-dark"></i>
-                    <p class="text-dark">
-                        Product
-                    </p>
-                </a>
-            </li>
+            @if (auth()->user()->role == 'customer')
+                <li class="nav-item">
+                    <a href="{{route('customer.slot.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-calendar-days text-dark"></i>
+                        <p class="text-dark">
+                            Slot
+                        </p>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a href="{{route('customer.promocode.index')}}" class="nav-link">
-                    <i class="nav-icon fa-solid fa-money-bill text-dark"></i>
-                    <p class="text-dark">
-                        Promocode
-                    </p>
-                </a>
-            </li>
+                <li class="nav-item ">
+                    <a href="{{route('customer.product.index')}}" class="nav-link">
+                        <i class="nav-icon fa-brands fa-product-hunt text-dark"></i>
+                        <p class="text-dark">
+                            Product
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('customer.promocode.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-money-bill text-dark"></i>
+                        <p class="text-dark">
+                            Promocode
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('customer.brunch.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-coffee text-dark"></i>
+                        <p class="text-dark">
+                            Brunch
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{route('calendarSettings.edit')}}" class="nav-link">

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SlotResource;
+use App\Models\BookedBrunch;
+use App\Models\BookedSlots;
+use App\Models\BookingProduct;
+use App\Models\Brunch;
+use App\Models\CalendarSettings;
 use App\Models\CustomSlot;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,6 +21,7 @@ class HomeController extends Controller
      */
     public function index(User $user)
     {
+        $brunches = $user->brunches;
         $products = $user->products;
         $slots = $user->slots;
 
@@ -24,10 +30,11 @@ class HomeController extends Controller
             $logo = $user->settings['logo'];
         }
         return view('index', [
+            'brunches' => $brunches,
             'products' => $products,
             'slots' => $slots,
             'user' => $user,
-            'logo' =>$logo
+            'logo' => $logo
         ]);
     }
     /**
@@ -49,6 +56,8 @@ class HomeController extends Controller
             ->whereDate('start_date', '<=', $to)
             ->get();
 
+        $settings = CalendarSettings::where('calendar_id', $user->id)->first();
+
         foreach ($slotsQuery as $slot) {
             $queriedSlots[] = ['start' => $slot->start_date, 'end' => $slot->end_date];
 
@@ -59,7 +68,7 @@ class HomeController extends Controller
                     'start' => $slot->start_date,
                     'end' => $slot->end_date,
                     'timestamp' => $startDate->getTimestamp(),
-                    'quantity' => $slot->attendee_qty
+                    'limit' => $slot->attendee_qty,
                 ];
             }
         }
@@ -81,7 +90,36 @@ class HomeController extends Controller
             }
         }
 
-        return response()->json($finalSlots);
+        $transformed = [];
+
+        foreach ($finalSlots as $slot) {
+            $slot['calendar_id'] = $user->id;
+            $start = new \DateTime($slot['start']);
+            $end = new \DateTime($slot['end']);
+
+            $slotQuery = BookedSlots::where('start_date', '=', $start->format('Y-m-d H:i:s'))
+                ->where('end_date', '=', $end->format('Y-m-d H:i:s'))
+                ->where('language', '=', $slot['language'])
+                ->where('calendar_id', '=', $user->id)
+                ->pluck('id')
+                ->toArray();
+
+            $slot['limit'] = $settings->default_quantity;
+
+            if (!$slotQuery) {
+                $slot['booked'] = 0;
+                $transformed[] = $slot;
+                continue;
+            }
+
+            $sumQuantity = BookingProduct::whereIn('slot_id', $slotQuery)->sum('quantity');
+
+            $slot['booked'] = (int)$sumQuantity;
+
+            $transformed[] = $slot;
+        }
+
+        return response()->json($transformed);
     }
 
     private function generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $rewritingRules, $user)
@@ -128,7 +166,6 @@ class HomeController extends Controller
                             'start' => $timeSlotStart->format('Y-m-d\TH:i:s.u\Z'),
                             'end' => $timeSlotEnd->format('Y-m-d\TH:i:s.u\Z'),
                             'timestamp' => $timeSlotStart->getTimestamp(),
-                            'quantity' => $user->settings->default_quantity??3
                         ];
                     }
 

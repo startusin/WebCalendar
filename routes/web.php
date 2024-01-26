@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('/calendar/settings/edit', [App\Http\Controllers\CalendarSettingsController::class, 'edit'])->name('calendarSettings.edit');
     Route::put('/calendar/settings/update', [App\Http\Controllers\CalendarSettingsController::class, 'update'])->name('calendarSettings.update');
 
+    Route::get('/brunches', [\App\Http\Controllers\PurchaseController::class, 'loadBrunches'])->name('loadBrunches');
     Route::get('/checkprice', [\App\Http\Controllers\PurchaseController::class, 'checkprice'])->name('checkprice');
     Route::get('/purchase', [\App\Http\Controllers\PurchaseController::class, 'index'])->name('purchase');
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
@@ -66,6 +67,15 @@ use Illuminate\Support\Facades\Route;
                 Route::post('store', [\App\Http\Controllers\PromocodeController::class, 'store'])->name('customer.promocode.store');
                 Route::put('update', [\App\Http\Controllers\PromocodeController::class, 'update'])->name('customer.promocode.update');
                 Route::delete('delete/{id}', [\App\Http\Controllers\PromocodeController::class, 'delete'])->name('customer.promocode.delete');
+            });
+
+            Route::group(['prefix' => 'brunch'], function () {
+                Route::get('/', [\App\Http\Controllers\BrunchController::class, 'index'])->name('customer.brunch.index');
+                Route::get('create', [\App\Http\Controllers\BrunchController::class, 'create'])->name('customer.brunch.create');
+                Route::get('edit/{brunch}', [\App\Http\Controllers\BrunchController::class, 'edit'])->name('customer.brunch.edit');
+                Route::post('store', [\App\Http\Controllers\BrunchController::class, 'store'])->name('customer.brunch.store');
+                Route::put('update', [\App\Http\Controllers\BrunchController::class, 'update'])->name('customer.brunch.update');
+                Route::delete('delete/{id}', [\App\Http\Controllers\BrunchController::class, 'delete'])->name('customer.brunch.delete');
             });
 
         });

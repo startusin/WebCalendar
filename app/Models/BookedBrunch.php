@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BookingProduct extends Model
+class BookedBrunch extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'product_id',
-        'booking_id',
-        'quantity',
-        'promocode_id',
-        'slot_id',
-        'sold_price'
+      'brunch_date',
+      'quantity',
+      'calendar_id',
+      'booking_id',
     ];
 }

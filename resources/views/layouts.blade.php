@@ -31,12 +31,14 @@
         showPopover:false,
 
         formatEvent:function (event) {
-            const startTime = new Date(event.start).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            const endTime = new Date(event.end).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const startTime = new Date(event.start).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            const qty = (event.limit - event.booked) < 0 ? 0 : (event.limit - event.booked);
 
             //return drawEvent(event);
-            return '<button class="event-time meeting d-inline-block w-auto event-item" data-language = '+event.language+'  data-id = '+event.timestamp+'  data-start = '+event.start+' data-end='+event.end+'>' +
-                '<img class="event-flag" src="/assets/flags/'+ event.language+'.png">' + startTime + '</button>'
+            return '<button class="event-time meeting d-inline-block w-auto event-item ' + (qty <= 0 ? 'inactive' : '') + '" data-language = '+event.language+'  data-id = '+event.timestamp+' data-start = '+event.start+' data-end='+event.end+' data-available=' + qty + '>' +
+                '<img class="event-flag" src="/assets/flags/'+ event.language+'.png">' + startTime + '' +
+                '<div class="qty-inner"><i class="fa-regular fa-user attendee-icon"></i> <div class="qty-inner-text">' + qty +
+                '</div></div></button>'
         },
     });
 </script>

@@ -60,6 +60,7 @@
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
+
                             <div class="myImage">
                                 <img src="{{ isset($settings['logo']) ? asset('storage/' . $settings['logo']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>

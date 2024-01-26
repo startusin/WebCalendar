@@ -11,20 +11,20 @@
 
 
             <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
-            <div class="col-6">
-                <div class="sub-title-text mt-5 mb-3">
+            <div class="col-6 form-inner">
+                <div class="sub-title mt-5 mb-4">
                     Indiques vos dates et holralres
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-floating mb-3">
-                            <input type="text"  class="form-control" id="First_NameInput" name="First_NameInput" placeholder="name@example.com">
+                            <input type="text" required class="form-control" id="First_NameInput" name="First_NameInput" placeholder="name@example.com">
                             <label for="floatingInput">Prenom</label>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-floating mb-3">
-                            <input type="text"  class="form-control" id="Last_NameInput" name="Last_NameInput" placeholder="name@example.com">
+                            <input type="text" required class="form-control" id="Last_NameInput" name="Last_NameInput" placeholder="name@example.com">
                             <label for="floatingInput">Perrier</label>
                         </div>
                     </div>
@@ -82,15 +82,16 @@
                 </div>
             </div>
 
-            <div class="col-6 ">
-                <div class="sub-title-text  mt-5 mb-3">
+            <div class="col-6">
+                <div class="sub-title mt-5 mb-4">
                     Indiques vos dates et holralres
                 </div>
 
                 <div class="all-purchase mb-5">
                     <div class="products-items ">
 
-                    @foreach($products as $product)
+                    @if(!$isBrunch)
+                        @foreach($products as $product)
                             <div class="accordion-item">
                                 <div class="accordion-header d-block" id="flush-heading{{$product->id}}">
                                     <div class="collapsed prod-info" data-product-price-id ="{{$product->product_price_id}}" data-price="{{$product->price}}" data-id = "{{$product->id}}" data-quantity = {{$product->quantity}}  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$product->id}}" aria-expanded="false" aria-controls="flush-collapse{{$product->id}}">
@@ -115,16 +116,42 @@
                                     </div>
                                 </div>
                                 <div id="flush-collapse{{$product->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$product->id}}" data-bs-parent="#accordionFlushExample">
-                                    <div class="row d-flex"  style="margin-top: 5px; margin-bottom: 5px; margin-left: 14px;">
-
-                                    <div class="accordion-body col-6">
-                                        <input type="text" class="form-control promocode-input" data-product-id="{{$product->id}}" placeholder="Promocode">
-                                    </div>
-                                        <div class="col-2 d-flex align-items-center is-promocode"></div>
+                                    <div class="row d-flex promo-inner">
+                                        <div class="accordion-body col-8 my-2">
+                                            <input type="text" class="form-control promocode-input" data-product-id="{{$product->id}}" placeholder="Promocode">
+                                        </div>
+                                        <div class="col-4 d-flex align-items-center promocode-apply text-center justify-content-center">
+                                            <button style="background-color: #CCA646; color: white; font-weight: 600">
+                                                Apply
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+                    @else
+                        <div class="accordion-item">
+                            <div class="accordion-header d-block">
+                                <div class="collapsed prod-info" data-brunch-id="{{ $brunchId }}" data-qty="{{ $totalQuantity }}">
+                                    <div class="product-item d-flex">
+                                        <div class="col-7 product-item-text">
+                                            Brunch
+                                        </div>
+                                        <div class="col-4 text-end">
+                                            <div class="product-item-count d-inline-block">
+                                                <span>{{ $totalQuantity }}</span>
+                                            </div>
+
+                                            <div class="product-item-price d-inline-block">
+                                                <span>{{ $brunchPrice }}$</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                     </div>
                     <div class="sous-total d-flex">
                         <div class="col-7 sous-total-item-text">
@@ -213,7 +240,7 @@
                 </div>
 
                 <div class="col-12 d-md-flex justify-content-md-end mt-5">
-                    <button type="submit" class="makesPurchase submit-form btn btn-warning text-end"><i class="fa-solid fa-check"></i> Payer</button>
+                    <button data-type="{{ $isBrunch ? 'brunch' : 'items' }}" type="submit" class="makesPurchase submit-form btn btn-warning text-end"><i class="fa-solid fa-check"></i> Payer</button>
                 </div>
             </div>
         </div>

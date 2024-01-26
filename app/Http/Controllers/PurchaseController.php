@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookedBrunch;
 use App\Models\BookedSlots;
+use App\Models\Brunch;
 use App\Models\CustomSlot;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
@@ -45,6 +47,7 @@ class PurchaseController extends Controller
     {
         $data = $request->all();
         $slotsFront = [];
+
         foreach ($data['slots'] as $key => $dateTime)
         {
             foreach ($dateTime as $items) {
@@ -59,9 +62,22 @@ class PurchaseController extends Controller
                 }
             }
         }
-        $calendarId = $data['calendarId'];
 
+        $calendarId = $data['calendarId'];
         $slots = $slotsFront[0];
+
+        if (isset($data['type']) && $data['type'] === 'branch') {
+            $brunch = Brunch::findOrFail((int)$data['branchId']);
+
+            $isBrunch = true;
+            $totalQuantity = (int)$data['branchQty'];
+            $totalSum = (int)$data['branchQty'] * ($brunch->price);
+            $brunchId = $data['branchId'];
+            $brunchPrice = $brunch->price;
+
+            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice'));
+        }
+
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
 
         foreach ($products as &$product) {
@@ -82,23 +98,28 @@ class PurchaseController extends Controller
         }
         $totalQuantity = 0;
         $totalSum = 0;
+
         foreach ($products as $item) {
             $totalQuantity+= $item['quantity'];
             $totalSum+= $item['quantity']*$item['price'];
         }
-        return view('purchase', compact('calendarId','products','slots', 'totalQuantity', 'totalSum'));
-    }
 
+        $isBrunch = false;
+
+        return view('purchase', compact('calendarId','products','slots', 'totalQuantity', 'totalSum', 'isBrunch'));
+    }
 
     public function makeSlot(Request $request)
     {
         $data = $request->all();
         $data['slots'] = json_decode($data['slots']);
+
         $bookedSlot = BookedSlots::create([
             'start_date' => $data['slots']->startDateSlot->date,
             'end_date' => $data['slots']->endDateSlot->date,
             'timestamp' => $data['slots']->timestamp,
             'language' => $data['slots']->language,
+            'calendar_id' => $data['calendarId'],
         ]);
 
         $booking = Bookings::create([
@@ -113,7 +134,22 @@ class PurchaseController extends Controller
             'phone' => $data['phoneName'],
             'slot_id' => $bookedSlot['id']
         ]);
-        var_dump($data);
+
+        if (isset($data['type']) && $data['type'] === 'brunch') {
+            $brunch = Brunch::findOrFail((int)$data['brunchId']);
+            $time = $brunch->time;
+            $date = explode(' ', $data['slots']->startDateSlot->date);
+
+            BookedBrunch::create([
+                'brunch_date' => $date[0] . ' ' . $time,
+                'quantity' => $data['qty'],
+                'calendar_id' => $data['calendarId'],
+                'booking_id' => $booking->id,
+            ]);
+
+            return true;
+        }
+
         foreach ($data['ProductQuantity'] as $id => $item) {
             $soldPrice = 0;
 
@@ -121,30 +157,55 @@ class PurchaseController extends Controller
             $priceDate = $priceDate['price']??0;
             $promoPrice = PromoCode::find($item['productPromo']);
             $promoPrice = $promoPrice['price']??0;
-            var_dump($promoPrice);
-            var_dump($priceDate);
 
             if ($promoPrice == 0 && $priceDate == 0) {
-                var_dump(1);
                 $product = Product::find($id);
                 $soldPrice = $item['productQuantity'] * $product['price'];
             } else if (($promoPrice < $priceDate && $promoPrice != 0) || ($promoPrice > $priceDate && $priceDate == 0 ) ) {
-                var_dump(2);
                 $soldPrice = $item['productQuantity'] * $promoPrice;
             } else if (($priceDate < $promoPrice && $priceDate !=0) || ($priceDate > $promoPrice && $promoPrice == 0 )) {
-                var_dump(3);
                 $soldPrice = $item['productQuantity'] * $priceDate;
             }
 
             BookingProduct::create([
                 'product_id' => $id,
                 'booking_id' =>  $booking['id'],
+                'slot_id' =>  $bookedSlot['id'],
                 'quantity' => $item['productQuantity'],
                 'promocode_id' => $item['productPromo'],
                 'sold_price' => $soldPrice
             ]);
         }
 
-        return 1;//Повертати сторінку чи модальне що все успішно
+        return true;
+    }
+
+    public function loadBrunches(Request $request)
+    {
+        $data = $request->all();
+        $start = new \DateTime($data['startTime']);
+        $calendarId = $data['calendarId'];
+
+        $brunches = Brunch::where('calendar_id', (int)$calendarId)->orderBy('time', 'ASC')->get();
+        $brunchCollected = [];
+
+        if ($brunches) {
+            foreach ($brunches as $brunch) {
+                $datetime = $start->format('Y-m-d') . ' ' . $brunch->time;
+                $booked = BookedBrunch::where('calendar_id', $calendarId)
+                    ->where('brunch_date', $datetime)
+                    ->sum('quantity');
+
+                $brunchCollected[] = [
+                    'id' => $brunch->id,
+                    'time' => $brunch->time,
+                    'quantity' => $brunch->quantity,
+                    'price' => $brunch->price,
+                    'booked' => (int)$booked,
+                ];
+            }
+        }
+
+        return $brunchCollected;
     }
 }

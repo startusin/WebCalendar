@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(CustomSlot::class, 'calendar_id', 'id');
     }
 
+    public function brunches(): HasMany
+    {
+        return $this->hasMany(Brunch::class, 'calendar_id', 'id');
+    }
+
     public  function settings(): HasOne
     {
         return $this->hasOne(CalendarSettings::class, 'calendar_id', 'id');

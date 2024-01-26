@@ -6,9 +6,55 @@ $(document).ready(function () {
 
     let rememberDate = {};
 
+    $('.brunch-navigation .left-icon').click(function (e) {
+        const target = e.currentTarget;
+        const brunchPrice = $(target).closest('.brunch-navigation').find('.count-of-brunch');
+        const currentValue = parseInt(brunchPrice.text(), 10);
+        const quantity = parseInt($('.brunch.selected').data('quantity'), 10);
+
+        if ($('.event-time.active').length <= 0) {
+            return;
+        }
+
+        if (currentValue < quantity) {
+            brunchPrice.text(currentValue + 1);
+        }
+
+        totalSumBrunch();
+    });
+
+    $('.brunch-navigation .right-icon').click(function (e) {
+        const target = e.currentTarget;
+        const brunchQty = $(target).closest('.brunch-navigation').find('.count-of-brunch');
+        const currentValue = parseInt(brunchQty.text(), 10);
+
+        if ($('.event-time.active').length <= 0) {
+            return;
+        }
+
+        if (currentValue > 0) {
+            brunchQty.text(currentValue - 1);
+        }
+
+        totalSumBrunch();
+    });
+
+    function totalSumBrunch() {
+        const price = parseFloat($('.brunch.selected').data('price'));
+        const brunchQty = parseInt($('.brunch-navigation').find('.count-of-brunch').text(), 10);
+
+        $('.total-sum-purchase').text((Math.round((brunchQty * price) * 100) / 100).toFixed(2)+"$");
+
+        if (brunchQty > 0) {
+            $('#PurchaseButton').removeClass('disable_button');
+        } else {
+            $('#PurchaseButton').addClass('disable_button');
+        }
+    }
 
     function TotalSum() {
         let sum = 0;
+
         $('.prod-info').each(function(index, element) {
             let selectQuantity = $(element).data('quantity');
             let selectPrice = $(element).data('temp-price');
@@ -112,8 +158,8 @@ $(document).ready(function () {
     });
 
 
-    $('.up-card').each(function(index, element) {
-        let productId = $(element).find('.left-icon').data('id');
+    $('.product .up-card').each(function(index, element) {
+        let productId = $(element).find('.product-navigation .left-icon').data('id');
 
         productIds.push(productId);
     });
@@ -125,12 +171,16 @@ $(document).ready(function () {
         let myDiv = document.getElementById('PurchaseButton');
 
         $('.up-card').each(function(index, element) {
-            let productId = $(element).find('.left-icon').data('id');
+            let productId = $(element).find('.product-navigation .left-icon').data('id');
 
-            let currentValue = parseInt($(element).find('.count-of-product').text());
-            if (currentValue > 0){
+            let currentValue = parseInt($(element).find('.count-of-product').text(), 10);
+
+            if (currentValue > 0) {
                 dataIds[productId] = currentValue;
+            } else {
+                delete dataIds[productId];
             }
+
             sumOfProduct+=currentValue;
         });
 
@@ -148,7 +198,7 @@ $(document).ready(function () {
 
 
 
-    $(document).on('click', '.event-time', function () {
+    $(document).on('click', '.event-time:not(.inactive)', function () {
         $('.event-time').removeClass('active');
         $(this).addClass('active');
         AddAndRemoveDate();
@@ -185,8 +235,10 @@ $(document).ready(function () {
         var params = {
             startTime: startTime,
             endTime: endTime,
-            productIds: productIds
+            productIds: productIds,
         };
+
+        $('.products-area').addClass('d-none');
 
         $.ajax({
             url: '/checkprice',
@@ -209,12 +261,62 @@ $(document).ready(function () {
                     });
                     UpdateTotalValue();
                 });
+
+                $('.products-area').removeClass('d-none');
+                $('.button-order').removeClass('d-none');
             },
             error: function(error) {
                 console.error('Помилка при відправленні запиту:', error);
             }
         });
 
+        var brunchesParams = {
+            startTime: startTime,
+            calendarId: $('.main-container').data('calendar-id'),
+        };
+
+        $('.brunches-area').addClass('d-none');
+
+        $.ajax({
+            url: '/brunches',
+            type: 'GET',
+            data: brunchesParams,
+            success: function(response) {
+                $('.brunch-list').html('');
+
+                let brunchHtml = '';
+                let count = 0;
+
+                response.forEach(function (item) {
+                    count++;
+                    const spacesLeft = (item.quantity - item.booked) <= 0 ? 0 : (item.quantity - item.booked);
+
+                    brunchHtml +=
+                        '<a class="brunch text-center ' + (spacesLeft <= 0 ? 'inactive' : '') + '" data-id="' + item.id + '" data-price="' + item.price + '"' +
+                        '    data-quantity="' + spacesLeft + '">' +
+                        '        <div class="icon">' +
+                        '             <i class="fa-solid fa-mug-hot"></i>' +
+                        '        </div>' +
+                        '        <div class="time">' + item.time + '</div>' +
+                        '        <div class="qty-inner">\n' +
+                        '             <i class="fa-regular fa-user attendee-icon"></i>' +
+                        '        <div class="qty-inner-text">' + spacesLeft + '</div>' +
+                        '    </div>' +
+                        '</a>';
+                });
+
+                $('.brunch-list').html(brunchHtml);
+
+                if (count > 0) {
+                    $('.brunches-area').removeClass('d-none');
+                }
+
+                $('.button-order').removeClass('d-none');
+            },
+            error: function(error) {
+                console.error('Помилка при відправленні запиту:', error);
+            }
+        });
     });
 
 
@@ -284,7 +386,6 @@ $(document).ready(function () {
         })
     });
 
-
     $(document).on('click', '.showSlot', function () {
         let route = $(this).data('route');
 
@@ -301,10 +402,6 @@ $(document).ready(function () {
     });
 
 
-
-
-
-
     $(document).on('click', '.card-item', function () {
         console.log(442);
         console.log($(this).data('id'));
@@ -314,9 +411,25 @@ $(document).ready(function () {
     });
 
 
-
-
     $(document).on('click', '.reserve', function () {
+        if ($('.brunch.selected').length > 0) {
+            const branchId = parseInt($('.brunch.selected').data('id'), 10);
+            const quantity = parseInt($('.brunch.selected').data('quantity'), 10);
+
+            const queryString = $.param({
+                slots: array,
+                type: 'branch',
+                branchId: branchId,
+                branchQty: quantity,
+                calendarId: parseInt($('.main-container').data('calendar-id'), 10)
+            });
+
+            window.location.href = '/purchase?' + queryString;
+
+            return;
+        }
+
+
         setActive();
         let currentUrl = window.location.href;
 
@@ -344,7 +457,6 @@ $(document).ready(function () {
 
     $("#form-data").validate({
         submitHandler: function(form) {
-
             let firstName = $('#First_NameInput').val();
             let lastName = $('#Last_NameInput').val();
             let companyName = $('#CompanyInput').val();
@@ -359,10 +471,48 @@ $(document).ready(function () {
             let slotId = $('#slots').val();
             let csrfToken = $('meta[name="csrf-token"]').attr('content');
 
+
+            if ($('.makesPurchase').data('type') === 'brunch') {
+                var dataToSend = {
+                    calendarId: calendarId,
+                    slots: slotId,
+                    csrfToken: csrfToken,
+                    firstName: firstName,
+                    lastName: lastName,
+                    companyName: companyName,
+                    RegionName: RegionName,
+                    streetName: streetName,
+                    placeName: placeName,
+                    postalCodeName: postalCodeName,
+                    villaName: villaName,
+                    phoneName: phoneName,
+                    emailName: emailName,
+                    brunchId: $('.prod-info').data('brunch-id'),
+                    type: 'brunch',
+                    qty: $('.prod-info').data('qty'),
+                };
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    url: '/makeSlot',
+                    method: 'POST',
+                    data: dataToSend,
+                    success: function(response) {
+                        console.log('Success:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+
+                return;
+            }
+
             let ProductQuantity = {}
 
-
-            $('.accordion-item').each(function(index, element) {
+            $('.products-items .accordion-item').each(function(index, element) {
                 let productId = $(element).find('.prod-info').data('id');
                 let productQuantity = $(element).find('.prod-info').data('quantity');
                 let productPromo = $(element).find('.is-promocode').data('promo');
@@ -375,8 +525,6 @@ $(document).ready(function () {
                 if (productPromo === undefined) {
                     productPromo = null;
                 }
-
-                // Створюємо об'єкт для productId з вказанням productQuantity та productPromo
 
                 ProductQuantity[productId] = {
                     productQuantity : productQuantity,
@@ -426,24 +574,25 @@ $(document).ready(function () {
 
 
 
-    $('.promocode-input').on('blur', function () {
+    $('.promo-inner button').on('click', function (e) {
+        const field = $(e.currentTarget).closest('.promo-inner').find('.promocode-input');
+
+        field.removeClass('wrong');
+        field.removeClass('correct');
 
         let htmlTrue = '<i class="fa-solid fa-check"></i>';
         let htmlFalse ='<i class="fa-solid fa-xmark"></i>';
-        var enteredValue = $(this).val();
-        var productId = $(this).data('product-id');
+        var enteredValue = $(field).val();
+        var productId = $(field).data('product-id');
 
         var isPromocodeElement = $(this).closest('.row').find('.is-promocode');
-        var $currentInput = $(this);
-        console.log("Val"+enteredValue);
-        console.log("Producg"+productId);
 
         let queryString = $.param({ promo: enteredValue, product: productId });
 
-        let quantityObj = $currentInput.closest('.accordion-item').find('.prod-info');
+        let quantityObj = field.closest('.accordion-item').find('.prod-info');
         let quantity = quantityObj.data('quantity');
-        let basePrice =  $currentInput.closest('.accordion-item').find('.prod-info').data('price');
-        let productInf = $currentInput.closest('.accordion-item').find('.product-item-price');
+        let basePrice =  field.closest('.accordion-item').find('.prod-info').data('price');
+        let productInf = field.closest('.accordion-item').find('.product-item-price');
 
         $.ajax({
             url: '/checkPromocode',
@@ -462,9 +611,7 @@ $(document).ready(function () {
                     else  {
                         quantityObj.attr('data-temp-price', response.price);
                         quantityObj.data('temp-price', response.price);
-                        console.log("QQQQQ= "+quantityObj.data('temp-price'));
 
-                        console.log("ADDPROMO");
                         isPromocodeElement.data('promo', response.id);
                         productInf.html("<span>" + (Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "$</span>");
                         TotalSum();
@@ -478,32 +625,48 @@ $(document).ready(function () {
                     productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
                     TotalSum();
                 }
+
+                field.addClass('correct');
             },
             error: function(error) {
-                console.error('Error:', error);
+                field.addClass('wrong');
             }
         });
-
     });
 
 
 
 
-    $(document).on('click', '.left-icon', function () {
+    $(document).on('click', '.product-navigation .left-icon', function () {
+        const activeButton = $('.event-time.active');
 
-        let productId = $(this).data('id');
-        let maxQuantity = $(this).closest('.product-navigation').find('.count-of-product').data('max');
-        let currentValue = $(this).closest('.product-navigation').find('.count-of-product');
-        var newCount =  parseInt(currentValue.text()) + 1;
-        if (newCount <= maxQuantity) {
+        if (activeButton.length > 0) {
+            let totalQty = 0;
+
+            const qtyAvailable = $(activeButton).data('available');
+
+            $('.products .product').each((index, element) => {
+                const target = $(element);
+                const count = parseInt($(target).find('.count-of-product').text(), 10);
+
+                totalQty += count;
+            });
+
+            if (totalQty >= qtyAvailable) {
+                return;
+            }
+
+            let currentValue = $(this).closest('.product-navigation').find('.count-of-product');
+            var newCount =  parseInt(currentValue.text()) + 1;
+
             currentValue.text(newCount);
+
+            UpdateTotalValue();
+            EnabledOrDisabledButton();
         }
-        console.log(currentValue);
-        UpdateTotalValue();
-        EnabledOrDisabledButton();
     });
 
-    $(document).on('click', '.right-icon', function () {
+    $(document).on('click', '.product-navigation .right-icon', function () {
         let productId = $(this).data('id');
         let currentValue = $(this).closest('.product-navigation').find('.count-of-product');
         var newCount =  parseInt(currentValue.text()) - 1;
@@ -517,11 +680,41 @@ $(document).ready(function () {
 
     function UpdateTotalValue() {
         let sum = 0;
-        $('.up-card').each(function(index, element) {
+        $('.product .up-card').each(function(index, element) {
             let priceItem = $(element).find('.product-price').data('price');
             let currentValue = parseInt($(element).find('.count-of-product').text());
             sum+= priceItem*currentValue;
         });
         $('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"$");
     }
+
+    $('.brunch-list').on('click', '.brunch:not(.inactive)', function(e) {
+        e.preventDefault();
+
+        const target = e.currentTarget;
+
+        if ($(target).hasClass('selected')) {
+            $(target).removeClass('selected');
+
+            $('.brunch-qty').addClass('d-none');
+            $('.products').removeClass('d-none');
+
+            $('.count-of-brunch').text('0');
+
+            UpdateTotalValue();
+            EnabledOrDisabledButton();
+
+            return;
+        }
+
+        const price = $(target).data('price');
+
+        $('.brunch-list .brunch').removeClass('selected');
+        $('.brunch-qty').removeClass('d-none');
+        $('.products').addClass('d-none');
+
+        $('.brunch-price span').text(price);
+
+        $(target).addClass('selected');
+    });
 });
