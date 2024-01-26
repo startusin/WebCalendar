@@ -54,9 +54,13 @@
                                 <label>Product</label>
                                 <select class="select2" name="product_id" style="width: 100%;">
                                     @foreach($products as $product)
-                                        <option value="{{ $product->id }}">
-                                            {{ $product->title }}
-                                        </option>
+                                        @foreach($product['title'] as $lg => $item)
+                                            @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
+                                                <option value="{{ $product->id }}">
+                                                    {{ $item }}
+                                                </option>
+                                            @endif
+                                        @endforeach
                                     @endforeach
                                 </select>
                                 @error('product_id')
