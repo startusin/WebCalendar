@@ -20,6 +20,7 @@ class CalendarSettingsController extends Controller
             $settings['bg_color'] = null;
             $settings['logo'] = null;
             $settings['default_quantity'] = 3;
+            $settings['brunch_text'] = '';
         }
 
         return view('customer.calendarSettings.edit', compact('settings'));
@@ -30,6 +31,7 @@ class CalendarSettingsController extends Controller
         $data = Validator::make($request->all(), [
             'calendar_id' => ['required', 'numeric'],
             'primary_color' => ['string'],
+            'brunch_text' => ['string'],
             'secondary_color' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
@@ -53,6 +55,7 @@ class CalendarSettingsController extends Controller
         ],[
             'calendar_id' => $data['calendar_id'],
             'primary_color' =>$data['primary_color'],
+            'brunch_text' =>$data['brunch_text'],
             'secondary_color' =>$data['secondary_color'],
             'bg_color' => $data['bg_color'],
             'logo' => $data['logo']??null,

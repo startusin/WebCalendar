@@ -15,5 +15,6 @@ class CalendarSettings extends Model
       'bg_color',
       'logo',
       'default_quantity',
+      'brunch_text',
     ];
 }

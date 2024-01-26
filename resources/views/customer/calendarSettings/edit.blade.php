@@ -36,6 +36,13 @@
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label>Brunch Text</label>
+                                <input type="number" name="default_quantity" value="{{$settings['brunch_text']}}" class="form-control col-4" required >
+                                @error('brunch_text')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
 
                             <div class="form-group">
                                 <label>Primary color</label>
