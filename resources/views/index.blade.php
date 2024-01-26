@@ -50,6 +50,12 @@
                     <div class="sub-title mb-4">
                         Ne manquez pas...
                     </div>
+
+                    <div class="brunch-article" style="background-image: url('https://placehold.co/600x400/EEE/31343C');">
+                        <div class="inner">
+                            {{ $user->settings['brunch_text'] }}
+                        </div>
+                    </div>
                 </div>
             </div>
 

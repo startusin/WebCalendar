@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
 
     Route::get('/checkPromocode', [\App\Http\Controllers\PromocodeController::class, 'checkPromocode'])->name('checkPromocode');
+    Route::get('/payment', [\App\Http\Controllers\PaymentController::class, 'index']);
 
     Route::group(['middleware' => 'auth'], function (){
         Route::group(['prefix' => 'user', 'middleware' => 'admin'], function () {
@@ -82,4 +83,6 @@ use Illuminate\Support\Facades\Route;
     });
 
     Auth::routes();
+
+    Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook']);
 

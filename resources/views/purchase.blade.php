@@ -189,47 +189,11 @@
                 <div class="card-items d-flex gx-2">
                     <div class="col-3 card-item d-flex align-items-center" data-id="1">
                         <div class="d-flex flex-column" style="padding-left: 10px;">
-                        <div class="imgF">
-                            <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
-                        </div>
-                        <div class="card-text">
-                            Card
-                        </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-3 card-item d-flex align-items-center" data-id="2">
-                        <div class="d-flex flex-column" style="padding-left: 10px;">
                             <div class="imgF">
                                 <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
                             </div>
                             <div class="card-text">
-                                Card
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-3 card-item d-flex align-items-center" data-id="3">
-                        <div class="d-flex flex-column" style="padding-left: 10px;">
-                            <div class="imgF">
-                                <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
-                            </div>
-                            <div class="card-text">
-                                Card
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-3 card-item d-flex align-items-center" data-id="4">
-                        <div class="d-flex flex-column" style="padding-left: 10px;">
-                            <div class="imgF">
-                                <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
-                            </div>
-                            <div class="card-text">
-                                Card
+                                Stripe
                             </div>
                         </div>
                     </div>
