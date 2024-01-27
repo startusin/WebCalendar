@@ -15,6 +15,8 @@ class PaymentController extends Controller
     public function index(Request $request, Bookings $booking)
     {
         if ($booking->payment_status === 'paid') {
+            echo 'Already paid.';
+
             return;
         }
 
