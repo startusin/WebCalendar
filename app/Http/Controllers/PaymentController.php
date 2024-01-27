@@ -46,8 +46,7 @@ class PaymentController extends Controller
             'payment_intent_data' => ['metadata' => ['booking_id' => $booking->id]]
         ]);
 
-        header("HTTP/1.1 303 See Other");
-        header("Location: " . $data->url);
+        return redirect($data->url);
     }
 
     public function hook(Request $request)
