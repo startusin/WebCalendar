@@ -170,7 +170,7 @@ $(document).ready(function () {
         let sumOfProduct = 0;
         let myDiv = document.getElementById('PurchaseButton');
 
-        $('.up-card').each(function(index, element) {
+        $('.product .up-card').each(function(index, element) {
             let productId = $(element).find('.product-navigation .left-icon').data('id');
 
             let currentValue = parseInt($(element).find('.count-of-product').text(), 10);
@@ -181,15 +181,16 @@ $(document).ready(function () {
                 delete dataIds[productId];
             }
 
-            sumOfProduct+=currentValue;
+            sumOfProduct += currentValue;
         });
 
-        if (Object.keys(array).length > 0 && sumOfProduct > 0){
+        if (sumOfProduct > 0){
             if (myDiv.classList.contains('disable_button')) {
                 myDiv.classList.remove('disable_button');
             }
         }
-        if (Object.keys(array).length <= 0 || sumOfProduct <= 0){
+
+        if (sumOfProduct <= 0){
             if (!myDiv.classList.contains('disable_button')) {
                 myDiv.classList.add('disable_button');
             }
@@ -322,20 +323,7 @@ $(document).ready(function () {
 
 
 
-    let htmlCard1 = '<div class="col-12">' +
-        '<label for="exampleInputEmail1" class="form-label text-label">Numero de carte</label>' +
-        '<input type="text" required name="CardNumberInput" class="form-control" placeholder="1234 1234 1234 1234" aria-describedby="basic-addon1">' +
-        '</div>' +
-        '<div class="row mt-2">' +
-        '<div class="col-6">' +
-        '<label for="exampleInputEmail1" class="form-label text-label">Expiration</label>' +
-        '<input type="text" required name="DateCardInput" class="form-control" placeholder="MM/YY" aria-describedby="basic-addon1">' +
-        '</div>' +
-        '<div class="col-6">' +
-        '<label for="exampleInputEmail1" class="form-label text-label">CVC</label>' +
-        '<input type="text" required name="CVCInput" class="form-control" placeholder="CVC" aria-describedby="basic-addon1">' +
-        '</div>' +
-        '</div>';
+    let htmlCard1 = '';
 
 
 
@@ -500,7 +488,7 @@ $(document).ready(function () {
                     method: 'POST',
                     data: dataToSend,
                     success: function(response) {
-                        console.log('Success:', response);
+                        window.location.replace("/payment/" + response.id + '?type=brunch');
                     },
                     error: function(error) {
                         console.error('Error:', error);
@@ -562,7 +550,7 @@ $(document).ready(function () {
                 method: 'POST',
                 data: dataToSend,
                 success: function(response) {
-                    console.log('Success:', response);
+                    window.location.replace("/payment/" + response.id);
                 },
                 error: function(error) {
                     console.error('Error:', error);
@@ -575,6 +563,8 @@ $(document).ready(function () {
 
 
     $('.promo-inner button').on('click', function (e) {
+        e.preventDefault();
+
         const field = $(e.currentTarget).closest('.promo-inner').find('.promocode-input');
 
         field.removeClass('wrong');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Languages;
 use App\Models\CalendarSettings;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,19 +12,22 @@ use Illuminate\Support\Facades\Validator;
 class CalendarSettingsController extends Controller
 {
     public function edit() {
-
+        $langs = Languages::getMyLanguages(auth()->user()->languages);
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
 
         if (!$settings) {
-            $settings['primary_color'] = null;
-            $settings['secondary_color'] = null;
-            $settings['bg_color'] = null;
+            $settings['primary_color'] = '#CCA646';
+            $settings['secondary_color'] = '#E9D9A7';
+            $settings['bg_color'] = '#FCF6E8';
+            $settings['working_hr_start'] = '8:00';
+            $settings['working_hr_end'] = '20:00';
+            $settings['excluded_days'] = ['saturday', 'sunday'];
             $settings['logo'] = null;
             $settings['default_quantity'] = 3;
-            $settings['brunch_text'] = '';
+            $settings['brunch_text'] = null;
         }
 
-        return view('customer.calendarSettings.edit', compact('settings'));
+        return view('customer.calendarSettings.edit', compact('settings', 'langs'));
     }
 
     public function update(Request $request) {
@@ -33,13 +37,26 @@ class CalendarSettingsController extends Controller
             'primary_color' => ['string'],
             'brunch_text' => ['string'],
             'secondary_color' => ['string'],
+            'working_hr_start' => ['string'],
+            'working_hr_end' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
             'default_quantity' => ['numeric'],
-            'banner' => ['file']
+            'banner' => ['file'],
+            'excluded_days' => ['required', 'array']
         ])->validated();
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
+
+
+        $BrunchTextL = [];
+
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'brunch_text') !== false) {
+                $LangKey = explode("_", $key);
+                $BrunchTextL[$LangKey[0]] = $value;
+            }
+        }
 
         if (isset($data['logo'])) {
             if ($oldData !=null &&$oldData['logo'] != null) {
@@ -63,15 +80,22 @@ class CalendarSettingsController extends Controller
             'calendar_id' => auth()->user()->id
         ],[
             'calendar_id' => $data['calendar_id'],
-            'primary_color' =>$data['primary_color'],
-            'brunch_text' =>$data['brunch_text'],
+            'primary_color' => $data['primary_color'],
+            'working_hr_start' => $data['working_hr_start'],
+            'working_hr_end' => $data['working_hr_end'],
+            'brunch_text' => $BrunchTextL,
             'secondary_color' =>$data['secondary_color'],
             'bg_color' => $data['bg_color'],
             'logo' => $data['logo'] ?? null,
             'default_quantity' => $data['default_quantity'],
             'banner' => $data['banner'] ?? null,
+            'excluded_days' => $data['excluded_days'] ?? null,
         ]);
 
         return redirect()->route('calendarSettings.edit');
+    }
+
+    public function embedded() {
+        return view('customer.calendarSettings.embedded');
     }
 }

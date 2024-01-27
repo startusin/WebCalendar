@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\WebhookController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 
     Route::get("/locale/{lange}", [\App\Http\Controllers\LocalizationController::class, 'setLang'])->name('setLang');
 
-
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
@@ -28,7 +29,11 @@ use Illuminate\Support\Facades\Route;
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
 
     Route::get('/checkPromocode', [\App\Http\Controllers\PromocodeController::class, 'checkPromocode'])->name('checkPromocode');
-    Route::get('/payment', [\App\Http\Controllers\PaymentController::class, 'index']);
+    Route::get('/payment/{booking}', [\App\Http\Controllers\PaymentController::class, 'index']);
+    Route::post('/stripe/hook', [\App\Http\Controllers\PaymentController::class, 'hook']);
+    Route::get('/payment-success', [\App\Http\Controllers\PaymentController::class, 'successPage']);
+
+    Route::get('/actions/cron', [\App\Http\Controllers\PaymentController::class, 'cron']);
 
     Route::group(['middleware' => 'auth'], function (){
         Route::group(['prefix' => 'user', 'middleware' => 'admin'], function () {
@@ -82,6 +87,18 @@ use Illuminate\Support\Facades\Route;
                 Route::delete('delete/{id}', [\App\Http\Controllers\BrunchController::class, 'delete'])->name('customer.brunch.delete');
             });
 
+            Route::group(['prefix' => 'price'], function () {
+                Route::get('/', [\App\Http\Controllers\PricesController::class, 'index'])->name('customer.price.index');
+                Route::get('create', [\App\Http\Controllers\PricesController::class, 'create'])->name('customer.price.create');
+                Route::get('edit/{id}', [\App\Http\Controllers\PricesController::class, 'edit'])->name('customer.price.edit');
+                Route::post('store', [\App\Http\Controllers\PricesController::class, 'store'])->name('customer.price.store');
+                Route::put('update', [\App\Http\Controllers\PricesController::class, 'update'])->name('customer.price.update');
+                Route::delete('delete/{id}', [\App\Http\Controllers\PricesController::class, 'delete'])->name('customer.price.delete');
+            });
+
+            Route::group(['prefix' => 'embedded'], function () {
+                Route::get('/', [\App\Http\Controllers\CalendarSettingsController::class, 'embedded'])->name('customer.embedded.index');
+            });
         });
     });
 

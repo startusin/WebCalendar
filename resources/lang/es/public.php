@@ -5,5 +5,6 @@ return [
     "Select the products" => "Selecciona los productos",
     "Don't miss..." => "No te pierdas...",
     "Reserver" => "Reservar",
+    "SelectedBrunch" => "Brunch sélectionné"
 ];
 

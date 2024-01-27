@@ -11,7 +11,7 @@
 
 
             <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
-            <div class="col-6 form-inner">
+            <div class="col-md-6 form-inner">
                 <div class="sub-title mt-5 mb-4">
                     Indiques vos dates et holralres
                 </div>
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-md-6">
                 <div class="sub-title mt-5 mb-4">
                     Indiques vos dates et holralres
                 </div>
@@ -128,7 +128,7 @@
                                             <input type="text" class="form-control promocode-input" data-product-id="{{$product->id}}" placeholder="Promocode">
                                         </div>
                                         <div class="col-4 d-flex align-items-center promocode-apply text-center justify-content-center">
-                                            <button style="background-color: #CCA646; color: white; font-weight: 600">
+                                            <button style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">
                                                 Apply
                                             </button>
                                         </div>
@@ -170,7 +170,7 @@
                             </div>
 
                             <div class="product-item-price d-inline-block">
-                                <span style="background-color: #CCA646; color: white; font-weight: 600">{{$totalSum}}$</span>
+                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$totalSum}}$</span>
                             </div>
                         </div>
 
@@ -181,7 +181,7 @@
                             Total
                         </div>
                         <div class="col-4 total-item-price text-end">
-                            <span class="total-sum" style="background-color: #CCA646; color: white; font-weight: 600">
+                            <span class="total-sum" style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">
                                 {{$totalSum}}$
                             </span>
                         </div>
@@ -211,7 +211,7 @@
                 </div>
 
                 <div class="col-12 d-md-flex justify-content-md-end mt-5">
-                    <button data-type="{{ $isBrunch ? 'brunch' : 'items' }}" type="submit" class="makesPurchase submit-form btn btn-warning text-end"><i class="fa-solid fa-check"></i> Payer</button>
+                    <button data-type="{{ $isBrunch ? 'brunch' : 'items' }}" type="submit" class="makesPurchase submit-form btn text-end"><i class="fa-solid fa-check"></i> Payer</button>
                 </div>
             </div>
         </div>

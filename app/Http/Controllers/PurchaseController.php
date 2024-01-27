@@ -11,6 +11,7 @@ use App\Models\Bookings;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\PromoCode;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -23,22 +24,25 @@ class PurchaseController extends Controller
 
         $ProductPrice = [];
 
-        foreach ($data['productIds'] as $item) {
-            $product = Product::find($item);
-            $priceDates = ProductPrice::where('product_id', $product->id)->get();
-            foreach ($priceDates as $range) {
-                $starRange = new \DateTime($range['start_date']);
-                $endRange = new \DateTime($range['end_date']);
-                if (($starRange <= $startDate && $startDate <= $endRange) || ($starRange <= $endDate && $endDate <= $endRange))
-                {
-                    $product['price'] = $range['price'];
-                    $product['priceProduct_id'] = $range['id'];
+        if (isset($data['productIds'])) {
+            foreach ($data['productIds'] as $item) {
+                $product = Product::find($item);
+                $priceDates = ProductPrice::where('product_id', $product->id)->get();
+                foreach ($priceDates as $range) {
+                    $starRange = new \DateTime($range['start_date']);
+                    $endRange = new \DateTime($range['end_date']);
+                    if (($starRange <= $startDate && $startDate <= $endRange) || ($starRange <= $endDate && $endDate <= $endRange))
+                    {
+                        $product['price'] = $range['price'];
+                        $product['priceProduct_id'] = $range['id'];
 
-                   break;
+                       break;
+                    }
                 }
+                array_push($ProductPrice, $product);
             }
-            array_push($ProductPrice, $product);
         }
+
         return $ProductPrice;
     }
 
@@ -47,6 +51,7 @@ class PurchaseController extends Controller
     {
         $data = $request->all();
         $slotsFront = [];
+        $user = User::findOrFail((int)$request->calendarId);
 
         foreach ($data['slots'] as $key => $dateTime)
         {
@@ -75,7 +80,7 @@ class PurchaseController extends Controller
             $brunchId = $data['branchId'];
             $brunchPrice = $brunch->price;
 
-            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice'));
+            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -106,7 +111,7 @@ class PurchaseController extends Controller
 
         $isBrunch = false;
 
-        return view('purchase', compact('calendarId','products','slots', 'totalQuantity', 'totalSum', 'isBrunch'));
+        return view('purchase', compact('calendarId','products','slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user'));
     }
 
     public function makeSlot(Request $request)
@@ -132,8 +137,12 @@ class PurchaseController extends Controller
             'place' => $data['placeName'],
             'postal_code' => $data['postalCodeName'],
             'phone' => $data['phoneName'],
-            'slot_id' => $bookedSlot['id']
+            'slot_id' => $bookedSlot['id'],
+            'type' => isset($data['type']) && $data['type'] === 'brunch' ? 'brunch' : 'product'
         ]);
+
+        $bookedSlot->booking_id = $booking->id;
+        $bookedSlot->save();
 
         if (isset($data['type']) && $data['type'] === 'brunch') {
             $brunch = Brunch::findOrFail((int)$data['brunchId']);
@@ -145,9 +154,11 @@ class PurchaseController extends Controller
                 'quantity' => $data['qty'],
                 'calendar_id' => $data['calendarId'],
                 'booking_id' => $booking->id,
+                'brunch_id' => $brunch->id,
+                'total' => $brunch->price * (int)$data['qty'],
             ]);
 
-            return true;
+            return $booking;
         }
 
         foreach ($data['ProductQuantity'] as $id => $item) {
@@ -177,7 +188,7 @@ class PurchaseController extends Controller
             ]);
         }
 
-        return true;
+        return $booking;
     }
 
     public function loadBrunches(Request $request)
@@ -185,6 +196,7 @@ class PurchaseController extends Controller
         $data = $request->all();
         $start = new \DateTime($data['startTime']);
         $calendarId = $data['calendarId'];
+        $dayOfWeek = strtolower($start->format('l'));
 
         $brunches = Brunch::where('calendar_id', (int)$calendarId)->orderBy('time', 'ASC')->get();
         $brunchCollected = [];
@@ -195,6 +207,10 @@ class PurchaseController extends Controller
                 $booked = BookedBrunch::where('calendar_id', $calendarId)
                     ->where('brunch_date', $datetime)
                     ->sum('quantity');
+
+                if (!empty($brunch->excluded_days) && in_array($dayOfWeek, $brunch->excluded_days)) {
+                    continue;
+                }
 
                 $brunchCollected[] = [
                     'id' => $brunch->id,

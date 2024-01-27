@@ -30,6 +30,7 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         $role = Auth::user()->role;
+
         switch ($role) {
             case 'admin':
                 return '/user';
@@ -47,6 +48,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest')
+            ->except('logout');
     }
 }

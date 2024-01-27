@@ -4,11 +4,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://kit.fontawesome.com/3f9b90c861.js" crossorigin="anonymous"></script>
     <!-- Scripts -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/hjsCalendar.min.css') }}">
+
+    <style>
+        :root {
+            --calendar-primary-color: {{ $user->settings['primary_color'] }};
+            --calendar-secondary-color: {{ $user->settings['secondary_color'] }};
+            --calendar-background-color: {{ $user->settings['bg_color'] }};
+        }
+    </style>
+
     <link rel="stylesheet" href="{{ asset('assets/css/customstyle.css') }}">
     <title>Calendar</title>
 

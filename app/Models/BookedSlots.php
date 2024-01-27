@@ -15,6 +15,7 @@ class BookedSlots extends Model
       'timestamp',
       'language',
       'calendar_id',
+      'booking_id',
     ];
 
     protected $casts = [

@@ -45,12 +45,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="description">Description  {{$lang}}</label>
+                                <label for="description">Description {{$lang}}</label>
                                 <textarea class="form-control" id="description" name="{{$key}}_description" required></textarea>
                             </div>
                             @endforeach
                             <div class="form-group">
-                                <label for="description">Price  {{$lang}}</label>
+                                <label for="description">Price</label>
                                 <input class="form-control" type="number" step="0.01"  name="price" required>
                                 @error('price')
                                 <div class="text-danger">{{ $message }}</div>

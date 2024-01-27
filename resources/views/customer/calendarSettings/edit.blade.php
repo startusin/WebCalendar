@@ -31,22 +31,25 @@
 
                             <div class="form-group">
                                 <label>Default quantity</label>
-                                <input type="number" name="default_quantity" value="{{$settings['default_quantity']}}" class="form-control col-4" required >
+                                <input type="number" name="default_quantity" value="{{$settings['default_quantity']}}" class="form-control" required >
                                 @error('default_quantity')
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label>Brunch Text</label>
-                                <input type="text" name="brunch_text" value="{{$settings['brunch_text']}}" class="form-control col-4" required >
-                                @error('brunch_text')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
-                            </div>
+
+                            @foreach($langs as $key => $lang)
+                                <div class="form-group">
+                                    <label>Brunch Text {{$lang}}</label>
+                                    <input type="text" name="{{$key}}_brunch_text" value="{{$settings['brunch_text'][$key] ?? ''}}" class="form-control" required >
+                                    @error('brunch_text')
+                                    <div class="text-danger">{{@$message}}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
 
                             <div class="form-group">
                                 <label>Primary color</label>
-                                <input type="color" name="primary_color" value="{{$settings['primary_color']}}" class="form-control col-4" required >
+                                <input type="color" name="primary_color" value="{{$settings['primary_color']}}" class="form-control" required >
                                 @error('primary_color')
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
@@ -54,15 +57,43 @@
 
                             <div class="form-group">
                                 <label>Secondary color</label>
-                                <input type="color" name="secondary_color" value="{{$settings['secondary_color']}}" class="form-control col-4" required >
+                                <input type="color" name="secondary_color" value="{{$settings['secondary_color']}}" class="form-control" required >
                                 @error('secondary_color')
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
 
                             <div class="form-group">
+                                <label>Working Hours (from)</label>
+                                <input type="text" name="working_hr_start" value="{{$settings['working_hr_start']}}" class="form-control" required >
+                                @error('working_hr_start')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Working Hours (to)</label>
+                                <input type="text" name="working_hr_end" value="{{$settings['working_hr_end']}}" class="form-control" required >
+                                @error('working_hr_end')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="languages">Excluded days</label>
+                                <select class="select2" name="excluded_days[]" id="excluded_days" multiple="multiple" style="width: 100%;">
+                                    @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
+                                        <option {{ in_array($day, $settings['excluded_days']) ? 'selected' : '1' }} value="{{ $day }}">{{ $day }}</option>
+                                    @endforeach
+                                </select>
+                                @error('excluded_days')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <label>Background color</label>
-                                <input type="color" name="bg_color" value="{{$settings['bg_color']}}" class="form-control col-4" required >
+                                <input type="color" name="bg_color" value="{{$settings['bg_color']}}" class="form-control" required >
                                 @error('bg_color')
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror

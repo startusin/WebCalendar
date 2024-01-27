@@ -39,6 +39,15 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{route('customer.price.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-dollar-sign text-dark"></i>
+                        <p class="text-dark">
+                            Custom Prices
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{route('customer.promocode.index')}}" class="nav-link">
                         <i class="nav-icon fa-solid fa-money-bill text-dark"></i>
                         <p class="text-dark">
@@ -61,6 +70,15 @@
                         <i class="nav-icon fa-solid fa-gear text-dark"></i>
                         <p class="text-dark">
                             Settings
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('customer.embedded.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                        <p class="text-dark">
+                            Embedded Code
                         </p>
                     </a>
                 </li>

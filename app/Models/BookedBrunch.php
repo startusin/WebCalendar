@@ -14,5 +14,7 @@ class BookedBrunch extends Model
       'quantity',
       'calendar_id',
       'booking_id',
+      'brunch_id',
+      'total',
     ];
 }

@@ -22,6 +22,10 @@ class HomeController extends Controller
      */
     public function index(User $user)
     {
+        if (!$user->settings) {
+            die('Calendar isn\'t configured. Login and go to Settings tab and configure it.');
+        }
+
         $brunches = $user->brunches;
         $products = $user->products;
         $slots = $user->slots;
@@ -83,8 +87,8 @@ class HomeController extends Controller
         }
 
         $dateRange = ['from' => $from, 'to' => $to];
-        $availableTime = ['from' => '08:00', 'to' => '20:00'];
-        $excludingDays = ['saturday', 'sunday'];
+        $availableTime = ['from' => $settings->working_hr_start, 'to' => $settings->working_hr_end];
+        $excludingDays = $settings->excluded_days ?? [];
         $intervalMinutes = 60;
         $result = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $queriedSlots, $user);
         $mergedSlots = array_merge($result, $availableSlots);

@@ -7,27 +7,19 @@
 
                 <div class="dropdown language-selector-container position-absolute">
                     <a class="dropdown-toggle language-selector" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/assets/flags/fr.png" class="flag-icon" />
+                        <img src="/assets/flags/{{ \Illuminate\Support\Facades\Cookie::get('locale') }}.png" class="flag-icon" />
 
                         <i class="fa-solid fa-arrow-down selector-arrow"></i>
                     </a>
 
                     <ul class="dropdown-menu language-selector-list">
-                        <li>
-                            <a class="dropdown-item my-1" href="{{route('setLang', "en")}}">
-                                <img src="/assets/flags/en.png" class="flag-icon me-2" /> English
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item my-1" href="{{route('setLang', "fr")}}">
-                                <img src="/assets/flags/fr.png" class="flag-icon me-2" /> France
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item my-1" href="{{route('setLang', "es")}}">
-                                <img src="/assets/flags/es.png" class="flag-icon me-2" /> Espanoi
-                            </a>
-                        </li>
+                        @foreach ($user->languages as $lang)
+                            <li>
+                                <a class="dropdown-item my-1" href="{{ route('setLang', $lang )}}">
+                                    <img src="/assets/flags/{{ $lang }}.png" class="flag-icon me-2" /> {{ \App\Enums\Languages::getStringLanguage($lang) }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </header>
@@ -53,7 +45,7 @@
 
                     <div class="brunch-article" style="background-image: url('{{$banner!=null ? asset('storage/' . $banner): 'https://placehold.co/600x400/EEE/31343C' }}');">
                         <div class="inner">
-                            {{ $user->settings['brunch_text'] }}
+                            {{ $user->settings['brunch_text'][\Illuminate\Support\Facades\Cookie::get('locale')] ?? '' }}
                         </div>
                     </div>
                 </div>
@@ -63,7 +55,7 @@
                 <div class="brunch col-12 py-3 mt-1 mb-1">
                     <div class="up-card d-flex mb-2">
                         <div class="col-9">
-                            <div class="brunch-title">Selected brunch</div>
+                            <div class="brunch-title">@lang("public.SelectedBrunch")</div>
                             <div class="brunch-price mt-2"><span>0</span>$</div>
                         </div>
 
