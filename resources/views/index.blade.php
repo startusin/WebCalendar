@@ -56,7 +56,7 @@
                     <div class="up-card d-flex mb-2">
                         <div class="col-9">
                             <div class="brunch-title">@lang("public.SelectedBrunch")</div>
-                            <div class="brunch-price mt-2"><span>0</span>$</div>
+                            <div class="brunch-price mt-2"><span>0</span>€</div>
                         </div>
 
                         <div class="brunch-navigation col-3">
