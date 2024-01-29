@@ -40,7 +40,7 @@ class HomeController extends Controller
         }
         $locale = Cookie::get('locale');
         if (!$locale) {
-            $locale = auth()->user()->settings->language;
+            $locale = $user->settings['language'] ?? 'en';
         }
         return view('index', [
             'brunches' => $brunches,

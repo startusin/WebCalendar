@@ -7,7 +7,7 @@
 
                 <div class="dropdown language-selector-container position-absolute">
                     <a class="dropdown-toggle language-selector" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/assets/flags/{{ \Illuminate\Support\Facades\Cookie::get('locale') }}.png" class="flag-icon" />
+                        <img src="/assets/flags/{{ $locale }}.png" class="flag-icon" />
 
                         <i class="fa-solid fa-arrow-down selector-arrow"></i>
                     </a>
