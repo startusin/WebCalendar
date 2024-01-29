@@ -91,7 +91,7 @@ class HomeController extends Controller
         $dateRange = ['from' => $from, 'to' => $to];
         $availableTime = ['from' => $settings->working_hr_start, 'to' => $settings->working_hr_end];
         $excludingDays = $settings->excluded_days ?? [];
-        $intervalMinutes = auth()->user()->settings->interval;
+        $intervalMinutes = $user->settings->interval;
 
         $result = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $queriedSlots, $user);
         $mergedSlots = array_merge($result, $availableSlots);
