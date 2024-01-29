@@ -12,7 +12,9 @@ use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\PromoCode;
 use App\Models\User;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class PurchaseController extends Controller
 {
@@ -25,7 +27,13 @@ class PurchaseController extends Controller
     public function getPurchase($id)
     {
         $purhase = BookingProduct::with('product', 'booking','slot')->findorfail($id);
-
+        foreach ($purhase->product['title'] as $key => $item)
+        {
+            if ($key == Cookie::get('locale')) {
+                $purhase->product['title'] = $item;
+                break;
+            }
+        }
         return $purhase;
     }
 

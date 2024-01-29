@@ -377,8 +377,7 @@ $(document).ready(function () {
                 $('#Phone').text(response.booking.phone);
                 $('#Place').text(response.booking.place);
                 $('#Street').text(response.booking.street_name);
-                //Зробити залежність від мови
-                $('#Title').text(response.product.title['en']);
+                $('#Title').text(response.product.title);
                 $('#Quantity').text(response.quantity);
                 $('#SoldPrice').text(response.sold_price);
                 $('#SlotStarted').text(moment(response.slot.start_date).format('YYYY-MM-DD HH:mm:ss'));
