@@ -20,6 +20,8 @@ class CalendarSettings extends Model
         'excluded_days',
         'working_hr_start',
         'working_hr_end',
+        'interval',
+        'language'
     ];
 
     protected $casts = [

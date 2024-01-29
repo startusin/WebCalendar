@@ -80,6 +80,28 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Interval</label>
+                                <input type="number" name="interval" value="{{$settings['interval']}}" class="form-control" required >
+                                @error('interval')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Default Languages</label>
+                                <select class="select2" name="language" style="width: 100%;">
+                                    @foreach($langs as $key => $language)
+                                        <option {{ $settings['language'] == $key ? 'selected' : ''}} value="{{ $key }}">
+                                            {{ $language }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('language')
+                                <div class="text-danger">{{@$message}}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <label for="languages">Excluded days</label>
                                 <select class="select2" name="excluded_days[]" id="excluded_days" multiple="multiple" style="width: 100%;">
                                     @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)

@@ -82,6 +82,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{route('purchase.index')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                        <p class="text-dark">
+                            History purchases
+                        </p>
+                    </a>
+                </li>
             @endif
         </ul>
 

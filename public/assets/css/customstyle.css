@@ -8,6 +8,7 @@ body{
 .MyContainer{
     max-width: 550px;
     width: 100%;
+    padding: 25px;
 }
 .calendar .day:not(.prev-date,.nxt-date,.active,.tillCurrentDate,.futureDays):hover {
     background: #ffffff;
@@ -178,10 +179,6 @@ button{
     color: var(--calendar-primary-color);
 }
 
-.js-events {
-    overflow-y: auto;
-    max-height: 400px;
-}
 
 
 /*Purchase*/
@@ -491,7 +488,7 @@ header {
 
 .total-sum-purchase {
     background-color: var(--calendar-primary-color);
-    padding: 10px;
+    padding: 10.75px;
     border-radius: 0 10px 10px 0;
     margin-left: 3px;
     color: #ffffff;
@@ -634,4 +631,10 @@ header {
 
 .makesPurchase {
     background: var(--calendar-secondary-color);
+}
+
+@media screen and (max-width:480px) {
+    .myDisp {
+        flex: 50%;
+    }
 }

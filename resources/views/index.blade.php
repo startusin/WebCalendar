@@ -93,7 +93,7 @@
                                     @endif
                                 @endforeach
                                 <div class="product-price" data-id="{{ $product->id }}" data-price="{{$product->price}}">
-                                    {{ $product->price }}$
+                                    {{ $product->price }}€
                                 </div>
                             </div>
                             <div class="product-navigation col-3">
@@ -131,7 +131,7 @@
                 </div>
                 <div  type="button" id="PurchaseButton"  class="col-5 reserve text-start disable_button" style="width: 37%;"><i class="fa-solid fa-check"></i> @lang('public.Reserver')</div>
                 <div class="col-1 total-sum-purchase" style="width: 13.5%;">
-                    0.00$
+                    0.00€
                 </div>
             </div>
         </div>

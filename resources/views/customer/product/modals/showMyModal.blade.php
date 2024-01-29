@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="showMyModal" tabindex="-1" role="dialog" aria-labelledby="updateModalTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

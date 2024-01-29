@@ -6,6 +6,13 @@ $(document).ready(function () {
 
     let rememberDate = {};
 
+
+    $(document).ready(function() {
+        $('#PhoneInput').on('input', function() {
+            $(this).val($(this).val().replace(/[^0-9+]/g,''));
+        });
+    });
+
     $('.brunch-navigation .left-icon').click(function (e) {
         const target = e.currentTarget;
         const brunchPrice = $(target).closest('.brunch-navigation').find('.count-of-brunch');
@@ -43,7 +50,7 @@ $(document).ready(function () {
         const price = parseFloat($('.brunch.selected').data('price'));
         const brunchQty = parseInt($('.brunch-navigation').find('.count-of-brunch').text(), 10);
 
-        $('.total-sum-purchase').text((Math.round((brunchQty * price) * 100) / 100).toFixed(2)+"$");
+        $('.total-sum-purchase').text((Math.round((brunchQty * price) * 100) / 100).toFixed(2)+"€");
 
         if (brunchQty > 0) {
             $('#PurchaseButton').removeClass('disable_button');
@@ -67,7 +74,7 @@ $(document).ready(function () {
             console.log("selectPrice"+selectPrice);
             sum += selectQuantity * selectPrice;
         });
-        $('.total-sum').text((Math.round((sum) * 100) / 100).toFixed(2)+"$");
+        $('.total-sum').text((Math.round((sum) * 100) / 100).toFixed(2)+"€");
     }
 
     function setActive() {
@@ -257,7 +264,7 @@ $(document).ready(function () {
                            } else {
                                productElement.removeAttr('data-product-price-id');
                            }
-                           productElement.text(item.price+"$");
+                           productElement.text(item.price+"€");
                        }
                     });
                     UpdateTotalValue();
@@ -354,6 +361,27 @@ $(document).ready(function () {
                 $('#productDesc').text(response.description);
                 $('#productPrice').text(response.price);
                 $('#productMaxQty').text(response.max_qty);
+            }
+        })
+    });
+
+    $(document).on('click', '.showPurchase', function () {
+        let route = $(this).data('route');
+        console.log(3234234234);
+        $.ajax({
+            url: route,
+            success: function (response) {
+                console.log(response.booking.first_name);
+                $('#FirstName').text(response.booking.first_name);
+                $('#LastName').text(response.booking.last_name);
+                $('#Phone').text(response.booking.phone);
+                $('#Place').text(response.booking.place);
+                $('#Street').text(response.booking.street_name);
+                //Зробити залежність від мови
+                $('#Title').text(response.product.title['en']);
+                $('#Quantity').text(response.quantity);
+                $('#SoldPrice').text(response.sold_price);
+                $('#SlotStarted').text(moment(response.slot.start_date).format('YYYY-MM-DD HH:mm:ss'));
             }
         })
     });
@@ -594,7 +622,7 @@ $(document).ready(function () {
 
                     isPromocodeElement.removeData('promo');
                     if (response.price > basePrice){
-                        productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
+                        productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "€</span>");
                         console.log("Not Add");
                         TotalSum();
                     }
@@ -603,7 +631,7 @@ $(document).ready(function () {
                         quantityObj.data('temp-price', response.price);
 
                         isPromocodeElement.data('promo', response.id);
-                        productInf.html("<span>" + (Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "$</span>");
+                        productInf.html("<span>" + (Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "€</span>");
                         TotalSum();
                     }
 
@@ -612,7 +640,7 @@ $(document).ready(function () {
                     isPromocodeElement.removeData('promo');
                     quantityObj.removeAttr('data-temp-price');
                     quantityObj.removeData('temp-price');
-                    productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "$</span>");
+                    productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "€</span>");
                     TotalSum();
                 }
 
@@ -675,7 +703,7 @@ $(document).ready(function () {
             let currentValue = parseInt($(element).find('.count-of-product').text());
             sum+= priceItem*currentValue;
         });
-        $('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"$");
+        $('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"€");
     }
 
     $('.brunch-list').on('click', '.brunch:not(.inactive)', function(e) {

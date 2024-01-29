@@ -23,8 +23,7 @@ class LocalizationMiddleware
             $locale = Cookie::get('locale');
             App::setLocale($locale);
         } else {
-            // Якщо кука locale не встановлена, встановлюємо англійську мову за замовчуванням і зберігаємо куку
-            $locale = 'en';
+            $locale = auth()->user()->settings->language;
             Cookie::queue(Cookie::forever('locale', $locale));
             App::setLocale($locale);
         }

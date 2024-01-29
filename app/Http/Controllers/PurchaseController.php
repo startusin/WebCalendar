@@ -16,7 +16,22 @@ use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
 {
-    public function checkprice(Request $request) {
+    public function getAllPurchases()
+    {
+        $purchases = BookingProduct::paginate(10);
+        return view('customer.history.index', compact('purchases'));
+    }
+
+    public function getPurchase($id)
+    {
+        $purhase = BookingProduct::with('product', 'booking','slot')->findorfail($id);
+
+        return $purhase;
+    }
+
+
+    public function checkprice(Request $request)
+    {
 
         $data = $request->all();
         $startDate = new \DateTime($data['startTime']);

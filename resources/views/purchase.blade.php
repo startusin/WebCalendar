@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
-                        <input type="text"required class="form-control" id="PhoneInput" name="PhoneInput" placeholder="name@example.com">
+                        <input type="tel" required class="form-control" id="PhoneInput" name="PhoneInput" placeholder="name@example.com">
                         <label for="floatingInput">Telephone</label>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                                                 </div>
 
                                                 <div class="product-item-price d-inline-block">
-                                                    <span>{{$product->quantity * $product->price}}$</span>
+                                                    <span>{{$product->quantity * $product->price}}€</span>
                                                 </div>
                                             </div>
 
@@ -150,7 +150,7 @@
                                             </div>
 
                                             <div class="product-item-price d-inline-block">
-                                                <span>{{ $brunchPrice }}$</span>
+                                                <span>{{ $brunchPrice }}€</span>
                                             </div>
                                         </div>
                                     </div>
@@ -170,7 +170,7 @@
                             </div>
 
                             <div class="product-item-price d-inline-block">
-                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$totalSum}}$</span>
+                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$totalSum}}€</span>
                             </div>
                         </div>
 
@@ -182,7 +182,7 @@
                         </div>
                         <div class="col-4 total-item-price text-end">
                             <span class="total-sum" style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">
-                                {{$totalSum}}$
+                                {{$totalSum}}€
                             </span>
                         </div>
                         <div class="col-1 text-end"></div>

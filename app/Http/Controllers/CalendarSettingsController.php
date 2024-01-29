@@ -25,6 +25,8 @@ class CalendarSettingsController extends Controller
             $settings['logo'] = null;
             $settings['default_quantity'] = 3;
             $settings['brunch_text'] = null;
+            $settings['interval'] = 60;
+            $settings['language'] = 'en';
         }
 
         return view('customer.calendarSettings.edit', compact('settings', 'langs'));
@@ -43,7 +45,9 @@ class CalendarSettingsController extends Controller
             'logo' => ['file'],
             'default_quantity' => ['numeric'],
             'banner' => ['file'],
-            'excluded_days' => ['required', 'array']
+            'excluded_days' => ['required', 'array'],
+            'interval' => ['numeric'],
+            'language' => ['string'],
         ])->validated();
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
@@ -90,6 +94,8 @@ class CalendarSettingsController extends Controller
             'default_quantity' => $data['default_quantity'],
             'banner' => $data['banner'] ?? null,
             'excluded_days' => $data['excluded_days'] ?? null,
+            'interval' => $data['interval'],
+            'language' => $data['language'],
         ]);
 
         return redirect()->route('calendarSettings.edit');

@@ -47,6 +47,10 @@ use Illuminate\Support\Facades\Route;
         });
 
         Route::group(['middleware' => 'customer'], function () {
+
+            Route::get('purchase/all', [\App\Http\Controllers\PurchaseController::class, 'getAllPurchases'])->name('purchase.index');
+            Route::get('purchase/show/{id}', [\App\Http\Controllers\PurchaseController::class, 'getPurchase'])->name('purchase.show');
+
             Route::group(['prefix' => 'slots'], function () {
                 Route::get('', [\App\Http\Controllers\SlotController::class, 'index'])->name('customer.slot.index');
                 Route::get('show/{id}', [\App\Http\Controllers\SlotController::class, 'show'])->name('customer.slot.show');
