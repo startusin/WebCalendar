@@ -74,18 +74,7 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
-//        $data = Validator::make($request->all(), [
-//            'id' => ['required'],
-//            "calendar_id" => ['required', 'exists:users,id'],
-//            "title" => ['required', 'string'],
-//            "short_description" => ['required', 'string'],
-//            "description" => ['required', 'string'],
-//            "price" => ['required', 'numeric'],
-//            "max_qty" => ['required', 'numeric'],
-//        ])->validated();
         $data = $request->all();
-
-
 
         $TitleL = [];
         $ShortDL = [];

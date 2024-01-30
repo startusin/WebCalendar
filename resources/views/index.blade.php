@@ -25,7 +25,7 @@
             </header>
 
             <div class="sub-title mt-3 mb-2 text-center mb-4">
-                @lang('public.Indicate your dates and times')
+               {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
             </div>
 
             <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar" data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
@@ -33,14 +33,14 @@
             <div class="brunches d-flex flex-wrap justify-content-center d-none brunches-area">
                 <div class="col-6">
                     <div class="sub-title mb-4">
-                        @lang("public.Brunch")
+                        {{$user->translations['translations']['brunch'][Cookie::get('locale')]??""}}
                     </div>
 
                     <div class="brunch-list"></div>
                 </div>
                 <div class="col-6">
                     <div class="sub-title mb-4">
-                        @lang("public.Don't miss...")
+                        {{$user->translations['translations']['dont-miss'][Cookie::get('locale')]??""}}
                     </div>
 
                     <div class="brunch-article" style="background-image: url('{{$banner!=null ? asset('storage/' . $banner): 'https://placehold.co/600x400/EEE/31343C' }}');">
@@ -55,7 +55,9 @@
                 <div class="brunch col-12 py-3 mt-1 mb-1">
                     <div class="up-card d-flex mb-2">
                         <div class="col-9">
-                            <div class="brunch-title">@lang("public.SelectedBrunch")</div>
+                            <div class="brunch-title">
+                                {{$user->translations['translations']['select-brunch'][Cookie::get('locale')]??""}}
+                            </div>
                             <div class="brunch-price mt-2"><span>0</span>€</div>
                         </div>
 
@@ -80,7 +82,7 @@
 
             <div class="products d-flex flex-wrap justify-content-center mt-3 d-none products-area">
                 <div class="sub-title mt-3 mb-2 text-center mb-4">
-                    @lang('public.Select the products')
+                    {{$user->translations['translations']['select-product'][Cookie::get('locale')]??""}}
                 </div>
 
                 @foreach($products as $product)
@@ -129,7 +131,9 @@
             <div class="mt-3 mb-5 row d-flex flex-nowrap align-items-center d-none button-order" style="padding: 0;">
                 <div class="col-6" style="width: 47.5%;">
                 </div>
-                <div  type="button" id="PurchaseButton"  class="col-5 reserve text-start disable_button" style="width: 37%;"><i class="fa-solid fa-check"></i> @lang('public.Reserver')</div>
+                <div  type="button" id="PurchaseButton"  class="col-5 reserve text-start disable_button" style="width: 37%;"><i class="fa-solid fa-check"></i>
+                    {{$user->translations['translations']['reserver'][Cookie::get('locale')]??""}}
+                </div>
                 <div class="col-1 total-sum-purchase" style="width: 13.5%;">
                     0.00€
                 </div>

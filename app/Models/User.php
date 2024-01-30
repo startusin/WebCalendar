@@ -64,8 +64,13 @@ class User extends Authenticatable
         return $this->hasMany(Brunch::class, 'calendar_id', 'id');
     }
 
-    public  function settings(): HasOne
+    public function settings(): HasOne
     {
         return $this->hasOne(CalendarSettings::class, 'calendar_id', 'id');
+    }
+
+    public function translations(): HasOne
+    {
+        return $this->hasOne(Translations::class, 'calendar_id', 'id');
     }
 }

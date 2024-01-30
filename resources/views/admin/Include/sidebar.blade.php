@@ -85,9 +85,18 @@
 
                 <li class="nav-item">
                     <a href="{{route('purchase.index')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                        <i class="nav-icon fa-solid fa-clock-rotate-left text-dark"></i>
                         <p class="text-dark">
                             History purchases
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('translations.edit')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-language text-dark"></i>
+                        <p class="text-dark">
+                            Translations
                         </p>
                     </a>
                 </li>

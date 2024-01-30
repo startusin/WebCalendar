@@ -13,26 +13,26 @@
             <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
             <div class="col-md-6 form-inner">
                 <div class="sub-title mt-5 mb-4">
-                    Indiques vos dates et holralres
+                    {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-floating mb-3">
                             <input type="text" required class="form-control" id="First_NameInput" name="First_NameInput" placeholder="name@example.com">
-                            <label for="floatingInput">Prenom</label>
+                            <label for="floatingInput">{{$user->translations['translations']['prenom'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-floating mb-3">
                             <input type="text" required class="form-control" id="Last_NameInput" name="Last_NameInput" placeholder="name@example.com">
-                            <label for="floatingInput">Perrier</label>
+                            <label for="floatingInput">{{$user->translations['translations']['perrier'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="text" required class="form-control" id="CompanyInput" name="CompanyInput" placeholder="name@example.com">
-                        <label for="floatingInput">Nam de l'enterprise</label>
+                        <label for="floatingInput">{{$user->translations['translations']['nam-de-enterprise'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
@@ -41,50 +41,50 @@
                             <option value="1" selected>France</option>
                             <option value="2">England</option>
                         </select>
-                        <label for="floatingSelect">Works with selects</label>
+                        <label for="floatingSelect">{{$user->translations['translations']['works-with-selectes'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="text"required class="form-control" id="StreetInput" name="StreetInput" placeholder="name@example.com">
-                        <label for="floatingInput">Numero de voie et norm de rue</label>
+                        <label for="floatingInput">{{$user->translations['translations']['numero-de-voie'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="text"required class="form-control" id="PlaceInput" name="PlaceInput" placeholder="name@example.com">
-                        <label for="floatingInput">Appartnent ou</label>
+                        <label for="floatingInput">{{$user->translations['translations']['appartnent'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="text"required class="form-control" id="PostalCode"  name="PostalCode" placeholder="name@example.com">
-                        <label for="floatingInput">Code postal</label>
+                        <label for="floatingInput">{{$user->translations['translations']['code-postal'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" name=floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Ville</label>
+                        <label for="floatingInput">{{$user->translations['translations']['ville'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="tel" required class="form-control" id="PhoneInput" name="PhoneInput" placeholder="name@example.com">
-                        <label for="floatingInput">Telephone</label>
+                        <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
                         <input type="email"required class="form-control" id="EmailInput"  name="EmailInput" placeholder="name@example.com">
-                        <label for="floatingInput">Adresse de messagerie</label>
+                        <label for="floatingInput">{{$user->translations['translations']['addresse-de'][Cookie::get('locale')]??""}}</label>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="sub-title mt-5 mb-4">
-                    Indiques vos dates et holralres
+                    {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
                 </div>
 
                 <div class="all-purchase mb-5">
@@ -142,7 +142,7 @@
                                 <div class="collapsed prod-info" data-brunch-id="{{ $brunchId }}" data-qty="{{ $totalQuantity }}">
                                     <div class="product-item d-flex">
                                         <div class="col-7 product-item-text">
-                                            Brunch
+                                            {{$user->translations['translations']['brunch'][Cookie::get('locale')]??""}}
                                         </div>
                                         <div class="col-4 text-end">
                                             <div class="product-item-count d-inline-block">
@@ -162,7 +162,7 @@
                     </div>
                     <div class="sous-total d-flex">
                         <div class="col-7 sous-total-item-text">
-                            Sous total
+                            {{$user->translations['translations']['sous-total'][Cookie::get('locale')]??""}}
                         </div>
                         <div class="col-4 text-end">
                             <div class="product-item-count d-inline-block">
@@ -178,7 +178,7 @@
                     </div>
                     <div class="total d-flex">
                         <div class="col-7 total-item-text">
-                            Total
+                            {{$user->translations['translations']['total'][Cookie::get('locale')]??""}}
                         </div>
                         <div class="col-4 total-item-price text-end">
                             <span class="total-sum" style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">
@@ -190,7 +190,7 @@
                 </div>
 
                 <div class="title-payment mb-3">
-                    Reglement
+                    {{$user->translations['translations']['reglement'][Cookie::get('locale')]??""}}
                 </div>
 
                 <div class="card-items d-flex gx-2">
@@ -200,7 +200,7 @@
                                 <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
                             </div>
                             <div class="card-text">
-                                Stripe
+                                {{$user->translations['translations']['stripe'][Cookie::get('locale')]??""}}
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                 </div>
 
                 <div class="col-12 d-md-flex justify-content-md-end mt-5">
-                    <button data-type="{{ $isBrunch ? 'brunch' : 'items' }}" type="submit" class="makesPurchase submit-form btn text-end"><i class="fa-solid fa-check"></i> Payer</button>
+                    <button data-type="{{ $isBrunch ? 'brunch' : 'items' }}" type="submit" class="makesPurchase submit-form btn text-end"><i class="fa-solid fa-check"></i> {{$user->translations['translations']['payer'][Cookie::get('locale')]??""}}</button>
                 </div>
             </div>
         </div>
