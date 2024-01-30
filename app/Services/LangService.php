@@ -4,7 +4,7 @@ namespace App\Services;
 
 class LangService
 {
-    public function EnglishWords()
+    public function EnglishWords(&$translations)
     {
         $translations['indicate-your']['en'] = "Indicate your dates and times";
         $translations['brunch']['en'] = "Brunch";
@@ -27,12 +27,10 @@ class LangService
         $translations['sous-total']['en'] = "Under total";
         $translations['total']['en'] = "Total";
         $translations['payer']['en'] = "Payer";
-
-        return $translations;
     }
 
 
-    public function FranceWords()
+    public function FranceWords(&$translations)
     {
         $translations['indicate-your']['fr'] = "Indiques vos dates et holralres";
         $translations['brunch']['fr'] = "Brunch";
@@ -55,7 +53,5 @@ class LangService
         $translations['sous-total']['fr'] = "Sous total";
         $translations['total']['fr'] = "Total";
         $translations['payer']['fr'] = "Payeur";
-
-        return $translations;
     }
 }

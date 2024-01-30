@@ -22,10 +22,10 @@ class TranslationsController extends Controller
             foreach (auth()->user()->languages as $item) {
                 switch ($item) {
                     case "en":
-                        $translations = $this->langService->EnglishWords();
+                         $this->langService->EnglishWords($translations);
                         break;
                     case "fr":
-                        $translations = $this->langService->FranceWords();
+                         $this->langService->FranceWords($translations);
                         break;
                 }
             }
