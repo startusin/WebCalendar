@@ -7,6 +7,13 @@ $(document).ready(function () {
     let rememberDate = {};
 
 
+    if ($('.logoImage img').attr('src') === '') {
+        $('.logoImage').css('display', 'none');
+    }
+    if ($('.bannerImage img').attr('src') === '') {
+        $('.bannerImage').css('display', 'none');
+    }
+
     $(document).ready(function() {
         $('#PhoneInput').on('input', function() {
             $(this).val($(this).val().replace(/[^0-9+]/g,''));

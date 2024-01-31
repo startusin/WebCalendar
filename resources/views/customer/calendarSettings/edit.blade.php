@@ -37,15 +37,6 @@
                                 @enderror
                             </div>
 
-                            @foreach($langs as $key => $lang)
-                                <div class="form-group">
-                                    <label>Brunch Text {{$lang}}</label>
-                                    <input type="text" name="{{$key}}_brunch_text" value="{{$settings['brunch_text'][$key] ?? ''}}" class="form-control" required >
-                                    @error('brunch_text')
-                                    <div class="text-danger">{{@$message}}</div>
-                                    @enderror
-                                </div>
-                            @endforeach
 
                             <div class="form-group">
                                 <label>Primary color</label>
@@ -78,14 +69,15 @@
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
-
-                            <div class="form-group">
-                                <label>Interval</label>
-                                <input type="number" name="interval" value="{{$settings['interval']}}" class="form-control" required >
-                                @error('interval')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
-                            </div>
+                            @foreach($langs as $key => $language)
+                                <div class="form-group">
+                                    <label>Interval for {{$language}}</label>
+                                    <input type="number" name="{{$key}}-interval" value="{{$settings['interval'][$key]??60}}" class="form-control" required >
+                                    @error('interval')
+                                    <div class="text-danger">{{@$message}}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
 
                             <div class="form-group">
                                 <label>Default Languages</label>
@@ -121,6 +113,9 @@
                                 @enderror
                             </div>
 
+                            <div>
+                                <label >Logotype</label>
+                            </div>
                             <div class="myImage logoImage">
                                 <img src="{{ isset($settings['logo']) ? asset('storage/' . $settings['logo']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
@@ -135,7 +130,9 @@
                                 </div>
                             </div>
 
-
+                            <div>
+                                <label >Banner</label>
+                            </div>
                             <div class="myImage bannerImage">
                                 <img src="{{ isset($settings['banner']) ? asset('storage/' . $settings['banner']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>

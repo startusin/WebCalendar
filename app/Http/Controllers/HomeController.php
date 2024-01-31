@@ -74,7 +74,7 @@ class HomeController extends Controller
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
 
         foreach ($slotsQuery as $slot) {
-            $queriedSlots[] = ['start' => $slot->start_date, 'end' => $slot->end_date];
+            $queriedSlots[] = ['start' => $slot->start_date, 'end' => $slot->end_date, 'language' => $slot->language];
 
             if ($slot->is_available) {
                 $startDate = new \DateTime($slot->start_date);
@@ -84,16 +84,29 @@ class HomeController extends Controller
                     'end' => $slot->end_date,
                     'timestamp' => $startDate->getTimestamp(),
                     'limit' => $slot->attendee_qty,
+                    'language' => $slot->language
                 ];
             }
         }
-
         $dateRange = ['from' => $from, 'to' => $to];
         $availableTime = ['from' => $settings->working_hr_start, 'to' => $settings->working_hr_end];
         $excludingDays = $settings->excluded_days ?? [];
+
+        $result = [];
+        foreach ($user->settings->interval as $lang => $interval){
+
+            $resFunc = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $interval, $queriedSlots, $user,$lang);
+
+            $result = array_merge($result,$resFunc);
+        }
         $intervalMinutes = $user->settings->interval;
 
-        $result = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $queriedSlots, $user);
+
+
+//        $result1 = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, 40, $queriedSlots, $user,'fr');
+//        $result2 = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, 30, $queriedSlots, $user,'en');
+//        $result = array_merge($result1,$result2);
+
         $mergedSlots = array_merge($result, $availableSlots);
 
         usort($mergedSlots, function ($a, $b) {
@@ -101,11 +114,10 @@ class HomeController extends Controller
         });
 
         foreach ($mergedSlots as $slot) {
-            foreach ($user->languages as $language) {
-                $finalSlots[] = array_merge($slot, ['language' => $language]);
-            }
-        }
 
+            $finalSlots[] = $slot;
+
+        }
         $transformed = [];
 
         foreach ($finalSlots as $slot) {
@@ -119,9 +131,9 @@ class HomeController extends Controller
                 ->where('calendar_id', '=', $user->id)
                 ->pluck('id')
                 ->toArray();
-
-            $slot['limit'] = $settings->default_quantity;
-
+            if (!isset($slot['limit'])) {
+                $slot['limit'] = $settings->default_quantity;
+            }
             if (!$slotQuery) {
                 $slot['booked'] = 0;
                 $transformed[] = $slot;
@@ -134,11 +146,10 @@ class HomeController extends Controller
 
             $transformed[] = $slot;
         }
-
         return response()->json($transformed);
     }
 
-    private function generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $rewritingRules, $user)
+    private function generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $rewritingRules, $user, $lang)
     {
         $result = [];
 
@@ -166,22 +177,23 @@ class HomeController extends Controller
                     $excludeSlot = false;
 
                     foreach ($rewritingRules as $rule) {
+                        if ($rule['language']==$lang) {
                         $ruleStart = new \DateTime($rule['start']);
                         $ruleEnd = new \DateTime($rule['end']);
 
-                        // Check if the time slot is within the exclusion range
                         if ($timeSlotStart >= $ruleStart && $timeSlotEnd <= $ruleEnd) {
                             $excludeSlot = true;
                             break;
                         }
+                        }
                     }
 
-                    // Add the time slot to the result if not excluded
                     if (!$excludeSlot) {
                         $result[] = [
                             'start' => $timeSlotStart->format('Y-m-d\TH:i:s.u\Z'),
                             'end' => $timeSlotEnd->format('Y-m-d\TH:i:s.u\Z'),
                             'timestamp' => $timeSlotStart->getTimestamp(),
+                            'language' => $lang
                         ];
                     }
 

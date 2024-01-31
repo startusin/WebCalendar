@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 class TranslationsController extends Controller
 {
     private $langService;
+
     public function __construct(LangService $langService)
     {
         $this->langService = $langService;
     }
 
-    public function edit() {
+    public function edit()
+    {
         $translations = Translations::where('calendar_id', auth()->user()->id)
             ->first();
 
@@ -22,10 +24,10 @@ class TranslationsController extends Controller
             foreach (auth()->user()->languages as $item) {
                 switch ($item) {
                     case "en":
-                         $this->langService->EnglishWords($translations);
+                        $this->langService->EnglishWords($translations);
                         break;
                     case "fr":
-                         $this->langService->FranceWords($translations);
+                        $this->langService->FranceWords($translations);
                         break;
                 }
             }
@@ -36,8 +38,10 @@ class TranslationsController extends Controller
         return view('customer.translations.edit', compact('translations'));
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $data = $request->all();
+        dd($data);
         unset($data['_token']);
         unset($data['_method']);
         $objToCreateorUpdate['calendar_id'] = $data['calendar_id'];

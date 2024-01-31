@@ -15,7 +15,6 @@ class CalendarSettings extends Model
         'bg_color',
         'logo',
         'default_quantity',
-        'brunch_text',
         'banner',
         'excluded_days',
         'working_hr_start',
@@ -25,7 +24,7 @@ class CalendarSettings extends Model
     ];
 
     protected $casts = [
-        'brunch_text' => 'array',
+        'interval' => 'array',
         'excluded_days' => 'array',
     ];
 }

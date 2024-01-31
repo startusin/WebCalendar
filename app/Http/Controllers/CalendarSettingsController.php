@@ -25,7 +25,9 @@ class CalendarSettingsController extends Controller
             $settings['logo'] = null;
             $settings['default_quantity'] = 3;
             $settings['brunch_text'] = null;
-            $settings['interval'] = 60;
+            foreach ($langs as $key => $lang) {
+                $settings['interval'][$key] = 60;
+            }
             $settings['language'] = 'en';
         }
 
@@ -37,7 +39,6 @@ class CalendarSettingsController extends Controller
         $data = Validator::make($request->all(), [
             'calendar_id' => ['required', 'numeric'],
             'primary_color' => ['string'],
-            'brunch_text' => ['string'],
             'secondary_color' => ['string'],
             'working_hr_start' => ['string'],
             'working_hr_end' => ['string'],
@@ -46,21 +47,23 @@ class CalendarSettingsController extends Controller
             'default_quantity' => ['numeric'],
             'banner' => ['file'],
             'excluded_days' => ['required', 'array'],
-            'interval' => ['numeric'],
+            'en-interval' => ['numeric'],
+            'fr-interval' => ['numeric'],
+            'es-interval' => ['numeric'],
             'language' => ['string'],
         ])->validated();
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
 
-
-        $BrunchTextL = [];
-
+        $IntervalLang = [];
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'brunch_text') !== false) {
-                $LangKey = explode("_", $key);
-                $BrunchTextL[$LangKey[0]] = $value;
+            if (strpos($key, 'interval') !== false) {
+                $LangKey = explode("-", $key);
+                $IntervalLang[$LangKey[0]] = $value;
             }
         }
+
+
 
         if (isset($data['logo'])) {
             if ($oldData !=null &&$oldData['logo'] != null) {
@@ -87,14 +90,13 @@ class CalendarSettingsController extends Controller
             'primary_color' => $data['primary_color'],
             'working_hr_start' => $data['working_hr_start'],
             'working_hr_end' => $data['working_hr_end'],
-            'brunch_text' => $BrunchTextL,
             'secondary_color' =>$data['secondary_color'],
             'bg_color' => $data['bg_color'],
             'logo' => $data['logo'] ?? null,
             'default_quantity' => $data['default_quantity'],
             'banner' => $data['banner'] ?? null,
             'excluded_days' => $data['excluded_days'] ?? null,
-            'interval' => $data['interval'],
+            'interval' => $IntervalLang,
             'language' => $data['language'],
         ]);
 
