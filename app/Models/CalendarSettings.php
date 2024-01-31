@@ -26,5 +26,6 @@ class CalendarSettings extends Model
     protected $casts = [
         'interval' => 'array',
         'excluded_days' => 'array',
+        'default_quantity' => 'array',
     ];
 }

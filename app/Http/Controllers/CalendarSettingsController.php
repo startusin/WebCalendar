@@ -23,10 +23,10 @@ class CalendarSettingsController extends Controller
             $settings['working_hr_end'] = '20:00';
             $settings['excluded_days'] = ['saturday', 'sunday'];
             $settings['logo'] = null;
-            $settings['default_quantity'] = 3;
             $settings['brunch_text'] = null;
             foreach ($langs as $key => $lang) {
                 $settings['interval'][$key] = 60;
+                $settings['default_quantity'][$key] = 3;
             }
             $settings['language'] = 'en';
         }
@@ -44,7 +44,9 @@ class CalendarSettingsController extends Controller
             'working_hr_end' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
-            'default_quantity' => ['numeric'],
+            'en-default_quantity' => ['numeric'],
+            'fr-default_quantity' => ['numeric'],
+            'es-default_quantity' => ['numeric'],
             'banner' => ['file'],
             'excluded_days' => ['required', 'array'],
             'en-interval' => ['numeric'],
@@ -63,7 +65,13 @@ class CalendarSettingsController extends Controller
             }
         }
 
-
+        $Quantity = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'default_quantity') !== false) {
+                $LangKey = explode("-", $key);
+                $Quantity[$LangKey[0]] = $value;
+            }
+        }
 
         if (isset($data['logo'])) {
             if ($oldData !=null &&$oldData['logo'] != null) {
@@ -93,7 +101,7 @@ class CalendarSettingsController extends Controller
             'secondary_color' =>$data['secondary_color'],
             'bg_color' => $data['bg_color'],
             'logo' => $data['logo'] ?? null,
-            'default_quantity' => $data['default_quantity'],
+            'default_quantity' => $Quantity,
             'banner' => $data['banner'] ?? null,
             'excluded_days' => $data['excluded_days'] ?? null,
             'interval' => $IntervalLang,

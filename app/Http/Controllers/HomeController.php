@@ -132,7 +132,11 @@ class HomeController extends Controller
                 ->pluck('id')
                 ->toArray();
             if (!isset($slot['limit'])) {
-                $slot['limit'] = $settings->default_quantity;
+                foreach ($user->languages as $lang) {
+                    if ($lang == $slot['language']) {
+                        $slot['limit'] = $user->settings['default_quantity'][$lang];
+                    }
+                }
             }
             if (!$slotQuery) {
                 $slot['booked'] = 0;

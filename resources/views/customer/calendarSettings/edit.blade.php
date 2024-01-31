@@ -29,13 +29,16 @@
                             @method('PUT')
                             <input name="calendar_id" value="{{auth()->user()->id}}" hidden >
 
-                            <div class="form-group">
-                                <label>Default quantity</label>
-                                <input type="number" name="default_quantity" value="{{$settings['default_quantity']}}" class="form-control" required >
-                                @error('default_quantity')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
-                            </div>
+
+                            @foreach($langs as $key => $language)
+                                <div class="form-group">
+                                    <label>Default quantity for {{$language}}</label>
+                                    <input type="number" name="{{$key}}-default_quantity" value="{{$settings['default_quantity'][$key]??3}}" class="form-control" required >
+                                    @error('interval')
+                                    <div class="text-danger">{{@$message}}</div>
+                                    @enderror
+                                </div>
+                            @endforeach
 
 
                             <div class="form-group">
