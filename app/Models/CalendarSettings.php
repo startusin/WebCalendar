@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CalendarSettings extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'calendar_id',
         'primary_color',
@@ -27,5 +28,7 @@ class CalendarSettings extends Model
         'interval' => 'array',
         'excluded_days' => 'array',
         'default_quantity' => 'array',
+        'working_hr_start' => 'array',
+        'working_hr_end' => 'array',
     ];
 }

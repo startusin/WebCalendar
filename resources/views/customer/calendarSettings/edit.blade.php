@@ -24,22 +24,66 @@
                 <div class="row">
 
                     <div class="col-12">
-                        <form action="{{route('calendarSettings.update')}}" method="POST" class="w-25" enctype="multipart/form-data">
+                        <form action="{{route('calendarSettings.update')}}" method="POST" class="w-50" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input name="calendar_id" value="{{auth()->user()->id}}" hidden >
 
+                            <div class="row">
+                                @foreach($langs as $key => $language)
+                                    <div class="col-sm-{{ 12 / count($langs) }}">
+                                        <div class="form-group">
+                                            <label>Default quantity for {{$language}}</label>
+                                            <input type="number" name="{{$key}}-default_quantity" value="{{$settings['default_quantity'][$key]??3}}" class="form-control" required >
+                                            @error('interval')
+                                            <div class="text-danger">{{@$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
 
-                            @foreach($langs as $key => $language)
-                                <div class="form-group">
-                                    <label>Default quantity for {{$language}}</label>
-                                    <input type="number" name="{{$key}}-default_quantity" value="{{$settings['default_quantity'][$key]??3}}" class="form-control" required >
-                                    @error('interval')
-                                    <div class="text-danger">{{@$message}}</div>
-                                    @enderror
-                                </div>
-                            @endforeach
+                            <div class="row">
+                                @foreach($langs as $key => $language)
+                                    <div class="col-sm-{{ 12 / count($langs) }}">
+                                        <div class="form-group">
+                                            <label>Interval for {{$language}}</label>
+                                            <input type="number" name="{{$key}}-interval" value="{{$settings['interval'][$key]??60}}" class="form-control" required >
+                                            @error('interval')
+                                            <div class="text-danger">{{@$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
 
+                            <div class="row">
+                                @foreach($langs as $key => $language)
+                                    <div class="col-sm-{{ 12 / count($langs) }}">
+                                        <div class="form-group">
+                                            <label>Working Hours (from) for {{$language}}</label>
+                                            <input type="text" name="{{$key}}-working_hr_start" value="{{$settings['working_hr_start'][$key] ?? '08:00'}}" class="form-control" required >
+                                            @error('working_hr_start')
+                                            <div class="text-danger">{{@$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="row">
+                                @foreach($langs as $key => $language)
+                                    <div class="col-sm-{{ 12 / count($langs) }}">
+                                        <div class="form-group">
+                                            <label>Working Hours (to) for {{$language}}</label>
+                                            <input type="text" name="{{$key}}-working_hr_end" value="{{$settings['working_hr_end'][$key] ?? '20:00'}}" class="form-control" required >
+                                            @error('working_hr_end')
+                                            <div class="text-danger">{{@$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
 
                             <div class="form-group">
                                 <label>Primary color</label>
@@ -56,31 +100,6 @@
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
-
-                            <div class="form-group">
-                                <label>Working Hours (from)</label>
-                                <input type="text" name="working_hr_start" value="{{$settings['working_hr_start']}}" class="form-control" required >
-                                @error('working_hr_start')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Working Hours (to)</label>
-                                <input type="text" name="working_hr_end" value="{{$settings['working_hr_end']}}" class="form-control" required >
-                                @error('working_hr_end')
-                                <div class="text-danger">{{@$message}}</div>
-                                @enderror
-                            </div>
-                            @foreach($langs as $key => $language)
-                                <div class="form-group">
-                                    <label>Interval for {{$language}}</label>
-                                    <input type="number" name="{{$key}}-interval" value="{{$settings['interval'][$key]??60}}" class="form-control" required >
-                                    @error('interval')
-                                    <div class="text-danger">{{@$message}}</div>
-                                    @enderror
-                                </div>
-                            @endforeach
 
                             <div class="form-group">
                                 <label>Default Languages</label>

@@ -27,6 +27,8 @@ class CalendarSettingsController extends Controller
             foreach ($langs as $key => $lang) {
                 $settings['interval'][$key] = 60;
                 $settings['default_quantity'][$key] = 3;
+                $settings['working_hr_start'][$key] = '08:00';
+                $settings['working_hr_end'][$key] = '20:00';
             }
             $settings['language'] = 'en';
         }
@@ -40,13 +42,17 @@ class CalendarSettingsController extends Controller
             'calendar_id' => ['required', 'numeric'],
             'primary_color' => ['string'],
             'secondary_color' => ['string'],
-            'working_hr_start' => ['string'],
-            'working_hr_end' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
             'en-default_quantity' => ['numeric'],
             'fr-default_quantity' => ['numeric'],
             'es-default_quantity' => ['numeric'],
+            'en-working_hr_start' => ['string'],
+            'fr-working_hr_start' => ['string'],
+            'es-working_hr_start' => ['string'],
+            'en-working_hr_end' => ['string'],
+            'fr-working_hr_end' => ['string'],
+            'es-working_hr_end' => ['string'],
             'banner' => ['file'],
             'excluded_days' => ['required', 'array'],
             'en-interval' => ['numeric'],
@@ -73,6 +79,22 @@ class CalendarSettingsController extends Controller
             }
         }
 
+        $workingHrStart = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'working_hr_start') !== false) {
+                $LangKey = explode("-", $key);
+                $workingHrStart[$LangKey[0]] = $value;
+            }
+        }
+
+        $workingHrEnd = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'working_hr_end') !== false) {
+                $LangKey = explode("-", $key);
+                $workingHrEnd[$LangKey[0]] = $value;
+            }
+        }
+
         if (isset($data['logo'])) {
             if ($oldData !=null &&$oldData['logo'] != null) {
                 Storage::disk('public')->delete($oldData['logo']);
@@ -96,9 +118,9 @@ class CalendarSettingsController extends Controller
         ],[
             'calendar_id' => $data['calendar_id'],
             'primary_color' => $data['primary_color'],
-            'working_hr_start' => $data['working_hr_start'],
-            'working_hr_end' => $data['working_hr_end'],
-            'secondary_color' =>$data['secondary_color'],
+            'working_hr_start' => $workingHrStart,
+            'working_hr_end' => $workingHrEnd,
+            'secondary_color' => $data['secondary_color'],
             'bg_color' => $data['bg_color'],
             'logo' => $data['logo'] ?? null,
             'default_quantity' => $Quantity,

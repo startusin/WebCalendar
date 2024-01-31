@@ -88,19 +88,16 @@ class HomeController extends Controller
                 ];
             }
         }
+
         $dateRange = ['from' => $from, 'to' => $to];
-        $availableTime = ['from' => $settings->working_hr_start, 'to' => $settings->working_hr_end];
         $excludingDays = $settings->excluded_days ?? [];
 
         $result = [];
-        foreach ($user->settings->interval as $lang => $interval){
-
+        foreach ($user->settings->interval as $lang => $interval) {
+            $availableTime = ['from' => $settings['working_hr_start'][$lang], 'to' => $settings['working_hr_end'][$lang]];
             $resFunc = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $interval, $queriedSlots, $user,$lang);
-
             $result = array_merge($result,$resFunc);
         }
-        $intervalMinutes = $user->settings->interval;
-
 
 
 //        $result1 = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, 40, $queriedSlots, $user,'fr');
