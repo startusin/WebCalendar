@@ -52,10 +52,10 @@
                                         <td class="align-middle">1</td>
                                         <td>
                                             <select name="dynamicSelect" class="select2" aria-label="Default select example">
-                                                <option {{$slot['dynamicSelect'] == "months"?'selected':""}} value="months">Range of month</option>
-                                                <option {{$slot['dynamicSelect'] == "days"?'selected':""}} value="days">Range of days</option>
+                                                <option {{$slot['dynamicSelect'] == "months"?'selected':""}}  value="months">Range of month</option>
+                                                <option {{$slot['dynamicSelect'] == "days"?'selected':""}}    value="days">Range of days</option>
                                                 <option {{$slot['dynamicSelect'] == "customs"?'selected':""}} value="customs">Custom date Range</option>
-                                                <option {{$slot['dynamicSelect'] == "allWeeks"?'selected':""}} value="allWeeks">All week</option>
+                                                <option {{$slot['dynamicSelect'] == "allWeeks"?'selected':""}}value="allWeeks">All week</option>
                                             </select>
                                         </td>
 

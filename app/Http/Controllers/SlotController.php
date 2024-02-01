@@ -50,6 +50,22 @@ class SlotController extends Controller
 
         return view('customer.slot.ncreate', compact('languages','slots'));
     }
+    public function allCustomSlots()
+    {
+        $id = (\request()->input('calendar_id'));
+
+        $Fullslots = CustomSlot::where('calendar_id', $id)->first();
+        $slotsMaxId = $Fullslots->pluck('id');
+        $slots = null;
+        if (!$Fullslots) {
+            $slots = [];
+        }
+        else {
+            $slots = $Fullslots['period_type'];
+        }
+        return $slots;
+    }
+
     public function  createOrUpdate(Request $request)
     {
         $data = $request->all();

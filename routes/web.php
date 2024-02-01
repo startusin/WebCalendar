@@ -59,6 +59,7 @@ use Illuminate\Support\Facades\Route;
 
                 Route::get('/view', [\App\Http\Controllers\SlotController::class, 'view'])->name('customer.slot.view');
                 Route::post('/createOrUpdate', [\App\Http\Controllers\SlotController::class, 'createOrUpdate'])->name('customer.slot.createOrUpdate');
+                Route::get('/allCustomSlots', [\App\Http\Controllers\SlotController::class, 'allCustomSlots'])->name('customer.slot.allCustomSlots');
 
                 Route::get('show/{id}', [\App\Http\Controllers\SlotController::class, 'show'])->name('customer.slot.show');
                 Route::get('create', [\App\Http\Controllers\SlotController::class, 'create'])->name('customer.slot.create');
