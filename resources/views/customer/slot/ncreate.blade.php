@@ -47,69 +47,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($slots as $slot)
-                                    <tr>
-                                        <td class="align-middle">1</td>
-                                        <td>
-                                            <select name="dynamicSelect" class="select2" aria-label="Default select example">
-                                                <option {{$slot['dynamicSelect'] == "months"?'selected':""}}  value="months">Range of month</option>
-                                                <option {{$slot['dynamicSelect'] == "days"?'selected':""}}    value="days">Range of days</option>
-                                                <option {{$slot['dynamicSelect'] == "customs"?'selected':""}} value="customs">Custom date Range</option>
-                                                <option {{$slot['dynamicSelect'] == "allWeeks"?'selected':""}}value="allWeeks">All week</option>
-                                            </select>
-                                        </td>
-
-                                        <td>
-                                            <div>
-                                                <select class="select2" name="language" style="width: 100%;">
-                                                    @foreach($languages as $key => $language)
-                                                        <option {{$language == $slot['language']?"selected":""}}  value="{{ $language }}">
-                                                            {{ $key }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('language')
-                                                <div class="text-danger">{{@$message}}</div>
-                                                @enderror
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <div class="row Start">
-                                                    <input type="text" name="start"  class="datetimes form-control"/>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <div class="row End">
-                                                    <input type="text" name="end"  class="datetimes form-control" />
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><input name="fromHour" type="time" class="form-control" value="10:05 AM" /></td>
-                                        <td><input name="toHour"   type="time" class="form-control" value="10:05 AM" /></td>
-                                        <td>
-                                            <div>
-                                                <select class="select2" name="is_available" style="width: 100%;">
-                                                    <option value="0">No</option>
-                                                    <option value="1">Yes</option>
-                                                </select>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div>
-                                                <input type="number" name="quantity" class="form-control" required >
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                                <button  class="bg-transparent border-0 deleteBut">
-                                                    <i class="fas fa-trash text-danger"></i>
-                                                </button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
 
                                     </tbody>
                                 </table>

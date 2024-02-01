@@ -33,9 +33,9 @@ $(document).ready(function() {
         let options = select.options;
         for (let i = 0; i < options.length; i++) {
             if (options[i].value === MyVariable) {
-                options[i].selected = true;
+                options[i].setAttribute('selected','selected');
                 console.log("dasdasdasdasdasd");
-                break; // Ми знайшли співпадіння, тому можемо вийти з циклу
+                break;
             }
         }
         return select;
@@ -96,7 +96,7 @@ $(document).ready(function() {
             option.value = daysOfWeek[i].value;
             option.text = daysOfWeek[i].name;
             if (daysOfWeek[i].value === MyVariable) {
-                option.selected = true;
+                option.setAttribute('selected','selected');
             }
             select.appendChild(option);
         }
@@ -107,13 +107,10 @@ $(document).ready(function() {
 
 
     $(document).on('click', '.deleteBut', function(event) {
-        // Код, який ви хочете виконати при кліку на кнопку з класом deleteBut
         console.log("Клікнули на кнопку видалення");
 
-        // Видалення рядка таблиці
         $(this).closest('tr').remove();
 
-        // Зупинка подальшого вспливання події
         event.stopPropagation();
 
     });
@@ -121,14 +118,12 @@ $(document).ready(function() {
     $('select[name="dynamicSelect"]').change(function() {
         console.log("DADSADAS");
        var selectedOption = $(this).val();
-       var selectedRow = $(this).closest('tr'); // Знаходимо найближчий рядок з елементом dynamicSelect
+       var selectedRow = $(this).closest('tr');
 
-        if (selectedOption == "months") { // Якщо обрано опцію "Range of month"
-            // Замінюємо вхідні поля колонок "Start" і "End" на нові вибірки
+        if (selectedOption == "months") {
             selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
             selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
-        } else if (selectedOption == "customs") { // Якщо обрано опцію "Range of days"
-            // Замінюємо вхідні поля колонок "Start" і "End" на нові input з класом "datetimes"
+        } else if (selectedOption == "customs") {
             selectedRow.find('.Start').find('input, select').replaceWith('<input name="start" type="text" class="datetimes form-control datetimes"/>');
             selectedRow.find('.End').find('input, select').replaceWith('<input   name="end"   type="text" class="datetimes form-control datetimes"/>');
         } else if(selectedOption=="days"){
@@ -180,7 +175,7 @@ $(document).ready(function() {
 
     let select = document.createElement("select");
     select.id = "languageSelect";
-    select.classList.add("form-control"); // Додає клас "select2"
+    select.classList.add("form-control");
 
     for (var langCode in languages) {
         if (languages.hasOwnProperty(langCode)) {
@@ -216,14 +211,14 @@ $(document).ready(function() {
         console.log(res);
         return res;
     }
-    function ReturnReadyTr() {
-        let wqw= CustomTypePeriod('months');
-        let start = pickerFunction('months','start','march');
-        let end = pickerFunction('months','end','march');
+    function ReturnReadyTr(MyObj) {
 
-        console.log(start);
-        console.log(end);
-        console.log(wqw);
+        let wqw= CustomTypePeriod(MyObj.dynamicSelect);
+        let start = pickerFunction(MyObj.dynamicSelect,'start',MyObj.start);
+        let end = pickerFunction(MyObj.dynamicSelect,'end',MyObj.end);
+
+        console.log("Picker"+MyObj.dynamicSelect);
+
         let newRow = '<tr>' +
             '<td class="align-middle">1</td>' +
             '<td>' +
@@ -248,19 +243,19 @@ $(document).ready(function() {
             '</div>' +
             '</div>' +
             '</td>' +
-            '<td><input type="time" name="fromHour"class="form-control" value="10:05 AM" /></td>' +
-            '<td><input type="time" name="toHour" class="form-control" value="10:05 AM" /></td>' +
+            '<td><input type="time" name="fromHour"class="form-control" value="' + MyObj.fromHour + '" /></td>' +
+            '<td><input type="time" name="toHour" class="form-control" value="' + MyObj.toHour + '" /></td>' +
             '<td>' +
             '<div>' +
             '<select class="select2 form-control" name="is_available" style="width: 100%;">' +
-            '<option value="0">No</option>' +
-            '<option value="1">Yes</option>' +
+            '<option ' + (MyObj.is_available == 0 ? 'selected' : '') + ' value="0">No</option>' +
+            '<option ' + (MyObj.is_available == 1 ? 'selected' : '') + ' value="1">Yes</option>' +
             '</select>' +
             '</div>' +
             '</td>' +
             '<td>' +
             '<div>' +
-            '<input type="number" name="quantity" class="form-control" required >' +
+            '<input value="'+ MyObj.quantity+'" type="number"  name="quantity" class="form-control" required >' +
             '</div>' +
             '</td>' +
             '<td class="align-middle">' +
@@ -271,21 +266,15 @@ $(document).ready(function() {
             '</tr>';
 
 
-        console.log("dasdasdasfjnsdlvkndflvfdvdkfnvkdjfn");
-        console.log(newRow);
-
-
         $('table tbody').append(newRow);
 
 
 
         $(document).on('click', '.deleteBut', function() {
-            console.log("Клікнули на кнопку видалення");
             $(this).closest('tr').remove();
 
         });
         $('select[name="dynamicSelect"]').change(function() {
-            console.log("DADSADAS");
             var selectedOption = $(this).val();
             var selectedRow = $(this).closest('tr');
 
@@ -328,7 +317,9 @@ $(document).ready(function() {
         success: function(data) {
 
             console.log(data);
-            ReturnReadyTr();
+            data.forEach(function(obj) {
+                ReturnReadyTr(obj);
+            });
         },
         error: function(xhr, status, error) {
 
@@ -396,18 +387,15 @@ $(document).ready(function() {
             $(this).closest('tr').remove();
 
         });
-        // Прикріплюємо обробник події після додавання нових полів
         $('select[name="dynamicSelect"]').change(function() {
             console.log("DADSADAS");
             var selectedOption = $(this).val();
-            var selectedRow = $(this).closest('tr'); // Знаходимо найближчий рядок з елементом dynamicSelect
+            var selectedRow = $(this).closest('tr');
 
-            if (selectedOption == "months") { // Якщо обрано опцію "Range of month"
-                // Замінюємо вхідні поля колонок "Start" і "End" на нові вибірки
+            if (selectedOption == "months") {
                 selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
                 selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
             } else if (selectedOption == "customs") { // Якщо обрано опцію "Range of days"
-                // Замінюємо вхідні поля колонок "Start" і "End" на нові input з класом "datetimes"
                 selectedRow.find('.Start').find('input, select').replaceWith('<input name="start" type="text" class="datetimes form-control datetimes"/>');
                 selectedRow.find('.End').find('input, select').replaceWith('<input   name="end"   type="text" class="datetimes form-control datetimes"/>');
             } else if(selectedOption=="days"){
@@ -436,28 +424,23 @@ $(document).ready(function() {
 
 
     $('#Save').click(function() {
-        // Створення порожнього масиву для зберігання даних
         var rowsData = [];
         let isCanSend = true;
-        // Прохід по кожному рядку таблиці
         $('tbody tr').each(function() {
-            // Створення об'єкта для поточного рядка
             var rowData = {};
 
-            // Отримання значень з кожного елементу <input> або <select> у поточному рядку
             $(this).find('input, select').each(function() {
-                var name = $(this).attr('name'); // Отримання значення атрибуту 'name'
-                var value = $(this).val(); // Отримання значення елементу
+                var name = $(this).attr('name');
+                var value = $(this).val();
                 if (value === "") {
                     $(this).addClass('customError');
                     isCanSend = false;
                 } else {
                     $(this).removeClass('customError');
                 }
-                rowData[name] = value; // Запис значення до відповідного ключа у об'єкті rowData
+                rowData[name] = value;
             });
 
-            // Додавання об'єкта з даними поточного рядка до масиву rowsData
             rowsData.push(rowData);
         });
 
