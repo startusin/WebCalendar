@@ -163,7 +163,6 @@ class HomeController extends Controller
 
         while ($currentDate <= $endDate) {
             $dayOfWeek = strtolower($currentDate->format('l'));
-
             if (!in_array($dayOfWeek, $excludingDays)) {
                 $currentTime = clone $startTime;
 

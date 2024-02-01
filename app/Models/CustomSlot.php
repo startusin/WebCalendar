@@ -11,16 +11,10 @@ class CustomSlot extends Model
 
     protected $fillable = [
         'calendar_id' ,
-        'language',
-        'attendee_qty',
-        'is_available',
-        'start_date',
-        'end_date',
+        'period_type'
     ];
 
     protected $casts = [
-        'language' => 'array',
-        'start_date' => 'datetime',
-        'end_date' => 'datetime'
+        'period_type' => 'array',
     ];
 }

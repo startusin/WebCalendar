@@ -21,7 +21,7 @@
 
             @if (auth()->user()->role == 'customer')
                 <li class="nav-item">
-                    <a href="{{route('customer.slot.index')}}" class="nav-link">
+                    <a href="{{route('customer.slot.view')}}" class="nav-link">
                         <i class="nav-icon fa-solid fa-calendar-days text-dark"></i>
                         <p class="text-dark">
                             Slot

@@ -88,13 +88,15 @@
 
 <script>
     $(function() {
-        $('input[name="datetimes"]').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            minYear: 1901,
-            maxYear: parseInt(moment().format('YYYY'),10)
-        }, function(start, end, label) {
-            var years = moment().diff(start, 'years');
+        $('.datetimes').each(function() {
+            $(this).daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 1901,
+                maxYear: parseInt(moment().format('YYYY'), 10)
+            }, function(start, end, label) {
+                var years = moment().diff(start, 'years');
+            });
         });
     });
 </script>
@@ -160,7 +162,15 @@
     $('.select2').select2();
 </script>
 
+
+
+<script src="/path/to/cdn/jquery.min.js"></script>
+
+<!-- Day.js  -->
+<script src="/path/to/cdn/dayjs.min.js"></script>
+
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('assets/js/uploadPhoto.js')}}"></script>
+<script src="{{asset('assets/js/slots.js')}}"></script>
 </body>
 </html>

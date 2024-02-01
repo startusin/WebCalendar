@@ -12,3 +12,8 @@
     background-color: rgb(175, 168, 168);
     color: #0a0a0a;
 }
+
+
+.customError{
+    border-color: red;
+}

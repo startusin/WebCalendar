@@ -19,8 +19,6 @@ class CalendarSettingsController extends Controller
             $settings['primary_color'] = '#CCA646';
             $settings['secondary_color'] = '#E9D9A7';
             $settings['bg_color'] = '#FCF6E8';
-            $settings['working_hr_start'] = '8:00';
-            $settings['working_hr_end'] = '20:00';
             $settings['excluded_days'] = ['saturday', 'sunday'];
             $settings['logo'] = null;
             $settings['brunch_text'] = null;
