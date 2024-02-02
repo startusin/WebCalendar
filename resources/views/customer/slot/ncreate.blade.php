@@ -17,9 +17,10 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
+        <button class="col-2 btn btn-primary ml-3 mb-3"  id="Save">Save</button>
         <!-- Main content -->
         <section class="content">
+
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
@@ -34,7 +35,7 @@
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                     <tr>
-                                        <th class="col-1">ID</th>
+                                        <th class="col-1">Priority</th>
                                         <th class="col-1">Type</th>
                                         <th class="col-1">Language</th>
                                         <th class="col-1">Start</th>
@@ -51,12 +52,11 @@
                                     </tbody>
                                 </table>
 
-                                <button id="CreateBT">Add Row</button>
-                                <button id="Save">Add Row</button>
+
 
                                 <!-- /.card-body -->
                         </div>
-
+                            <button class="col-2 btn btn-primary mt-3"  id="CreateBT">Add Row</button>
                     </div>
 
 

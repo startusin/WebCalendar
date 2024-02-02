@@ -54,6 +54,7 @@ use Illuminate\Support\Facades\Route;
             Route::get('purchase/all', [\App\Http\Controllers\PurchaseController::class, 'getAllPurchases'])->name('purchase.index');
             Route::get('purchase/show/{id}', [\App\Http\Controllers\PurchaseController::class, 'getPurchase'])->name('purchase.show');
 
+            Route::get('/languages', [\App\Http\Controllers\HomeController::class, 'languages']);
             Route::group(['prefix' => 'slots'], function () {
                 Route::get('', [\App\Http\Controllers\SlotController::class, 'index'])->name('customer.slot.index');
 

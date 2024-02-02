@@ -93,6 +93,10 @@
                 singleDatePicker: true,
                 showDropdowns: true,
                 minYear: 1901,
+
+                locale: {
+                    format: 'MM/DD'
+                },
                 maxYear: parseInt(moment().format('YYYY'), 10)
             }, function(start, end, label) {
                 var years = moment().diff(start, 'years');

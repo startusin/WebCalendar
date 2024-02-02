@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Languages;
 use App\Http\Resources\SlotResource;
 use App\Models\BookedBrunch;
 use App\Models\BookedSlots;
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
+    public function languages()
+    {
+        return Languages::getMyLanguages(auth()->user()->languages);
+    }
     /**
      * Show the application dashboard.
      *

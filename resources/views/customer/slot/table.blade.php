@@ -61,3 +61,68 @@
             </button>
     </td>
 </tr>
+
+
+
+
+
+
+
+let allData = {};
+
+function getAllData() {
+let rows = [];
+
+$('tbody tr').each(function() {
+let tempData = {};
+$(this).find('input, select').each(function() {
+let name = $(this).attr('name');
+let value = $(this).val();
+if (value === "") {
+$(this).addClass('customError');
+} else {
+$(this).removeClass('customError');
+}
+tempData[name] = value;
+});
+rows.push(tempData);
+});
+
+return rows;
+}
+
+
+
+
+
+let languages = {
+"en": "English"
+};
+let select = document.createElement("select");
+
+$.ajax({
+url: '/languages',
+method: 'GET',
+success: function(data) {
+console.log(data);
+languages = data;
+
+select.id = "languageSelect";
+select.classList.add("form-control");
+
+for (var langCode in languages) {
+if (languages.hasOwnProperty(langCode)) {
+var option = document.createElement("option");
+option.value = langCode;
+option.text = languages[langCode];
+select.appendChild(option);
+}
+}
+
+select.setAttribute("name", "language");
+},
+error: function(xhr, status, error) {
+
+console.error(xhr.responseText);
+}
+});

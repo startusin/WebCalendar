@@ -1,6 +1,25 @@
 $(document).ready(function() {
 
+    let allData = {};
+    let maxPriority = 0;
 
+    function getAllData() {
+        let last;
+        $('tbody tr').each(function() {
+            let lastValue; // Змінна для зберігання останнього значення value
+            // Пройтися по всім елементам input з атрибутом name="priority" в поточному рядку
+            $(this).find('input[name="priority"]').each(function() {
+                last = $(this).val(); // Записати останнє значення value у змінну
+
+            });
+        });
+        console.log(last);
+        if (last!=undefined) {
+            maxPriority = parseInt(last);
+            console.log("Deqweqwe");
+        }
+        console.log("MAX==== "+maxPriority);
+    }
 
     function month(MyVariable, MyPeriod) {
 
@@ -46,7 +65,7 @@ $(document).ready(function() {
         var input = document.createElement('input');
         input.type = "text";
         input.name = MyPeriod; // Задаємо атрибут name
-        input.className = "datetimes form-control datetimes";
+        input.className = "form-control datetimes";
         input.value = myVariable;
 
         return input;
@@ -71,6 +90,25 @@ $(document).ready(function() {
             select.appendChild(option);
         }
 
+        return select;
+    }
+
+    function languageSelector(selectedLanguage, languages) {
+
+        let select = document.createElement('select');
+        select.className = "newSelect form-control";
+        select.name = "language";
+
+        for (let lang in languages) {
+            let option = document.createElement('option');
+            option.value = lang;
+            option.text = languages[lang];
+            select.appendChild(option);
+
+            if (lang === selectedLanguage) {
+                option.setAttribute('selected', 'selected');
+            }
+        }
         return select;
     }
 
@@ -106,11 +144,14 @@ $(document).ready(function() {
 
 
 
+    $(document).on('click', '.datetimes', function(event) {
+
+    });
+
     $(document).on('click', '.deleteBut', function(event) {
         console.log("Клікнули на кнопку видалення");
-
         $(this).closest('tr').remove();
-
+        getAllData();
         event.stopPropagation();
 
     });
@@ -140,6 +181,9 @@ $(document).ready(function() {
                 singleDatePicker: true,
                 showDropdowns: true,
                 minYear: 1901,
+                locale: {
+                    format: 'MM/DD'
+                },
                 maxYear: parseInt(moment().format('YYYY'), 10)
             }, function(start, end, label) {
                 var years = moment().diff(start, 'years');
@@ -169,26 +213,36 @@ $(document).ready(function() {
 
 
     let languages = {
-        "en": "English",
-        "fr": "France"
+        "en": "English"
     };
-
     let select = document.createElement("select");
-    select.id = "languageSelect";
-    select.classList.add("form-control");
 
-    for (var langCode in languages) {
-        if (languages.hasOwnProperty(langCode)) {
-            var option = document.createElement("option");
-            option.value = langCode;
-            option.text = languages[langCode];
-            select.appendChild(option);
+    $.ajax({
+        url: '/languages',
+        method: 'GET',
+        success: function(data) {
+            console.log(data);
+            languages = data;
+
+            select.id = "languageSelect";
+            select.classList.add("form-control");
+
+            for (var langCode in languages) {
+                if (languages.hasOwnProperty(langCode)) {
+                    var option = document.createElement("option");
+                    option.value = langCode;
+                    option.text = languages[langCode];
+                    select.appendChild(option);
+                }
+            }
+
+            select.setAttribute("name", "language");
+        },
+        error: function(xhr, status, error) {
+
+            console.error(xhr.responseText);
         }
-    }
-
-    select.setAttribute("name", "language");
-
-    console.log(select);
+    });
 
     function pickerFunction(picker, period, val) {
         let res;
@@ -219,14 +273,18 @@ $(document).ready(function() {
 
         console.log("Picker"+MyObj.dynamicSelect);
 
-        let newRow = '<tr>' +
-            '<td class="align-middle">1</td>' +
+        let newRow = '<tr data-start="'+MyObj.start+'" data-end="'+MyObj.end+'">' +
+            '<td class="align-middle">' +
+            '<div>' +
+            '<input value="'+ MyObj.priority+'" type="number"  name="priority" class="form-control" required >' +
+            '</div>' +
+            '</td>' +
             '<td>' +
             wqw +
             '</td>' +
             '<td>' +
             '<div>' +
-            select.outerHTML  +
+            languageSelector(MyObj.language,languages).outerHTML  +
             '</div>' +
             '</td>' +
             '<td>' +
@@ -298,6 +356,9 @@ $(document).ready(function() {
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1901,
+                    locale: {
+                        format: 'MM/DD'
+                    },
                     maxYear: parseInt(moment().format('YYYY'), 10)
                 }, function(start, end, label) {
                     var years = moment().diff(start, 'years');
@@ -319,7 +380,43 @@ $(document).ready(function() {
             console.log(data);
             data.forEach(function(obj) {
                 ReturnReadyTr(obj);
+
+                $('input[name="start"].datetimes').each(function() {
+
+                    let $tr = $(this).closest('tr');
+                    let starttime = $tr.data('start'); // Отримуємо значення атрибута data-start
+                    $(this).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        minYear: 1901,
+                        startDate: starttime,
+                        locale: {
+                            format: 'MM/DD'
+                        },
+                        maxYear: parseInt(moment().format('YYYY'), 10)
+                    }, function(start, end, label) {
+                        var years = moment().diff(start, 'years');
+                    });
+                });
+                $('input[name="end"].datetimes').each(function() {
+                    let $tr = $(this).closest('tr');
+                    let starttime = $tr.data('end');
+                    $(this).daterangepicker({
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        minYear: 1901,
+                        startDate: starttime,
+                        locale: {
+                            format: 'MM/DD'
+                        },
+                        maxYear: parseInt(moment().format('YYYY'), 10)
+                    }, function(start, end, label) {
+                        var years = moment().diff(start, 'years');
+                    });
+                });
             });
+
+            getAllData();
         },
         error: function(xhr, status, error) {
 
@@ -329,8 +426,14 @@ $(document).ready(function() {
 
 
     $('#CreateBT').click(function() {
+        console.log("MX CreateBu"+ maxPriority);
+        maxPriority+=1;
         var newRow = '<tr>' +
-            '<td class="align-middle">1</td>' +
+            '<td>' +
+            '<div>' +
+            '<input value="'+(maxPriority)+'" type="number"  name="priority" class="form-control" required >' +
+            '</div>' +
+            '</td>' +
             '<td>' +
             '<select name="dynamicSelect" class="select2 form-control" aria-label="Default select example">' +
             '<option selected value="months">Range of month</option>' +
@@ -379,8 +482,12 @@ $(document).ready(function() {
             '</button>' +
             '</td>' +
             '</tr>';
-
         $('table tbody').append(newRow);
+
+        getAllData();
+
+
+
 
         $(document).on('click', '.deleteBut', function() {
             console.log("Клікнули на кнопку видалення");
@@ -412,6 +519,9 @@ $(document).ready(function() {
                     singleDatePicker: true,
                     showDropdowns: true,
                     minYear: 1901,
+                    locale: {
+                        format: 'MM/DD'
+                    },
                     maxYear: parseInt(moment().format('YYYY'), 10)
                 }, function(start, end, label) {
                     var years = moment().diff(start, 'years');
