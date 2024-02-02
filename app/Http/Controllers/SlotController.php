@@ -39,7 +39,6 @@ class SlotController extends Controller
     {
         $languages = array_flip(Languages::getMyLanguages(auth()->user()->languages));
         $Fullslots = CustomSlot::where('calendar_id', auth()->user()->id)->first();
-        $slotsMaxId = $Fullslots->pluck('id');
         $slots = null;
         if (!$Fullslots) {
             $slots = [];
@@ -50,6 +49,7 @@ class SlotController extends Controller
 
         return view('customer.slot.ncreate', compact('languages','slots'));
     }
+
     public function allCustomSlots()
     {
         $id = (\request()->input('calendar_id'));
@@ -68,8 +68,13 @@ class SlotController extends Controller
 
     public function  createOrUpdate(Request $request)
     {
+
         $data = $request->all();
         $period_type = [];
+        if (!isset($data['alldata'])){
+            $data['alldata'] = [];
+        }
+
         foreach ($data['alldata'] as $slot) {
             array_push($period_type, $slot);
         }
@@ -77,7 +82,6 @@ class SlotController extends Controller
             'calendar_id' => $data['calendar_id'],
             'period_type' => $period_type
         ]);
-        dd($data);
     }
     public function create()
     {
