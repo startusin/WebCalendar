@@ -79,7 +79,7 @@ class PaymentController extends Controller
                 echo 'Received unknown event type ' . $event->type;
         }
 
-        http_response_code(200);
+        return response()->json(['success' => 'success', 200]);
     }
 
     public function cron()

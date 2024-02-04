@@ -52,36 +52,31 @@ class SlotController extends Controller
 
     public function allCustomSlots()
     {
-        $id = (\request()->input('calendar_id'));
+        $id = (request()->input('calendar_id'));
+        $slots = CustomSlot::where('calendar_id', $id)->get();
 
-        $Fullslots = CustomSlot::where('calendar_id', $id)->first();
-        $slotsMaxId = $Fullslots->pluck('id');
-        $slots = null;
-        if (!$Fullslots) {
-            $slots = [];
-        }
-        else {
-            $slots = $Fullslots['period_type'];
-        }
-        return $slots;
+        return response()->json($slots);
     }
 
     public function  createOrUpdate(Request $request)
     {
 
         $data = $request->all();
-        $period_type = [];
+
         if (!isset($data['alldata'])){
             $data['alldata'] = [];
         }
 
+        CustomSlot::where(['calendar_id' => $data['calendar_id']])->delete();
+
         foreach ($data['alldata'] as $slot) {
-            array_push($period_type, $slot);
+            CustomSlot::create([
+                'calendar_id' => $data['calendar_id'],
+                'period_type' => $slot
+            ]);
         }
-        CustomSlot::updateOrCreate(['calendar_id' => $data['calendar_id']],[
-            'calendar_id' => $data['calendar_id'],
-            'period_type' => $period_type
-        ]);
+
+        return response()->noContent();
     }
     public function create()
     {

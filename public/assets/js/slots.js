@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     let allData = {};
-    let maxPriority = 0;
 
     function getAllData() {
         let last;
@@ -13,12 +12,6 @@ $(document).ready(function() {
 
             });
         });
-        console.log(last);
-        if (last!=undefined) {
-            maxPriority = parseInt(last);
-            console.log("Deqweqwe");
-        }
-        console.log("MAX==== "+maxPriority);
     }
 
     function month(MyVariable, MyPeriod) {
@@ -46,17 +39,14 @@ $(document).ready(function() {
             let option = document.createElement('option');
             option.value = months[i].value;
             option.text = months[i].name;
+
+            if (parseInt(MyVariable, 10) === (i + 1)) {
+                option.setAttribute('selected','selected');
+            }
+
             select.appendChild(option);
         }
 
-        let options = select.options;
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].value === MyVariable) {
-                options[i].setAttribute('selected','selected');
-                console.log("dasdasdasdasdasd");
-                break;
-            }
-        }
         return select;
     }
 
@@ -202,7 +192,7 @@ $(document).ready(function() {
         ];
 
         options.forEach(option => {
-            let selected = (option.value === MyVariable) ? 'selected' : '';
+            let selected = (option.value === MyVariable.dynamicSelect) ? 'selected' : '';
             selectHTML += '<option value="' + option.value + '" ' + selected + '>' + option.text + '</option>';
         });
 
@@ -215,10 +205,12 @@ $(document).ready(function() {
     let languages = {
         "en": "English"
     };
+
     let select = document.createElement("select");
 
     $.ajax({
         url: '/languages',
+        async: false,
         method: 'GET',
         success: function(data) {
             console.log(data);
@@ -246,11 +238,10 @@ $(document).ready(function() {
 
     function pickerFunction(picker, period, val) {
         let res;
-        console.log("Picker"+val);
-        switch (picker) {
+
+        switch (picker.dynamicSelect) {
             case "months":
                 res = month(val, period);
-                console.log(1);
                 break
             case "days":
                 res = days(val, period);
@@ -265,26 +256,24 @@ $(document).ready(function() {
         console.log(res);
         return res;
     }
+
     function ReturnReadyTr(MyObj) {
+        let wqw= CustomTypePeriod(MyObj);
+        let start = pickerFunction(MyObj,'start', MyObj.start);
+        let end = pickerFunction(MyObj,'end',MyObj.end);
 
-        let wqw= CustomTypePeriod(MyObj.dynamicSelect);
-        let start = pickerFunction(MyObj.dynamicSelect,'start',MyObj.start);
-        let end = pickerFunction(MyObj.dynamicSelect,'end',MyObj.end);
+        console.log("Picker"+MyObj);
 
-        console.log("Picker"+MyObj.dynamicSelect);
+        console.log('languages');
+        console.log(languages);
 
         let newRow = '<tr data-start="'+MyObj.start+'" data-end="'+MyObj.end+'">' +
-            '<td class="align-middle">' +
-            '<div>' +
-            '<input value="'+ MyObj.priority+'" type="number"  name="priority" class="form-control" required >' +
-            '</div>' +
-            '</td>' +
             '<td>' +
             wqw +
             '</td>' +
             '<td>' +
             '<div>' +
-            languageSelector(MyObj.language,languages).outerHTML  +
+            languageSelector(MyObj.language, languages).outerHTML  +
             '</div>' +
             '</td>' +
             '<td>' +
@@ -376,10 +365,8 @@ $(document).ready(function() {
         method: 'GET',
         data: { calendar_id: calendarId },
         success: function(data) {
-
-            console.log(data);
             data.forEach(function(obj) {
-                ReturnReadyTr(obj);
+                ReturnReadyTr(obj.period_type);
 
                 $('input[name="start"].datetimes').each(function() {
 
@@ -426,14 +413,7 @@ $(document).ready(function() {
 
 
     $('#CreateBT').click(function() {
-        console.log("MX CreateBu"+ maxPriority);
-        maxPriority+=1;
         var newRow = '<tr>' +
-            '<td>' +
-            '<div>' +
-            '<input value="'+(maxPriority)+'" type="number"  name="priority" class="form-control" required >' +
-            '</div>' +
-            '</td>' +
             '<td>' +
             '<select name="dynamicSelect" class="select2 form-control" aria-label="Default select example">' +
             '<option selected value="months">Range of month</option>' +

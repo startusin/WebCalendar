@@ -35,7 +35,6 @@
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                     <tr>
-                                        <th class="col-1">Priority</th>
                                         <th class="col-1">Type</th>
                                         <th class="col-1">Language</th>
                                         <th class="col-1">Start</th>
@@ -47,7 +46,7 @@
                                         <th class="col-1">Actions</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="sortable" style="cursor: pointer;">
 
                                     </tbody>
                                 </table>
@@ -56,7 +55,7 @@
 
                                 <!-- /.card-body -->
                         </div>
-                            <button class="col-2 btn btn-primary mt-3"  id="CreateBT">Add Row</button>
+                            <button class="col-2 btn btn-primary mt-3 ml-4 mb-3"  id="CreateBT">Add Row</button>
                     </div>
 
 
