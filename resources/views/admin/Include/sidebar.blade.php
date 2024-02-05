@@ -39,7 +39,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{route('customer.price.index')}}" class="nav-link">
+                    <a href="{{route('customer.price.view')}}" class="nav-link">
                         <i class="nav-icon fa-solid fa-dollar-sign text-dark"></i>
                         <p class="text-dark">
                             Custom Prices

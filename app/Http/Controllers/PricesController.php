@@ -18,6 +18,12 @@ class PricesController extends Controller
         return view('customer.price.index', compact('prices'));
     }
 
+    public function view()
+    {
+
+        return view('customer.price.nprice');
+    }
+
     public function create()
     {
         $products = Product::where('calendar_id', auth()->user()->id)->get();

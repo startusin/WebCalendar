@@ -29,20 +29,18 @@
                             <div class="card-body table-responsive p-0">
 
                                 <div id="tableContainer"></div>
-                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                                <meta name="csrf-token" content="{{ csrf_token() }}">
                                 <input name="calendar_id" value="{{auth()->user()->id}}" hidden/>
 
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                     <tr>
                                         <th class="col-1">Type</th>
-                                        <th class="col-1">Language</th>
                                         <th class="col-1">Start</th>
                                         <th class="col-1">End</th>
                                         <th class="col-1">From Hours</th>
                                         <th class="col-1">To Hours</th>
-                                        <th class="col-1">Available</th>
-                                        <th class="col-1">Quantity</th>
+                                        <th class="col-1">Price</th>
                                         <th class="col-1">Actions</th>
                                     </tr>
                                     </thead>
@@ -54,13 +52,13 @@
 
 
                                 <!-- /.card-body -->
-                        </div>
+                            </div>
                             <button class="col-2 btn btn-primary mt-3 ml-4 mb-3"  id="CreateBT">Add Row</button>
+                        </div>
+
+
                     </div>
-
-
-                </div>
-                <!-- /.row -->
+                    <!-- /.row -->
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -69,5 +67,5 @@
 
 @endsection
 @push('js')
-    <script src="{{asset('assets/js/slots.js')}}"></script>
+    <script src="{{asset('assets/js/price.js')}}"></script>
 @endpush

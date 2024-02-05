@@ -102,6 +102,7 @@ use Illuminate\Support\Facades\Route;
 
             Route::group(['prefix' => 'price'], function () {
                 Route::get('/', [\App\Http\Controllers\PricesController::class, 'index'])->name('customer.price.index');
+                Route::get('/view', [\App\Http\Controllers\PricesController::class, 'view'])->name('customer.price.view');
                 Route::get('create', [\App\Http\Controllers\PricesController::class, 'create'])->name('customer.price.create');
                 Route::get('edit/{id}', [\App\Http\Controllers\PricesController::class, 'edit'])->name('customer.price.edit');
                 Route::post('store', [\App\Http\Controllers\PricesController::class, 'store'])->name('customer.price.store');

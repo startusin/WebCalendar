@@ -177,6 +177,7 @@
 
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('assets/js/uploadPhoto.js')}}"></script>
-<script src="{{asset('assets/js/slots.js')}}"></script>
+@stack('js')
+
 </body>
 </html>

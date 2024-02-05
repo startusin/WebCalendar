@@ -54,9 +54,9 @@ class User extends Authenticatable
         return $this->hasMany(Product::class, 'calendar_id', 'id');
     }
 
-    public function slots(): HasMany
+    public function slots(): HasOne
     {
-        return $this->hasMany(CustomSlot::class, 'calendar_id', 'id');
+        return $this->hasOne(CustomSlot::class, 'calendar_id', 'id');
     }
 
     public function brunches(): HasMany
