@@ -17,18 +17,18 @@ $(document).ready(function() {
     function month(MyVariable, MyPeriod) {
 
         let months = [
-            { value: "january", name: "January" },
-            { value: "february", name: "February" },
-            { value: "march", name: "March" },
-            { value: "april", name: "April" },
-            { value: "may", name: "May" },
-            { value: "june", name: "June" },
-            { value: "july", name: "July" },
-            { value: "august", name: "August" },
-            { value: "september", name: "September" },
-            { value: "october", name: "October" },
-            { value: "november", name: "November" },
-            { value: "december", name: "December" }
+            { value: "1", name: "January" },
+            { value: "2", name: "February" },
+            { value: "3", name: "March" },
+            { value: "4", name: "April" },
+            { value: "5", name: "May" },
+            { value: "6", name: "June" },
+            { value: "7", name: "July" },
+            { value: "8", name: "August" },
+            { value: "9", name: "September" },
+            { value: "10", name: "October" },
+            { value: "11", name: "November" },
+            { value: "12", name: "December" }
         ];
 
         let select = document.createElement('select');
@@ -68,13 +68,13 @@ $(document).ready(function() {
 
         if (period === "start") {
             let option = document.createElement('option');
-            option.value = "monday";
+            option.value = "1";
             option.text = "Monday";
             option.selected = true;
             select.appendChild(option);
         } else if (period === "end") {
             let option = document.createElement('option');
-            option.value = "sunday";
+            option.value = "7";
             option.text = "Sunday";
             option.selected = true;
             select.appendChild(option);
@@ -106,13 +106,13 @@ $(document).ready(function() {
 
     function days(MyVariable, MyPeriod) {
         let daysOfWeek = [
-            { value: "monday", name: "Monday" },
-            { value: "tuesday", name: "Tuesday" },
-            { value: "wednesday", name: "Wednesday" },
-            { value: "thursday", name: "Thursday" },
-            { value: "friday", name: "Friday" },
-            { value: "saturday", name: "Saturday" },
-            { value: "sunday", name: "Sunday" }
+            { value: "1", name: "Monday" },
+            { value: "2", name: "Tuesday" },
+            { value: "3", name: "Wednesday" },
+            { value: "4", name: "Thursday" },
+            { value: "5", name: "Friday" },
+            { value: "6", name: "Saturday" },
+            { value: "7", name: "Sunday" }
         ];
 
         let select = document.createElement('select');
@@ -152,18 +152,18 @@ $(document).ready(function() {
        var selectedRow = $(this).closest('tr');
 
         if (selectedOption == "months") {
-            selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
-            selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
+            selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>');
+            selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>');
         } else if (selectedOption == "customs") {
             selectedRow.find('.Start').find('input, select').replaceWith('<input name="start" type="text" class="datetimes form-control datetimes"/>');
             selectedRow.find('.End').find('input, select').replaceWith('<input   name="end"   type="text" class="datetimes form-control datetimes"/>');
         } else if(selectedOption=="days"){
-            selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>');
-            selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>');
+            selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select>');
+            selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select>');
         }
         else if(selectedOption=="allWeeks"){
-            selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="monday" selected>Monday</option></select>');
-            selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="sunday" selected>Sunday</option></select>');
+            selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1" selected>Monday</option></select>');
+            selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="7" selected>Sunday</option></select>');
         }
 
         $('.datetimes').each(function() {
@@ -172,7 +172,7 @@ $(document).ready(function() {
                 showDropdowns: true,
                 minYear: 1901,
                 locale: {
-                    format: 'MM/DD'
+                    format: 'MM-DD'
                 },
                 maxYear: parseInt(moment().format('YYYY'), 10)
             }, function(start, end, label) {
@@ -326,18 +326,18 @@ $(document).ready(function() {
             var selectedRow = $(this).closest('tr');
 
             if (selectedOption == "months") {
-                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
-                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
+                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>');
+                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>');
             } else if (selectedOption == "customs") {
                 selectedRow.find('.Start').find('input, select').replaceWith('<input name="start" type="text" class="datetimes form-control datetimes"/>');
                 selectedRow.find('.End').find('input, select').replaceWith('<input   name="end"   type="text" class="datetimes form-control datetimes"/>');
             } else if(selectedOption=="days"){
-                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>');
-                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>');
+                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select>');
+                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select>');
             }
             else if(selectedOption=="allWeeks"){
-                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="monday" selected>Monday</option></select>');
-                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="sunday" selected>Sunday</option></select>');
+                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1" selected>Monday</option></select>');
+                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="7" selected>Sunday</option></select>');
             }
 
             $('.datetimes').each(function() {
@@ -346,7 +346,7 @@ $(document).ready(function() {
                     showDropdowns: true,
                     minYear: 1901,
                     locale: {
-                        format: 'MM/DD'
+                        format: 'MM-DD'
                     },
                     maxYear: parseInt(moment().format('YYYY'), 10)
                 }, function(start, end, label) {
@@ -378,7 +378,7 @@ $(document).ready(function() {
                         minYear: 1901,
                         startDate: starttime,
                         locale: {
-                            format: 'MM/DD'
+                            format: 'MM-DD'
                         },
                         maxYear: parseInt(moment().format('YYYY'), 10)
                     }, function(start, end, label) {
@@ -394,7 +394,7 @@ $(document).ready(function() {
                         minYear: 1901,
                         startDate: starttime,
                         locale: {
-                            format: 'MM/DD'
+                            format: 'MM-DD'
                         },
                         maxYear: parseInt(moment().format('YYYY'), 10)
                     }, function(start, end, label) {
@@ -480,18 +480,18 @@ $(document).ready(function() {
             var selectedRow = $(this).closest('tr');
 
             if (selectedOption == "months") {
-                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
-                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="january">January</option><option value="february">February</option><option value="march">March</option><option value="april">April</option><option value="may">May</option><option value="june">June</option><option value="july">July</option><option value="august">August</option><option value="september">September</option><option value="october">October</option><option value="november">November</option><option value="december">December</option></select>');
+                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>');
+                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>');
             } else if (selectedOption == "customs") { // Якщо обрано опцію "Range of days"
                 selectedRow.find('.Start').find('input, select').replaceWith('<input name="start" type="text" class="datetimes form-control datetimes"/>');
                 selectedRow.find('.End').find('input, select').replaceWith('<input   name="end"   type="text" class="datetimes form-control datetimes"/>');
             } else if(selectedOption=="days"){
-                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>');
-                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>');
+                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select>');
+                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="7">Sunday</option></select>');
             }
             else if(selectedOption=="allWeeks"){
-                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="monday" selected>Monday</option></select>');
-                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="sunday" selected>Sunday</option></select>');
+                selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1" selected>Monday</option></select>');
+                selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="7" selected>Sunday</option></select>');
             }
 
             $('.datetimes').each(function() {
@@ -500,7 +500,7 @@ $(document).ready(function() {
                     showDropdowns: true,
                     minYear: 1901,
                     locale: {
-                        format: 'MM/DD'
+                        format: 'MM-DD'
                     },
                     maxYear: parseInt(moment().format('YYYY'), 10)
                 }, function(start, end, label) {
