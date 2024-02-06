@@ -41,7 +41,6 @@ class TranslationsController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
-        dd($data);
         unset($data['_token']);
         unset($data['_method']);
         $objToCreateorUpdate['calendar_id'] = $data['calendar_id'];

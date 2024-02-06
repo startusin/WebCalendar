@@ -28,8 +28,8 @@ class HomeController extends Controller
      */
     public function index(User $user)
     {
-        if (!$user->settings) {
-            die('Calendar isn\'t configured. Login and go to Settings tab and configure it.');
+        if (!$user->settings || !$user->translations) {
+            die('Calendar isn\'t configured. Login and go to Settings tab and configure it, and you must to save translations');
         }
 
         $brunches = $user->brunches;
@@ -83,31 +83,32 @@ class HomeController extends Controller
 
         foreach ($rules as $rule)
         {
-
-            if ($rule['period_type']['is_available'] == 1) {
             switch ($rule['period_type']['dynamicSelect']){
                 case 'customs':
                     $startDateTime = implode('-', [$currentYear, $rule['period_type']['start']]);
                     $endDateTime = implode('-', [$currentYear, $rule['period_type']['end']]);
-                    $arr = generateCustomsSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity']);
+                    $arr = generateCustomsSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
                     $result = array_merge($result,$arr);
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'days':
-                    $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity']);
+                    $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $result = array_merge($result,$arr);
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
-                case 'weeks':
-                    $arr = generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity']);
+                case 'allWeeks':
+                    $arr = generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $result = array_merge($result,$arr);
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'months':
-                    $arr = generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity']);
+                    $arr = generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
                     $result = array_merge($result,$arr);
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
-            }
-            }
-        }
+                }
 
+        }
 
         $dateRange = ['from' => $from, 'to' => $to];
 
@@ -117,21 +118,13 @@ class HomeController extends Controller
             $result = array_merge($result,$resFunc);
         }
 
-
-
-//        $result1 = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, 40, $queriedSlots, $user,'fr');
-//        $result2 = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, 30, $queriedSlots, $user,'en');
-//        $result = array_merge($result1,$result2);
-
         $mergedSlots = array_merge($result, $availableSlots);
         usort($mergedSlots, function ($a, $b) {
             return $a['timestamp'] > $b['timestamp'];
         });
 
         foreach ($mergedSlots as $slot) {
-
             $finalSlots[] = $slot;
-
         }
         $transformed = [];
 
@@ -153,7 +146,7 @@ class HomeController extends Controller
                     }
                 }
             }
-            if (!$slotQuery) {
+            if (!$slotQuery && $slot['is_available'] == 1) {
                 $slot['booked'] = 0;
                 $transformed[] = $slot;
                 continue;
@@ -162,8 +155,9 @@ class HomeController extends Controller
             $sumQuantity = BookingProduct::whereIn('slot_id', $slotQuery)->sum('quantity');
 
             $slot['booked'] = (int)$sumQuantity;
-
+            if ($slot['is_available'] == 1) {
             $transformed[] = $slot;
+            }
         }
         return response()->json($transformed);
     }
@@ -210,7 +204,8 @@ class HomeController extends Controller
                             'start' => $timeSlotStart->format('Y-m-d\TH:i:s.u\Z'),
                             'end' => $timeSlotEnd->format('Y-m-d\TH:i:s.u\Z'),
                             'timestamp' => $timeSlotStart->getTimestamp(),
-                            'language' => $lang
+                            'language' => $lang,
+                            'is_available' => 1
                         ];
                     }
 
@@ -220,12 +215,11 @@ class HomeController extends Controller
 
             $currentDate->add(new \DateInterval('P1D'));
         }
-
         return $result;
     }
 }
 
-    function generateWeeksSlots($from, $to, $startRangeWeek, $endRangeWeek, $fromHour, $toHour, $excludedDays, $language, $limit) {
+    function generateWeeksSlots($from, $to, $startRangeWeek, $endRangeWeek, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
         $objects = array();
         $excludedDays = transformDays($excludedDays);
 
@@ -242,7 +236,8 @@ class HomeController extends Controller
                     'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
                     'timestamp' => $startDateTime->getTimestamp(),
                     'language' => $language,
-                    'limit' => $limit
+                    'limit' => $limit,
+                    'is_available' => $isAvailable
                 );
                 $objects[] = $object;
             }
@@ -251,7 +246,7 @@ class HomeController extends Controller
         return $objects;
     }
 
-    function generateMonthSlots($from, $to, $startRangeMonth, $endRangeMonth, $fromHour, $toHour, $excludedDays, $language, $limit) {
+    function generateMonthSlots($from, $to, $startRangeMonth, $endRangeMonth, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
         $objects = array();
         $excludedDays = transformDays($excludedDays);
 
@@ -271,7 +266,8 @@ class HomeController extends Controller
                         'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
                         'timestamp' => $startDateTime->getTimestamp(),
                         'language' => $language,
-                        'limit' => $limit
+                        'limit' => $limit,
+                        'is_available' => $isAvailable
                     );
                     $objects[] = $object;
                 }
@@ -283,7 +279,7 @@ class HomeController extends Controller
     }
 
 
-    function generateCustomsSlots($from, $to, $startCustomDate, $endCustomDate, $fromHour, $toHour, $excludedDays, $language, $limit) {
+    function generateCustomsSlots($from, $to, $startCustomDate, $endCustomDate, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
         $objects = array();
         $excludedDays = transformDays($excludedDays);
         $startDate = new DateTime($from);
@@ -303,7 +299,8 @@ class HomeController extends Controller
                         'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
                         'timestamp' => $startDateTime->getTimestamp(),
                         'language' => $language,
-                        'limit' => $limit
+                        'limit' => $limit,
+                        'is_available' => $isAvailable
                     );
                     $objects[] = $object;
                 }
