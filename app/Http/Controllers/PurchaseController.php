@@ -50,16 +50,26 @@ class PurchaseController extends Controller
         if (isset($data['productIds'])) {
             foreach ($data['productIds'] as $item) {
                 $product = Product::find($item);
+
                 $priceDates = ProductPrice::where('product_id', $product->id)->get();
+
                 foreach ($priceDates as $range) {
                     $starRange = new \DateTime($range['start_date']);
                     $endRange = new \DateTime($range['end_date']);
                     if (($starRange <= $startDate && $startDate <= $endRange) || ($starRange <= $endDate && $endDate <= $endRange))
                     {
-                        $product['price'] = $range['price'];
-                        $product['priceProduct_id'] = $range['id'];
 
-                       break;
+                        if ($data['CurrentLang'] == $range['language']) {
+
+                            //Error
+
+                            //dd($product->price[$data['CurrentLang']]=2);
+
+                            $product['price'][$data['CurrentLang']] = $range['price'];
+                            $product['priceProduct_id'] = $range['id'];
+
+                            break;
+                        }
                     }
                 }
                 array_push($ProductPrice, $product);
@@ -107,7 +117,7 @@ class PurchaseController extends Controller
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
-
+        dd($data);
         foreach ($products as &$product) {
             foreach ($data['productIdsQuantity'] as $key => $item) {
                 if ($key == $product['id']) {

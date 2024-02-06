@@ -3,11 +3,12 @@
     <div class="container MyContainer main-container" data-calendar-id="{{ $user->id }}">
         <div class="row justify-content-center">
             <header class="d-block my-header pb-4 mt-4 mb-3 text-center position-relative">
-                <img src="{{$logo!=null ? asset('storage/' . $logo): '/demologo.png' }}" class="calendar-logo" />
+                <img src="{{$logo!=null ? asset('storage/' . $logo): '/demologo.png' }}" class="calendar-logo"/>
 
                 <div class="dropdown language-selector-container position-absolute">
-                    <a class="dropdown-toggle language-selector" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/assets/flags/{{ $locale }}.png" class="flag-icon" />
+                    <a class="dropdown-toggle language-selector" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="/assets/flags/{{ $locale }}.png" class="flag-icon"/>
 
                         <i class="fa-solid fa-arrow-down selector-arrow"></i>
                     </a>
@@ -16,7 +17,8 @@
                         @foreach ($user->languages as $lang)
                             <li>
                                 <a class="dropdown-item my-1" href="{{ route('setLang', $lang )}}">
-                                    <img src="/assets/flags/{{ $lang }}.png" class="flag-icon me-2" /> {{ \App\Enums\Languages::getStringLanguage($lang) }}
+                                    <img src="/assets/flags/{{ $lang }}.png"
+                                         class="flag-icon me-2"/> {{ \App\Enums\Languages::getStringLanguage($lang) }}
                                 </a>
                             </li>
                         @endforeach
@@ -25,10 +27,11 @@
             </header>
 
             <div class="sub-title mt-3 mb-2 text-center mb-4">
-               {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
+                {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
             </div>
 
-            <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar" data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
+            <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar"
+                 data-bs-target="{{ route('slots', ['user' => $user]) }}"></div>
 
             <div class="brunches d-flex flex-wrap justify-content-center d-none brunches-area">
                 <div class="col-6">
@@ -43,7 +46,8 @@
                         {{$user->translations['translations']['dont-miss'][Cookie::get('locale')]??""}}
                     </div>
 
-                    <div class="brunch-article" style="background-image: url('{{$banner!=null ? asset('storage/' . $banner): 'https://placehold.co/600x400/EEE/31343C' }}');">
+                    <div class="brunch-article"
+                         style="background-image: url('{{$banner!=null ? asset('storage/' . $banner): 'https://placehold.co/600x400/EEE/31343C' }}');">
                         <div class="inner">
                             {{ $user->settings['brunch_text'][\Illuminate\Support\Facades\Cookie::get('locale')] ?? '' }}
                         </div>
@@ -94,9 +98,15 @@
                                         <div class="product-title">{{$item}}</div>
                                     @endif
                                 @endforeach
-                                <div class="product-price" data-id="{{ $product->id }}" data-price="{{$product->price}}">
-                                    {{ $product->price }}€
-                                </div>
+
+                                @foreach($product['price'] as $key => $item)
+                                    @if(\Illuminate\Support\Facades\Cookie::get('locale') == $key)
+                                        <div class="product-price" data-id="{{ $product->id }}" data-price="{{$item}}">
+                                            {{ (double)$item }}€
+                                        </div>
+                                    @endif
+                                @endforeach
+
                             </div>
                             <div class="product-navigation col-3">
                                 <div class="d-flex justify-content-center product-navigation-container mt-4">
@@ -107,7 +117,7 @@
                                     </div>
                                     <div class="count-of-product white-circle" data-max="{{$product->max_qty}}">0</div>
                                     <div class="left-icon white-circle" data-id="{{ $product->id }}">
-                                        <button >
+                                        <button>
                                             <i class="fa-solid fa-plus"></i>
                                         </button>
                                     </div>
@@ -131,7 +141,8 @@
             <div class="mt-3 mb-5 row d-flex flex-nowrap align-items-center d-none button-order" style="padding: 0;">
                 <div class="col-6" style="width: 47.5%;">
                 </div>
-                <div  type="button" id="PurchaseButton"  class="col-5 reserve text-start disable_button" style="width: 37%;"><i class="fa-solid fa-check"></i>
+                <div type="button" id="PurchaseButton" class="col-5 reserve text-start disable_button"
+                     style="width: 37%;"><i class="fa-solid fa-check"></i>
                     {{$user->translations['translations']['reserver'][Cookie::get('locale')]??""}}
                 </div>
                 <div class="col-1 total-sum-purchase" style="width: 13.5%;">
@@ -142,25 +153,27 @@
     </div>
 @endsection
 @push('js')
-<script>
+    <script>
 
 
+        $('#exampleCalendar').bsCalendar({
+            locale: "{{$locale}}",
+            width: '100%',
+            showTodayHeader: false,
+            showPopover: false,
 
-    $('#exampleCalendar').bsCalendar({
-        locale: "{{$locale}}",
-        width: '100%',
-        showTodayHeader:false,
-        showPopover:false,
+            formatEvent: function (event) {
+                const startTime = new Date(event.start).toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const qty = (event.limit - event.booked) < 0 ? 0 : (event.limit - event.booked);
 
-        formatEvent:function (event) {
-            const startTime = new Date(event.start).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            const qty = (event.limit - event.booked) < 0 ? 0 : (event.limit - event.booked);
-
-            return '<button class="event-time meeting d-inline-block w-auto event-item ' + (qty <= 0 ? 'inactive' : '') + '" data-language = '+event.language+'  data-id = '+event.timestamp+' data-start = '+event.start+' data-end='+event.end+' data-available=' + qty + '>' +
-                '<img class="event-flag" src="/assets/flags/'+ event.language+'.png">' + startTime + '' +
-                '<div class="qty-inner"><i class="fa-regular fa-user attendee-icon"></i> <div class="qty-inner-text">' + qty +
-                '</div></div></button>'
-        },
-    });
-</script>
+                return '<button class="event-time meeting d-inline-block w-auto event-item ' + (qty <= 0 ? 'inactive' : '') + '" data-language = ' + event.language + '  data-id = ' + event.timestamp + ' data-start = ' + event.start + ' data-end=' + event.end + ' data-available=' + qty + '>' +
+                    '<img class="event-flag" src="/assets/flags/' + event.language + '.png">' + startTime + '' +
+                    '<div class="qty-inner"><i class="fa-regular fa-user attendee-icon"></i> <div class="qty-inner-text">' + qty +
+                    '</div></div></button>'
+            },
+        });
+    </script>
 @endpush

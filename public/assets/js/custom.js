@@ -3,7 +3,7 @@ $(document).ready(function () {
     let currentDate;
     let dataIds = {};
     let productIds = [];
-
+    let CurrentLang;
     let rememberDate = {};
 
 
@@ -222,7 +222,7 @@ $(document).ready(function () {
         let language = $(this).data('language');
         let startTime = $(this).data('start');
         let endTime = $(this).data('end');
-
+        CurrentLang = language;
         let itemObject = {
             dateFromClick: dateFromClick,
             timestamp: timestamp,
@@ -248,6 +248,7 @@ $(document).ready(function () {
         EnabledOrDisabledButton();
 
         var params = {
+            CurrentLang: CurrentLang,
             startTime: startTime,
             endTime: endTime,
             productIds: productIds,
@@ -265,16 +266,26 @@ $(document).ready(function () {
                     let productElement = $(element).find('.product-price');
                     response.forEach(function (item){
                        if (item.id == productElement.data('id')) {
+                           console.log(item);
                            productElement.data("price", item.price);
                            if (item['priceProduct_id']){
                               productElement.attr("data-product-price-id", item['priceProduct_id']);
                            } else {
                                productElement.removeAttr('data-product-price-id');
                            }
-                           productElement.text(item.price+"€");
+                           console.log(item);
+                           for (let key in item.price) {
+                               if (key === language)
+                               {
+                                   console.log("Kety:"+key);
+                                   console.log("Kety:"+item.price[key]);
+                                   productElement.text(item.price[key]+"€");
+                               }
+                           }
+
                        }
                     });
-                    UpdateTotalValue();
+                    UpdateTotalValue(CurrentLang);
                 });
 
                 $('.products-area').removeClass('d-none');
@@ -672,7 +683,6 @@ $(document).ready(function () {
             $('.products .product').each((index, element) => {
                 const target = $(element);
                 const count = parseInt($(target).find('.count-of-product').text(), 10);
-
                 totalQty += count;
             });
 
@@ -685,7 +695,7 @@ $(document).ready(function () {
 
             currentValue.text(newCount);
 
-            UpdateTotalValue();
+            UpdateTotalValue(CurrentLang);
             EnabledOrDisabledButton();
         }
     });
@@ -697,17 +707,25 @@ $(document).ready(function () {
         if (newCount >= 0) {
             currentValue.text(newCount);
         }
-        UpdateTotalValue();
+        UpdateTotalValue(CurrentLang);
         EnabledOrDisabledButton();
 
     });
 
-    function UpdateTotalValue() {
+    function UpdateTotalValue(CurrentLang) {
         let sum = 0;
         $('.product .up-card').each(function(index, element) {
             let priceItem = $(element).find('.product-price').data('price');
             let currentValue = parseInt($(element).find('.count-of-product').text());
-            sum+= priceItem*currentValue;
+            if (priceItem == undefined){
+                console.log("EE");
+                priceItem = 0;
+            }
+            console.log("Price "+priceItem[CurrentLang]);
+            console.log("currentValue "+currentValue);
+
+            sum+= priceItem[CurrentLang]*currentValue;
+            console.log("sum "+sum)
         });
         $('.total-sum-purchase').text((Math.round(sum * 100) / 100).toFixed(2)+"€");
     }
@@ -725,7 +743,7 @@ $(document).ready(function () {
 
             $('.count-of-brunch').text('0');
 
-            UpdateTotalValue();
+            UpdateTotalValue(CurrentLang);
             EnabledOrDisabledButton();
 
             return;
