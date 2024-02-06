@@ -27,5 +27,6 @@ class Product extends Model
         'description' => 'array',
         'short_description' => 'array',
         'title' => 'array',
+        'price' => 'array'
     ];
 }

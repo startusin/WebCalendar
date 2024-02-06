@@ -48,14 +48,16 @@
                                                     <td class='col-5'>{{ $item }}</td>
                                                 @endif
                                             @endforeach
-                                            <td  class="col-1">{{$product->price}}</td>
+                                            @foreach($product['price'] as $lg => $item)
+                                                @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
+                                                    <td class='col-1'>{{ $item }}</td>
+                                                @endif
+                                            @endforeach
                                             <td  class="col-1">{{$product->max_qty}}</td>
                                                 <td class="col-1">
                                                     <a class="showProduct" href="#" data-route="{{ route('customer.product.show', $product->id) }}" data-toggle="modal" data-target="#showMyModal">
                                                         <i class="far fa-eye"></i>
                                                     </a>
-
-
                                                 </td>
                                                 <td class="col-2"><a href="{{route('customer.product.edit', $product->id)}}"><i class="fas fa-pencil-alt"></i></a></td>
                                                 <td class="col-1">

@@ -52,13 +52,12 @@
                                 </div>
                             @endforeach
 
-                            <div class="form-group">
-                                <label for="description">Price</label>
-                                <input class="form-control" type="number" step="0.01" value="{{$product->price}}" name="price" required>
-                                @error('price')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @foreach($product['price'] as $key => $value)
+                                <div class="form-group">
+                                    <label for="description">Price {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <input class="form-control" type="number" step="0.01" value="{{$value}}" name="{{$key}}_price" required>
+                                </div>
+                            @endforeach
 
                             <div class="form-group">
                                 <label for="description">Max quantity</label>
