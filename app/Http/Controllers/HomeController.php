@@ -81,6 +81,8 @@ class HomeController extends Controller
 
         $rules = CustomSlot::where('calendar_id', $user->id)->get();
 
+        $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
         foreach ($rules as $rule)
         {
             switch ($rule['period_type']['dynamicSelect']){
@@ -91,7 +93,7 @@ class HomeController extends Controller
                     $result = array_merge($result,$arr);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
-                case 'days':
+                case 'days' || in_array( strtolower($rule['period_type']['dynamicSelect']), $daysOfWeek):
                     $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $result = array_merge($result,$arr);
                     $queriedSlots = array_merge($queriedSlots,$arr);
