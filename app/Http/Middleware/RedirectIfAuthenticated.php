@@ -24,7 +24,7 @@ class RedirectIfAuthenticated
                 $role = Auth::user()->role;
                 $url = match($role) {
                     'admin' => '/user',
-                    'customer' => '/slots',
+                    'customer' => '/slots/view',
                     default => '/',
                 };
 

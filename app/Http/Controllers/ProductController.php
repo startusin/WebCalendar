@@ -89,6 +89,7 @@ class ProductController extends Controller
         $TitleL = [];
         $ShortDL = [];
         $DescriptL = [];
+        $PriceL = [];
 
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'title') !== false) {
@@ -103,12 +104,16 @@ class ProductController extends Controller
                 $LangKey = explode("_", $key);
                 $ShortDL[$LangKey[0]] = $value;
             }
+            if (strpos($key, 'price') !== false) {
+                $LangKey = explode("_", $key);
+                $PriceL[$LangKey[0]] = $value;
+            }
         }
 
 
         $objToCreate = null;
         $objToCreate['calendar_id'] = $data['calendar_id'];
-        $objToCreate['price'] = $data['price'];
+        $objToCreate['price'] = $PriceL;
         $objToCreate['max_qty'] = $data['max_qty'];
         $objToCreate['description'] = $DescriptL;
         $objToCreate['short_description'] = $ShortDL;
