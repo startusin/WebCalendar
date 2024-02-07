@@ -212,7 +212,6 @@ class PurchaseController extends Controller
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
-        dd($data);
         foreach ($products as &$product) {
             foreach ($data['productIdsQuantity'] as $key => $item) {
                 if ($key == $product['id']) {

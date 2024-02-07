@@ -16,6 +16,12 @@ class ProductController extends Controller
         return view('customer.product.index', compact('products'));
     }
 
+    public function getMyProducts()
+    {
+        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        return $products;
+    }
+
     public function show($id)
     {
         $product = Product::findOrFail($id);

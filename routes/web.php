@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
     Route::get("/locale/{lange}", [\App\Http\Controllers\LocalizationController::class, 'setLang'])->name('setLang');
+    Route::get("/currentLanguage", [\App\Http\Controllers\LocalizationController::class, 'getCurrentLanguage'])->name('getCurrentLanguage');
 
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
@@ -73,6 +74,7 @@ use Illuminate\Support\Facades\Route;
 
             Route::group(['prefix' => 'product'],function (){
                 Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('customer.product.index');
+                Route::get('/getMyProducts', [\App\Http\Controllers\ProductController::class, 'getMyProducts'])->name('customer.product.getMyProducts');
                 Route::get('show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('customer.product.show');
                 Route::get('create', [\App\Http\Controllers\ProductController::class, 'create'])->name('customer.product.create');
                 Route::get('edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('customer.product.edit');
@@ -103,9 +105,11 @@ use Illuminate\Support\Facades\Route;
             Route::group(['prefix' => 'price'], function () {
                 Route::get('/', [\App\Http\Controllers\PricesController::class, 'index'])->name('customer.price.index');
                 Route::get('/view', [\App\Http\Controllers\PricesController::class, 'view'])->name('customer.price.view');
+                Route::get('/allCustomPrice', [\App\Http\Controllers\PricesController::class, 'allCustomPrice'])->name('customer.price.allCustomPrice');
                 Route::get('create', [\App\Http\Controllers\PricesController::class, 'create'])->name('customer.price.create');
                 Route::get('edit/{id}', [\App\Http\Controllers\PricesController::class, 'edit'])->name('customer.price.edit');
                 Route::post('store', [\App\Http\Controllers\PricesController::class, 'store'])->name('customer.price.store');
+                Route::post('createOrUpdate', [\App\Http\Controllers\PricesController::class, 'createOrUpdate'])->name('customer.price.createOrUpdate');
                 Route::put('update', [\App\Http\Controllers\PricesController::class, 'update'])->name('customer.price.update');
                 Route::delete('delete/{id}', [\App\Http\Controllers\PricesController::class, 'delete'])->name('customer.price.delete');
             });

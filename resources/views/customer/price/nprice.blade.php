@@ -36,11 +36,13 @@
                                     <thead>
                                     <tr>
                                         <th class="col-1">Type</th>
+                                        <th class="col-1">Language</th>
                                         <th class="col-1">Start</th>
                                         <th class="col-1">End</th>
                                         <th class="col-1">From Hours</th>
                                         <th class="col-1">To Hours</th>
-                                        <th class="col-1">Price</th>
+                                        <th class="col-2 text-center" colspan="2">Price</th>
+                                        <th class="col-1">Product</th>
                                         <th class="col-1">Actions</th>
                                     </tr>
                                     </thead>

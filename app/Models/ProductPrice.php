@@ -12,13 +12,10 @@ class ProductPrice extends Model
     protected $fillable = [
         'price' ,
         'product_id',
-        'start_date',
-        'end_date',
+        'calendar_id'
     ];
 
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
         'price' => 'array'
     ];
 

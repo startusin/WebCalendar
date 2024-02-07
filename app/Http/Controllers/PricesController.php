@@ -24,6 +24,13 @@ class PricesController extends Controller
         return view('customer.price.nprice');
     }
 
+    public function allCustomPrice(){
+        $id = (request()->input('calendar_id'));
+        $products = Product::where('calendar_id', $id)->get()->pluck('id');
+        $prices = ProductPrice::whereIn('product_id', $products)->with('product')->get();
+        return response()->json($prices);
+    }
+
     public function create()
     {
         $products = Product::where('calendar_id', auth()->user()->id)->get();
@@ -49,6 +56,29 @@ class PricesController extends Controller
         ProductPrice::create($data);
 
         return redirect()->route('customer.price.index');
+    }
+
+    public function createOrUpdate(Request $request)
+    {
+        $data = $request->all();
+
+        if (!isset($data['alldata'])){
+            $data['alldata'] = [];
+        }
+
+        ProductPrice::where(['calendar_id' => $data['calendar_id']])->delete();
+
+        foreach ($data['alldata'] as $item){
+            $product_id = $item['product'];
+            unset($item['product']);
+            $price = $item;
+            ProductPrice::create([
+                'calendar_id' => $data['calendar_id'],
+                'product_id' => $product_id,
+                'price' => $price
+            ]);
+        }
+        return response()->noContent();
     }
 
     public function edit(int $id)

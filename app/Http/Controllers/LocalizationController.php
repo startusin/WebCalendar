@@ -16,4 +16,12 @@ class LocalizationController extends Controller
         return redirect()->back();
 
     }
+
+    public function getCurrentLanguage() {
+        $locale = 'en';
+        if (Cookie::has('locale')) {
+            $locale = Cookie::get('locale');
+        }
+        return $locale;
+    }
 }

@@ -102,7 +102,33 @@ $(document).ready(function() {
         return select;
     }
 
+    function oneDaySelector(SelectedDay, MyPeriod) {
+        let daysOfWeek = [
+            {value: "1", name: "Monday"},
+            {value: "2", name: "Tuesday"},
+            {value: "3", name: "Wednesday"},
+            {value: "4", name: "Thursday"},
+            {value: "5", name: "Friday"},
+            {value: "6", name: "Saturday"},
+            {value: "7", name: "Sunday"}
+        ];
 
+        let select = document.createElement('select');
+        select.className = "newSelect form-control";
+        select.name = MyPeriod;
+
+        for (let i = 0; i < daysOfWeek.length; i++) {
+            if (SelectedDay === daysOfWeek[i].name) {
+                let option = document.createElement('option');
+                option.value = daysOfWeek[i].value;
+                option.text = daysOfWeek[i].name;
+
+                select.appendChild(option);
+            }
+        }
+        console.log(select);
+        return select;
+    }
 
     function days(MyVariable, MyPeriod) {
         let daysOfWeek = [
@@ -181,23 +207,30 @@ $(document).ready(function() {
         });
     });
 
-    function CustomTypePeriod(MyVariable) {
+    function CustomTypePeriod(MyVariable = {}) {
         let selectHTML = '<select name="dynamicSelect" class="select2 form-control" aria-label="Default select example">';
 
         let options = [
             { value: 'months', text: 'Range of month' },
             { value: 'days', text: 'Range of days' },
             { value: 'customs', text: 'Custom date Range' },
-            { value: 'allWeeks', text: 'All week' }
+            { value: 'allWeeks', text: 'All week' },
+            { value: 'Monday', text: 'Monday' },
+            { value: 'Tuesday', text: 'Tuesday' },
+            { value: 'Wednesday', text: 'Wednesday' },
+            { value: 'Thursday', text: 'Thursday' },
+            { value: 'Friday', text: 'Friday' },
+            { value: 'Saturday', text: 'Saturday' },
+            { value: 'Sunday', text: 'Sunday' }
         ];
-
+        console.log(MyVariable);
         options.forEach(option => {
             let selected = (option.value === MyVariable.dynamicSelect) ? 'selected' : '';
             selectHTML += '<option value="' + option.value + '" ' + selected + '>' + option.text + '</option>';
         });
 
         selectHTML += '</select>';
-
+        console.log(selectHTML);
         return selectHTML;
     }
 
@@ -252,6 +285,27 @@ $(document).ready(function() {
             case "allWeeks":
                 res = weeks(period);
                 break
+            case "Friday":
+                res = oneDaySelector("Friday",period);
+                break;
+            case "Monday":
+                res = oneDaySelector("Monday",period);
+                break;
+            case "Thursday":
+                res = oneDaySelector("Thursday",period);
+                break;
+            case "Tuesday":
+                res = oneDaySelector("Tuesday",period);
+                break;
+            case "Wednesday":
+                res = oneDaySelector("Wednesday",period);
+                break;
+            case "Saturday":
+                res = oneDaySelector("Saturday",period);
+                break;
+            case "Sunday":
+                res = oneDaySelector("Sunday",period);
+                break;
         }
         console.log(res);
         return res;
@@ -339,6 +393,38 @@ $(document).ready(function() {
                 selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1" selected>Monday</option></select>');
                 selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="7" selected>Sunday</option></select>');
             }
+            else if(selectedOption=="Monday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Monday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Monday", 'end'));
+            }
+            else if(selectedOption=="Tuesday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Tuesday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Tuesday", 'end'));
+            }
+            else if(selectedOption=="Wednesday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Wednesday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Wednesday", 'end'));
+            }
+            else if(selectedOption=="Thursday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Thursday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Thursday", 'end'));
+            }
+            else if(selectedOption=="Friday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Friday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Friday", 'end'));
+            }
+            else if(selectedOption=="Friday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Friday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Friday", 'end'));
+            }
+            else if(selectedOption=="Saturday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Saturday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Saturday", 'end'));
+            }
+            else if(selectedOption=="Sunday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Sunday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Sunday", 'end'));
+            }
 
             $('.datetimes').each(function() {
                 $(this).daterangepicker({
@@ -415,12 +501,7 @@ $(document).ready(function() {
     $('#CreateBT').click(function() {
         var newRow = '<tr>' +
             '<td>' +
-            '<select name="dynamicSelect" class="select2 form-control" aria-label="Default select example">' +
-            '<option selected value="months">Range of month</option>' +
-            '<option value="days">Range of days</option>' +
-            '<option value="customs">Custom date Range</option>' +
-            '<option value="allWeeks">All week</option>' +
-            '</select>' +
+            CustomTypePeriod()+
             '</td>' +
             '<td>' +
             '<div>' +
@@ -492,6 +573,38 @@ $(document).ready(function() {
             else if(selectedOption=="allWeeks"){
                 selectedRow.find('.Start').find('input, select').replaceWith('<select name="start" class="newSelect form-control "><option value="1" selected>Monday</option></select>');
                 selectedRow.find('.End').find('input, select').replaceWith('<select   name="end"   class="newSelect form-control "><option value="7" selected>Sunday</option></select>');
+            }
+            else if(selectedOption=="Monday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Monday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Monday", 'end'));
+            }
+            else if(selectedOption=="Tuesday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Tuesday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Tuesday", 'end'));
+            }
+            else if(selectedOption=="Wednesday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Wednesday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Wednesday", 'end'));
+            }
+            else if(selectedOption=="Thursday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Thursday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Thursday", 'end'));
+            }
+            else if(selectedOption=="Friday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Friday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Friday", 'end'));
+            }
+            else if(selectedOption=="Friday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Friday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Friday", 'end'));
+            }
+            else if(selectedOption=="Saturday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Saturday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Saturday", 'end'));
+            }
+            else if(selectedOption=="Sunday"){
+                selectedRow.find('.Start').find('input, select').replaceWith(oneDaySelector("Sunday", 'start'));
+                selectedRow.find('.End').find('input, select').replaceWith(oneDaySelector("Sunday", 'end'));
             }
 
             $('.datetimes').each(function() {
