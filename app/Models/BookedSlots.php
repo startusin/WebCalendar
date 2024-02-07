@@ -22,4 +22,8 @@ class BookedSlots extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime'
     ];
+
+    public function booking(){
+        return $this->belongsTo(Bookings::class, 'booking_id','id');
+    }
 }

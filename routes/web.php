@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+    Route::get("/sendNotification", [\App\Http\Controllers\SlotController::class, 'sendNotification'])->name('sendNotification');
+
     Route::get("/locale/{lange}", [\App\Http\Controllers\LocalizationController::class, 'setLang'])->name('setLang');
     Route::get("/currentLanguage", [\App\Http\Controllers\LocalizationController::class, 'getCurrentLanguage'])->name('getCurrentLanguage');
+
 
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');

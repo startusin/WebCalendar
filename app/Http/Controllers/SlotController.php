@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Languages;
+use App\Models\BookedSlots;
 use App\Models\CustomSlot;
 use App\Services\SlotService;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -78,6 +80,24 @@ class SlotController extends Controller
 
         return response()->noContent();
     }
+
+    public function sendNotification() {
+        $currentDateTime = Carbon::now();
+        $OneHourNext = $currentDateTime->copy()->addHour(1);
+
+        $bookedSlots = BookedSlots::with('booking')
+            ->where('start_date', '>', $currentDateTime)
+            ->where('start_date', '<', $OneHourNext)
+            ->whereHas('booking', function ($query) {
+                $query->where('payment_status', 'paid');
+            })
+            ->get()
+            ->pluck('booking.email');
+
+
+        return $bookedSlots;
+    }
+
     public function create()
     {
         $languages = array_flip(Languages::getMyLanguages(auth()->user()->languages));
