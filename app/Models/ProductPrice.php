@@ -18,7 +18,8 @@ class ProductPrice extends Model
 
     protected $casts = [
         'start_date' => 'datetime',
-        'end_date' => 'datetime'
+        'end_date' => 'datetime',
+        'price' => 'array'
     ];
 
     public function product()
