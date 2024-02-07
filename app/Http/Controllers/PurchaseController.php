@@ -252,7 +252,7 @@ class PurchaseController extends Controller
                 $endTime = \DateTime::createFromFormat('H:i', $range->price['toHour']);
                 $nowTime = \DateTime::createFromFormat('H:i', $hour);
 
-                if ($range->price['dynamicSelect'] === 'days') {
+                if ($range->price['dynamicSelect'] === 'days' || in_array( strtolower($range->price['dynamicSelect']), $daysOfWeek)) {
                     $dayOfWeek = strtolower($date->format('l'));
                     $fromIndex = array_search(strtolower($range->price['start']), $daysOfWeek);
                     $toIndex = array_search(strtolower($range->price['end']), $daysOfWeek);

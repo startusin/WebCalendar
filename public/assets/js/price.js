@@ -706,6 +706,7 @@ $(document).ready(function() {
     $('#Save').click(function() {
         var rowsData = [];
         let isCanSend = true;
+
         $('tbody tr').each(function() {
             var rowData = {};
 
@@ -735,6 +736,7 @@ $(document).ready(function() {
 
         console.log(rowsData);
         console.log(csrfToken);
+
         if (isCanSend === true){
             $.ajax({
                 headers: {
@@ -744,7 +746,7 @@ $(document).ready(function() {
                 method: 'POST',
                 data: dataToSend,
                 success: function(response) {
-                    console.log("dasdasdasdasda");
+                    alert("Saved!");
                 },
                 error: function(error) {
                     console.error('Error:', error);

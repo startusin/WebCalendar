@@ -656,8 +656,6 @@ $(document).ready(function() {
             calendar_id: calendarId
         };
 
-        console.log(rowsData);
-        console.log(csrfToken);
         if (isCanSend === true){
             $.ajax({
                 headers: {
@@ -667,7 +665,7 @@ $(document).ready(function() {
                 method: 'POST',
                 data: dataToSend,
                 success: function(response) {
-                    console.log("dasdasdasdasda");
+                    alert("Saved!");
                 },
                 error: function(error) {
                     console.error('Error:', error);
