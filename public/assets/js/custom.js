@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var array  = {};
+    var array = {};
     let currentDate;
     let dataIds = {};
     let productIds = [];
@@ -230,6 +230,9 @@ $(document).ready(function () {
             startTime: startTime,
             endTime: endTime
         };
+
+        array = {};
+
         if (!array[currentDate]) {
             array[currentDate] = {};
         }
@@ -474,6 +477,7 @@ $(document).ready(function () {
         $('.up-card').each(function(index, element) {
 
             let productElement = $(element).find('.product-price').data('product-price-id');
+
             if (productElement!=undefined) {
                 productPriceId.push(productElement);
             }
@@ -548,25 +552,21 @@ $(document).ready(function () {
             $('.products-items .accordion-item').each(function(index, element) {
                 let productId = $(element).find('.prod-info').data('id');
                 let productQuantity = $(element).find('.prod-info').data('quantity');
-                let productPromo = $(element).find('.is-promocode').data('promo');
+                let productPromo = $(element).find('.promocode-input.correct').data('promo');
+
+                console.log("correct= ");
                 console.log("PROMP= "+productPromo);
-                let productPriceId = $(element).find('.prod-info').data('product-price-id');
-                console.log("id " +productId);
-                if (productPriceId === undefined) {
-                    productPriceId = null;
-                }
+
                 if (productPromo === undefined) {
                     productPromo = null;
                 }
 
                 ProductQuantity[productId] = {
                     productQuantity : productQuantity,
-                    productPromo : productPromo,
-                    productPriceId : productPriceId
+                    productPromo : productPromo
                 };
 
             });
-            console.log(ProductQuantity);
 
             var dataToSend = {
                 calendarId: calendarId,
@@ -615,12 +615,8 @@ $(document).ready(function () {
         field.removeClass('wrong');
         field.removeClass('correct');
 
-        let htmlTrue = '<i class="fa-solid fa-check"></i>';
-        let htmlFalse ='<i class="fa-solid fa-xmark"></i>';
         var enteredValue = $(field).val();
         var productId = $(field).data('product-id');
-
-        var isPromocodeElement = $(this).closest('.row').find('.is-promocode');
 
         let queryString = $.param({ promo: enteredValue, product: productId });
 
@@ -635,9 +631,8 @@ $(document).ready(function () {
             data: queryString,
             success: function(response) {
                 if (response && Object.keys(response).length > 0) {
-                    isPromocodeElement.html(htmlTrue);
+                    field.removeData('promo');
 
-                    isPromocodeElement.removeData('promo');
                     if (response.price > basePrice){
                         productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "€</span>");
                         console.log("Not Add");
@@ -647,14 +642,13 @@ $(document).ready(function () {
                         quantityObj.attr('data-temp-price', response.price);
                         quantityObj.data('temp-price', response.price);
 
-                        isPromocodeElement.data('promo', response.id);
+                        field.data('promo', response.id);
                         productInf.html("<span>" + (Math.round((quantity * response.price) * 100) / 100).toFixed(2) + "€</span>");
                         TotalSum();
                     }
 
                 } else {
-                    isPromocodeElement.html(htmlFalse);
-                    isPromocodeElement.removeData('promo');
+                    field.removeData('promo');
                     quantityObj.removeAttr('data-temp-price');
                     quantityObj.removeData('temp-price');
                     productInf.html("<span>" + (Math.round((quantity * basePrice) * 100) / 100).toFixed(2) + "€</span>");

@@ -26,7 +26,7 @@ class PurchaseController extends Controller
 
     public function getPurchase($id)
     {
-        $purhase = BookingProduct::with('product', 'booking','slot')->findorfail($id);
+        $purhase = BookingProduct::with('product', 'booking','slot')->findOrFail($id);
         foreach ($purhase->product['title'] as $key => $item)
         {
             if ($key == Cookie::get('locale')) {
@@ -45,127 +45,12 @@ class PurchaseController extends Controller
         $endDate = new \DateTime($data['endTime']);
 
         $ProductPrice = [];
-        $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-        $months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
         if (isset($data['productIds'])) {
             foreach ($data['productIds'] as $item) {
                 $product = Product::find($item);
-                $productArr = $product->toArray();
 
-                $priceDates = ProductPrice::where('product_id', $product->id)->get();
-
-                foreach ($priceDates as $range) {
-                    if ($data['CurrentLang'] == $range->price['language']) {
-                        $hour = $startDate->format('H:i');
-                        $startTime = \DateTime::createFromFormat('H:i', $range->price['fromHour']);
-                        $endTime = \DateTime::createFromFormat('H:i', $range->price['toHour']);
-                        $nowTime = \DateTime::createFromFormat('H:i', $hour);
-
-                        if ($range->price['dynamicSelect'] === 'days') {
-                            $dayOfWeek = strtolower($startDate->format('l'));
-                            $fromIndex = array_search(strtolower($range->price['start']), $daysOfWeek);
-                            $toIndex = array_search(strtolower($range->price['end']), $daysOfWeek);
-                            $currentDayIndex = array_search($dayOfWeek, $daysOfWeek);
-
-                            if (($currentDayIndex >= $fromIndex && $currentDayIndex <= $toIndex) && ($nowTime >= $startTime && $nowTime <= $endTime)) {
-                                if ($range->price['type'] === 'fixed') {
-                                    $productArr['price'][$data['CurrentLang']] = $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'add') {
-                                    $productArr['price'][$data['CurrentLang']] += $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'subtract') {
-                                    $productArr['price'][$data['CurrentLang']] -= $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'multiply') {
-                                    $productArr['price'][$data['CurrentLang']] *= $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'divide') {
-                                    $price = $productArr['price'][$data['CurrentLang']] / $range->price['value'];
-                                    $productArr['price'][$data['CurrentLang']] = number_format($price, 2);
-                                }
-                            }
-                        }
-
-                        if ($range->price['dynamicSelect'] === 'months') {
-                            $month = strtolower($startDate->format('F'));
-
-                            $monthsRangeStartIndex = array_search(strtolower($range->price['start']), $months);
-                            $monthsRangeEndIndex = array_search(strtolower($range->price['end']), $months);
-                            $currentMonthIndex = array_search($month, $months);
-
-                            if (($currentMonthIndex !== false && $currentMonthIndex >= $monthsRangeStartIndex && $currentMonthIndex <= $monthsRangeEndIndex) && ($nowTime >= $startTime && $nowTime <= $endTime)) {
-                                if ($range->price['type'] === 'fixed') {
-                                    $productArr['price'][$data['CurrentLang']] = $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'add') {
-                                    $productArr['price'][$data['CurrentLang']] += $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'subtract') {
-                                    $productArr['price'][$data['CurrentLang']] -= $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'multiply') {
-                                    $productArr['price'][$data['CurrentLang']] *= $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'divide') {
-                                    $price = $productArr['price'][$data['CurrentLang']] / $range->price['value'];
-                                    $productArr['price'][$data['CurrentLang']] = number_format($price, 2);
-                                }
-                            }
-                        }
-
-                        if ($range->price['dynamicSelect'] === 'customs') {
-                            $month = intval($startDate->format('m'));
-                            $day = intval($startDate->format('d'));
-
-                            list($rangeStartMonth, $rangeStartDay) = explode('/', $range->price['start']);
-                            list($rangeEndMonth, $rangeEndDay) = explode('/', $range->price['end']);
-
-                            $rangeStartMonth = intval($rangeStartMonth);
-                            $rangeStartDay = intval($rangeStartDay);
-                            $rangeEndMonth = intval($rangeEndMonth);
-                            $rangeEndDay = intval($rangeEndDay);
-
-                            if (
-                                ($month > $rangeStartMonth || ($month == $rangeStartMonth && $day >= $rangeStartDay)) &&
-                                ($month < $rangeEndMonth || ($month == $rangeEndMonth && $day <= $rangeEndDay)) &&
-                                ($nowTime >= $startTime && $nowTime <= $endTime)
-                            ) {
-                                if ($range->price['type'] === 'fixed') {
-                                    $productArr['price'][$data['CurrentLang']] = $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'add') {
-                                    $productArr['price'][$data['CurrentLang']] += $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'subtract') {
-                                    $productArr['price'][$data['CurrentLang']] -= $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'multiply') {
-                                    $productArr['price'][$data['CurrentLang']] *= $range->price['value'];
-                                }
-
-                                if ($range->price['type'] === 'divide') {
-                                    $price = $productArr['price'][$data['CurrentLang']] / $range->price['value'];
-                                    $productArr['price'][$data['CurrentLang']] = number_format($price, 2);
-                                }
-                            }
-                        }
-
-                        break;
-                    }
-                }
+                $productArr = $this->calculateProductPrice($product, $data['CurrentLang'], $startDate);
 
                 array_push($ProductPrice, $productArr);
             }
@@ -173,7 +58,6 @@ class PurchaseController extends Controller
 
         return $ProductPrice;
     }
-
 
     public function index(Request $request)
     {
@@ -191,6 +75,7 @@ class PurchaseController extends Controller
                         'timestamp' =>  $item['timestamp'],
                         'language' => $item['language']
                     ];
+
                     $slotsFront[] = $slotObject;
                 }
             }
@@ -212,6 +97,7 @@ class PurchaseController extends Controller
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
+
         foreach ($products as &$product) {
             foreach ($data['productIdsQuantity'] as $key => $item) {
                 if ($key == $product['id']) {
@@ -228,17 +114,24 @@ class PurchaseController extends Controller
                 }
             }
         }
+
         $totalQuantity = 0;
         $totalSum = 0;
 
+        $productData = [];
+
         foreach ($products as $item) {
-            $totalQuantity+= $item['quantity'];
-            $totalSum+= $item['quantity']*$item['price'];
+            $price = $this->calculateProductPrice($item, $slots['language'], $slots['startDateSlot']);
+
+            $totalQuantity+= (int)$item['quantity'];
+            $totalSum+= (int)$item['quantity'] * (float)$price['price'][$slots['language']];
+
+            $productData[] = ['product' => $item, 'price' => (float)$price['price'][$slots['language']]];
         }
 
         $isBrunch = false;
 
-        return view('purchase', compact('calendarId','products','slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user'));
+        return view('purchase', compact('calendarId','products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData'));
     }
 
     public function makeSlot(Request $request)
@@ -289,21 +182,13 @@ class PurchaseController extends Controller
         }
 
         foreach ($data['ProductQuantity'] as $id => $item) {
-            $soldPrice = 0;
+            $product = Product::find($id);
+            $language = $data['slots']->language;
+            $date = new \DateTime($data['slots']->startDateSlot->date);
+            $productPrice = $this->calculateProductPrice($product, $language, $date);
 
-            $priceDate = ProductPrice::find($item['productPriceId']);
-            $priceDate = $priceDate['price']??0;
-            $promoPrice = PromoCode::find($item['productPromo']);
-            $promoPrice = $promoPrice['price']??0;
-
-            if ($promoPrice == 0 && $priceDate == 0) {
-                $product = Product::find($id);
-                $soldPrice = $item['productQuantity'] * $product['price'];
-            } else if (($promoPrice < $priceDate && $promoPrice != 0) || ($promoPrice > $priceDate && $priceDate == 0 ) ) {
-                $soldPrice = $item['productQuantity'] * $promoPrice;
-            } else if (($priceDate < $promoPrice && $priceDate !=0) || ($priceDate > $promoPrice && $promoPrice == 0 )) {
-                $soldPrice = $item['productQuantity'] * $priceDate;
-            }
+            $promoPrice = PromoCode::find((int)$item['productPromo']);
+            $soldPrice = $promoPrice['price'] ?? (int)$item['productQuantity'] * (float)$productPrice['price'][$language];
 
             BookingProduct::create([
                 'product_id' => $id,
@@ -350,5 +235,128 @@ class PurchaseController extends Controller
         }
 
         return $brunchCollected;
+    }
+
+    private function calculateProductPrice(Product $product, string $lang, \DateTime $date)
+    {
+        $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+        $productArr = $product->toArray();
+        $productPrices = ProductPrice::where('product_id', $product->id)->get();
+
+        foreach ($productPrices as $range) {
+            if ($lang === $range->price['language']) {
+                $hour = $date->format('H:i');
+                $startTime = \DateTime::createFromFormat('H:i', $range->price['fromHour']);
+                $endTime = \DateTime::createFromFormat('H:i', $range->price['toHour']);
+                $nowTime = \DateTime::createFromFormat('H:i', $hour);
+
+                if ($range->price['dynamicSelect'] === 'days') {
+                    $dayOfWeek = strtolower($date->format('l'));
+                    $fromIndex = array_search(strtolower($range->price['start']), $daysOfWeek);
+                    $toIndex = array_search(strtolower($range->price['end']), $daysOfWeek);
+                    $currentDayIndex = array_search($dayOfWeek, $daysOfWeek);
+
+                    if (($currentDayIndex >= $fromIndex && $currentDayIndex <= $toIndex) && ($nowTime >= $startTime && $nowTime <= $endTime)) {
+                        if ($range->price['type'] === 'fixed') {
+                            $productArr['price'][$lang] = $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'add') {
+                            $productArr['price'][$lang] += $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'subtract') {
+                            $productArr['price'][$lang] -= $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'multiply') {
+                            $productArr['price'][$lang] *= $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'divide') {
+                            $price = $productArr['price'][$lang] / $range->price['value'];
+                            $productArr['price'][$lang] = number_format($price, 2);
+                        }
+                    }
+                }
+
+                if ($range->price['dynamicSelect'] === 'months') {
+                    $month = strtolower($date->format('F'));
+
+                    $monthsRangeStartIndex = array_search(strtolower($range->price['start']), $months);
+                    $monthsRangeEndIndex = array_search(strtolower($range->price['end']), $months);
+                    $currentMonthIndex = array_search($month, $months);
+
+                    if (($currentMonthIndex !== false && $currentMonthIndex >= $monthsRangeStartIndex && $currentMonthIndex <= $monthsRangeEndIndex) && ($nowTime >= $startTime && $nowTime <= $endTime)) {
+                        if ($range->price['type'] === 'fixed') {
+                            $productArr['price'][$lang] = $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'add') {
+                            $productArr['price'][$lang] += $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'subtract') {
+                            $productArr['price'][$lang] -= $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'multiply') {
+                            $productArr['price'][$lang] *= $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'divide') {
+                            $price = $productArr['price'][$lang] / $range->price['value'];
+                            $productArr['price'][$lang] = number_format($price, 2);
+                        }
+                    }
+                }
+
+                if ($range->price['dynamicSelect'] === 'customs') {
+                    $month = intval($date->format('m'));
+                    $day = intval($date->format('d'));
+
+                    list($rangeStartMonth, $rangeStartDay) = explode('/', $range->price['start']);
+                    list($rangeEndMonth, $rangeEndDay) = explode('/', $range->price['end']);
+
+                    $rangeStartMonth = intval($rangeStartMonth);
+                    $rangeStartDay = intval($rangeStartDay);
+                    $rangeEndMonth = intval($rangeEndMonth);
+                    $rangeEndDay = intval($rangeEndDay);
+
+                    if (
+                        ($month > $rangeStartMonth || ($month == $rangeStartMonth && $day >= $rangeStartDay)) &&
+                        ($month < $rangeEndMonth || ($month == $rangeEndMonth && $day <= $rangeEndDay)) &&
+                        ($nowTime >= $startTime && $nowTime <= $endTime)
+                    ) {
+                        if ($range->price['type'] === 'fixed') {
+                            $productArr['price'][$lang] = $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'add') {
+                            $productArr['price'][$lang] += $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'subtract') {
+                            $productArr['price'][$lang] -= $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'multiply') {
+                            $productArr['price'][$lang] *= $range->price['value'];
+                        }
+
+                        if ($range->price['type'] === 'divide') {
+                            $price = $productArr['price'][$lang] / $range->price['value'];
+                            $productArr['price'][$lang] = number_format($price, 2);
+                        }
+                    }
+                }
+
+                break;
+            }
+        }
+
+        return $productArr;
     }
 }

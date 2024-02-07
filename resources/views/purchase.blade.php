@@ -91,13 +91,17 @@
                     <div class="products-items ">
 
                     @if(!$isBrunch)
-                        @foreach($products as $product)
+                        @foreach($productData as $product)
                             <div class="accordion-item">
-                                <div class="accordion-header d-block" id="flush-heading{{$product->id}}">
-                                    <div class="collapsed prod-info" data-product-price-id ="{{$product->product_price_id}}" data-price="{{$product->price}}" data-id = "{{$product->id}}" data-quantity = {{$product->quantity}}  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$product->id}}" aria-expanded="false" aria-controls="flush-collapse{{$product->id}}">
+                                <div class="accordion-header d-block" id="flush-heading{{$product['product']->id}}">
+                                    <div class="collapsed prod-info" data-product-price-id ="{{$product['product']->product_price_id}}"
+                                         data-price="{{$product['price']}}"
+                                         data-id="{{$product['product']->id}}"
+                                         data-quantity={{$product['product']->quantity}}
+                                         type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$product['product']->id}}" aria-expanded="false" aria-controls="flush-collapse{{$product['product']->id}}">
                                         <div class="product-item d-flex">
 
-                                            @foreach($product['title'] as $lg => $item)
+                                            @foreach($product['product']['title'] as $lg => $item)
                                                 @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
                                                     <div class="col-7 product-item-text">
                                                         {{$item}}
@@ -108,11 +112,11 @@
 
                                             <div class="col-4 text-end">
                                                 <div class="product-item-count d-inline-block">
-                                                    <span>{{$product->quantity}}</span>
+                                                    <span>{{$product['product']->quantity}}</span>
                                                 </div>
 
                                                 <div class="product-item-price d-inline-block">
-                                                    <span>{{$product->quantity * $product->price}}€</span>
+                                                    <span>{{$product['product']->quantity * $product['price']}}€</span>
                                                 </div>
                                             </div>
 
@@ -122,10 +126,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="flush-collapse{{$product->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$product->id}}" data-bs-parent="#accordionFlushExample">
+                                <div id="flush-collapse{{$product['product']->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$product['product']->id}}" data-bs-parent="#accordionFlushExample">
                                     <div class="row d-flex promo-inner">
                                         <div class="accordion-body col-8 my-2">
-                                            <input type="text" class="form-control promocode-input" data-product-id="{{$product->id}}" placeholder="Promocode">
+                                            <input type="text" class="form-control promocode-input" data-product-id="{{$product['product']->id}}" placeholder="Promocode">
                                         </div>
                                         <div class="col-4 d-flex align-items-center promocode-apply text-center justify-content-center">
                                             <button style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">
