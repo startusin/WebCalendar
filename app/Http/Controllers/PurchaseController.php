@@ -254,9 +254,9 @@ class PurchaseController extends Controller
 
                 if ($range->price['dynamicSelect'] === 'days' || in_array( strtolower($range->price['dynamicSelect']), $daysOfWeek)) {
                     $dayOfWeek = strtolower($date->format('l'));
-                    $fromIndex = array_search(strtolower($range->price['start']), $daysOfWeek);
-                    $toIndex = array_search(strtolower($range->price['end']), $daysOfWeek);
-                    $currentDayIndex = array_search($dayOfWeek, $daysOfWeek);
+                    $fromIndex = (int)$range->price['start'];
+                    $toIndex = (int)$range->price['end'];
+                    $currentDayIndex = array_search($dayOfWeek, $daysOfWeek) + 1;
 
                     if (($currentDayIndex >= $fromIndex && $currentDayIndex <= $toIndex) && ($nowTime >= $startTime && $nowTime <= $endTime)) {
                         if ($range->price['type'] === 'fixed') {
@@ -282,12 +282,38 @@ class PurchaseController extends Controller
                     }
                 }
 
+                if ($range->price['dynamicSelect'] === 'allWeeks') {
+                    if ($range->price['type'] === 'fixed') {
+                        $productArr['price'][$lang] = $range->price['value'];
+                    }
+
+                    if ($range->price['type'] === 'add') {
+                        $productArr['price'][$lang] += $range->price['value'];
+                    }
+
+                    if ($range->price['type'] === 'subtract') {
+                        $productArr['price'][$lang] -= $range->price['value'];
+                    }
+
+                    if ($range->price['type'] === 'multiply') {
+                        $productArr['price'][$lang] *= $range->price['value'];
+                    }
+
+                    if ($range->price['type'] === 'divide') {
+                        $price = $productArr['price'][$lang] / $range->price['value'];
+                        $productArr['price'][$lang] = number_format($price, 2);
+                    }
+                }
+
                 if ($range->price['dynamicSelect'] === 'months') {
                     $month = strtolower($date->format('F'));
 
                     $monthsRangeStartIndex = array_search(strtolower($range->price['start']), $months);
                     $monthsRangeEndIndex = array_search(strtolower($range->price['end']), $months);
-                    $currentMonthIndex = array_search($month, $months);
+
+                    $monthsRangeStartIndex = (int)$range->price['start'];
+                    $monthsRangeEndIndex = (int)$range->price['end'];
+                    $currentMonthIndex = array_search($month, $months) + 1;
 
                     if (($currentMonthIndex !== false && $currentMonthIndex >= $monthsRangeStartIndex && $currentMonthIndex <= $monthsRangeEndIndex) && ($nowTime >= $startTime && $nowTime <= $endTime)) {
                         if ($range->price['type'] === 'fixed') {
