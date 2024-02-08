@@ -111,7 +111,7 @@ class PaymentController extends Controller
 
     public function successPage(Request $request)
     {
-        $user = User::findOrFail((int)$request->calendar_id);
+        $user = User::find((int)$request->calendar_id);
         return view('customer.payment.success', compact('user'));
     }
 

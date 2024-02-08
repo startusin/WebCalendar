@@ -17,9 +17,9 @@
 
     <style>
         :root {
-            --calendar-primary-color: {{ $user->settings['primary_color'] }};
-            --calendar-secondary-color: {{ $user->settings['secondary_color'] }};
-            --calendar-background-color: {{ $user->settings['bg_color'] }};
+            --calendar-primary-color: {{ isset($user) && isset($user->settings['primary_color']) ? $user->settings['primary_color'] : "#cca646" }};
+            --calendar-secondary-color: {{isset($user) &&  isset($user->settings['secondary_color'])? $user->settings['secondary_color']:"#e9d9a7" }};
+            --calendar-background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
     </style>
 
