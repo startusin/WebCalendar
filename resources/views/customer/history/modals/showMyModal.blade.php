@@ -14,101 +14,75 @@
                 <div class="tab-content" id="createTabContent">
                     <div class="tab-pane fade show active" id="general_tab" role="tabpanel">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12">
                                 <h5 class="form-group">Buyer</h5>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">First Name</label>
+                                            <div class="col-sm-12">
+                                                <p id="FirstName"></p>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Start Date</label>
-                                        <div class="col-sm-12">
-                                            <p id="FirstName"></p>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Last Name</label>
+                                            <div class="col-sm-12">
+                                                <p id="LastName"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Phone</label>
+                                            <div class="col-sm-12">
+                                                <p id="Phone"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Place</label>
+                                            <div class="col-sm-12">
+                                                <p id="Place"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Street</label>
+                                            <div class="col-sm-12">
+                                                <p id="Street"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Email</label>
+                                            <div class="col-sm-12">
+                                                <p id="Email"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Slot started</label>
+                                            <div class="col-sm-12">
+                                                <p id="SlotStarted"></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Start Date</label>
-                                        <div class="col-sm-12">
-                                            <p id="LastName"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Start Date</label>
-                                        <div class="col-sm-12">
-                                            <p id="Phone"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Start Date</label>
-                                        <div class="col-sm-12">
-                                            <p id="Place"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Street</label>
-                                        <div class="col-sm-12">
-                                            <p id="Street"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <div class="col-6">
-                                <h5 class="form-group">Product</h5>
-                                <div class="col-8">
 
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Title</label>
-                                        <div class="col-sm-12">
-                                            <p id="Title"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Quantity</label>
-                                        <div class="col-sm-12">
-                                            <p id="Quantity"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Sold price</label>
-                                        <div class="col-sm-12">
-                                            <p id="SoldPrice"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <label class="col-auto col-form-label font-weight-bold">Slot started</label>
-                                        <div class="col-sm-12">
-                                            <p id="SlotStarted"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <div class="col-12" id="myproducts"></div>
                         </div>
                     </div>
                 </div>

@@ -20,21 +20,39 @@ class PurchaseController extends Controller
 {
     public function getAllPurchases()
     {
-        $purchases = BookingProduct::paginate(10);
+        $userId = auth()->user()->id;
+
+        $purchases = Bookings::with('slots')
+            ->with('bookingProducts')
+            ->whereHas('slots', function ($query) use ($userId) {
+                $query->where('calendar_id', $userId);
+            })->get()
+            ->map(function ($booking) {
+                $totalSoldPrice = $booking->bookingProducts->sum('sold_price');
+
+                $year = substr($booking->created_at, 2, 2);
+                $month = date('m', strtotime($booking->created_at));
+                $id = str_pad($booking->id, 4, '0', STR_PAD_LEFT);
+                $orderNumber = $year . $month . $id;
+                return (object)[
+                    'booking' => $booking,
+                    'total_sold_price' => $totalSoldPrice,
+                    'customId' => $orderNumber
+                ];
+            });
+
         return view('customer.history.index', compact('purchases'));
     }
 
     public function getPurchase($id)
     {
-        $purhase = BookingProduct::with('product', 'booking','slot')->findOrFail($id);
-        foreach ($purhase->product['title'] as $key => $item)
-        {
-            if ($key == Cookie::get('locale')) {
-                $purhase->product['title'] = $item;
-                break;
-            }
-        }
-        return $purhase;
+        $userId = auth()->user()->id;
+        $purchase = Bookings::with('slots')
+            ->with('bookingProducts.product')
+            ->whereHas('slots', function ($query) use ($userId) {
+                $query->where('calendar_id', $userId);
+            })->first();
+        return $purchase;
     }
 
 
@@ -65,14 +83,13 @@ class PurchaseController extends Controller
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);
 
-        foreach ($data['slots'] as $key => $dateTime)
-        {
+        foreach ($data['slots'] as $key => $dateTime) {
             foreach ($dateTime as $items) {
                 foreach ($items as $item) {
                     $slotObject = [
                         'startDateSlot' => new \DateTime($item['startTime']),
                         'endDateSlot' => new \DateTime($item['endTime']),
-                        'timestamp' =>  $item['timestamp'],
+                        'timestamp' => $item['timestamp'],
                         'language' => $item['language']
                     ];
 
@@ -104,9 +121,9 @@ class PurchaseController extends Controller
                     $product['quantity'] = $item;
                 }
             }
-            if (isset($data['productPriceId'])){
+            if (isset($data['productPriceId'])) {
                 foreach ($data['productPriceId'] as $item) {
-                        $price_product = ProductPrice::find($item);
+                    $price_product = ProductPrice::find($item);
                     if ($price_product['product_id'] == $product['id']) {
                         $product['price'] = $price_product['price'];
                         $product['product_price_id'] = $price_product['id'];
@@ -123,15 +140,15 @@ class PurchaseController extends Controller
         foreach ($products as $item) {
             $price = $this->calculateProductPrice($item, $slots['language'], $slots['startDateSlot']);
 
-            $totalQuantity+= (int)$item['quantity'];
-            $totalSum+= (int)$item['quantity'] * (float)$price['price'][$slots['language']];
+            $totalQuantity += (int)$item['quantity'];
+            $totalSum += (int)$item['quantity'] * (float)$price['price'][$slots['language']];
 
             $productData[] = ['product' => $item, 'price' => (float)$price['price'][$slots['language']]];
         }
 
         $isBrunch = false;
 
-        return view('purchase', compact('calendarId','products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData'));
+        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData'));
     }
 
     public function makeSlot(Request $request)
@@ -192,8 +209,8 @@ class PurchaseController extends Controller
 
             BookingProduct::create([
                 'product_id' => $id,
-                'booking_id' =>  $booking['id'],
-                'slot_id' =>  $bookedSlot['id'],
+                'booking_id' => $booking['id'],
+                'slot_id' => $bookedSlot['id'],
                 'quantity' => $item['productQuantity'],
                 'promocode_id' => $item['productPromo'],
                 'sold_price' => $soldPrice
@@ -252,7 +269,7 @@ class PurchaseController extends Controller
                 $endTime = \DateTime::createFromFormat('H:i', $range->price['toHour']);
                 $nowTime = \DateTime::createFromFormat('H:i', $hour);
 
-                if ($range->price['dynamicSelect'] === 'days' || in_array( strtolower($range->price['dynamicSelect']), $daysOfWeek)) {
+                if ($range->price['dynamicSelect'] === 'days' || in_array(strtolower($range->price['dynamicSelect']), $daysOfWeek)) {
                     $dayOfWeek = strtolower($date->format('l'));
                     $fromIndex = (int)$range->price['start'];
                     $toIndex = (int)$range->price['end'];

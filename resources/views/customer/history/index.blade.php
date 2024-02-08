@@ -26,11 +26,10 @@
                                     <thead class="text-center">
                                     <tr>
                                         <th class="col-1">ID</th>
-                                        <th class="col-2">Product</th>
                                         <th class="col-2">Buyer</th>
                                         <th class="col-2">Sold price</th>
-                                        <th class="col-1">Quantity</th>
-                                        <th class="col-3">Date</th>
+                                        <th class="col-1"t>Status</th>
+                                        <th class="col-3">Information</th>
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">
@@ -38,19 +37,19 @@
                                     @foreach($purchases as $item)
 
                                         <tr>
-                                            <td  class="col-1">{{$item->id}}</td>
-                                            @foreach($item->product['title'] as $lg => $i)
-                                                @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
-                                                    <td class='col-2'>{{ $i }}</td>
-                                                @endif
-                                            @endforeach
+                                            <td  class="col-1">{{$item->customId}}</td>
+{{--                                            @foreach($item->product['title'] as $lg => $i)--}}
+{{--                                                @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)--}}
+{{--                                                    <td class='col-2'>{{ $i }}</td>--}}
+{{--                                                @endif--}}
+{{--                                            @endforeach--}}
 
                                             <td  class="col-1">{{$item->booking['first_name']. " ".$item->booking['last_name']}}</td>
-                                            <td  class="col-1">{{$item->sold_price}}</td>
-                                            <td  class="col-1">{{$item->quantity}}</td>
-                                            <td  class="col-3">{{$item->created_at}}</td>
+                                            <td  class="col-1">{{$item->total_sold_price}}</td>
+                                            <td  class="col-1">{{$item->booking['payment_status']}}</td>
+
                                             <td>
-                                                <a class="showPurchase" href="#" data-route="{{ route('purchase.show', $item->id) }}" data-toggle="modal" data-target="#showMyModal">
+                                                <a class="showPurchase" href="#" data-route="{{ route('purchase.show', $item->booking['id']) }}" data-toggle="modal" data-target="#showMyModal">
                                                     <i class="far fa-eye"></i>
                                                 </a>
                                             </td>

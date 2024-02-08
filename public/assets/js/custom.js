@@ -387,22 +387,82 @@ $(document).ready(function () {
         })
     });
 
+
+    function generateProduct(products, lang) {
+        var html = '';
+        console.log('products');
+        console.log(products);
+        products.forEach(function(item) {
+
+            let title = item.product.title[lang];
+            console.log("title");
+            console.log(title);
+
+            let price = item.product.price[lang];
+            let description = item.product.description[lang];
+            html += '<h5>Product</h5>' +
+                '<div class="row">'+
+                '<div class="col-6">' +
+                '<div class="form-group">' +
+                '<label class="col-auto col-form-label font-weight-bold">Title</label>' +
+                '<div class="col-sm-12">' +
+                '<p>' + title + '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-6">' +
+                '<div class="form-group">' +
+                '<label class="col-auto col-form-label font-weight-bold">Quantity</label>' +
+                '<div class="col-sm-12">' +
+                '<p>' + item.quantity + '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-6">' +
+                '<div class="form-group">' +
+                '<label class="col-auto col-form-label font-weight-bold">Price</label>' +
+                '<div class="col-sm-12">' +
+                '<p>' + price + '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-6">' +
+                '<div class="form-group">' +
+                '<label class="col-auto col-form-label font-weight-bold">Description</label>' +
+                '<div class="col-sm-12">' +
+                '<p>' + description + '</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+        });
+
+        document.getElementById('myproducts').innerHTML = html;
+    }
+
+
+
     $(document).on('click', '.showPurchase', function () {
         let route = $(this).data('route');
         console.log(3234234234);
         $.ajax({
             url: route,
             success: function (response) {
-                console.log(response.booking.first_name);
-                $('#FirstName').text(response.booking.first_name);
-                $('#LastName').text(response.booking.last_name);
-                $('#Phone').text(response.booking.phone);
-                $('#Place').text(response.booking.place);
-                $('#Street').text(response.booking.street_name);
-                $('#Title').text(response.product.title);
-                $('#Quantity').text(response.quantity);
-                $('#SoldPrice').text(response.sold_price);
-                $('#SlotStarted').text(moment(response.slot.start_date).format('YYYY-MM-DD HH:mm:ss'));
+                console.log(response.booking_products);
+                generateProduct(response.booking_products,'en');
+                console.log('response.booking.first_name');
+                console.log(response.first_name);
+                $('#FirstName').text(response.first_name);
+                $('#LastName').text(response.last_name);
+                $('#Phone').text(response.phone);
+                $('#Place').text(response.place);
+                $('#Street').text(response.street_name);
+
+                $('#Email').text(response.email);
+                console.log('response.slots[0].start_date');
+                let dateTime = response.slots[0].start_date;
+                console.log(dateTime);
+                $('#SlotStarted').text(moment(dateTime).format('YYYY-MM-DD HH:mm:ss'));
             }
         })
     });
