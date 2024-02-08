@@ -35,7 +35,7 @@
 
             <div class="brunches d-flex flex-wrap justify-content-center d-none brunches-area">
                 <div class="col-12">
-                    <div class="brunch-title mb-4">
+                    <div class="brunch-title-head mb-4">
                         {{$user->translations['translations']['brunch'][Cookie::get('locale')]??""}}
                     </div>
 
