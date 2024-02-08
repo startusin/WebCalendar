@@ -46,13 +46,9 @@ class PurchaseController extends Controller
 
     public function getPurchase($id)
     {
-        $userId = auth()->user()->id;
-        $purchase = Bookings::with('slots')
+        return Bookings::with('slots')
             ->with('bookingProducts.product')
-            ->whereHas('slots', function ($query) use ($userId) {
-                $query->where('calendar_id', $userId);
-            })->first();
-        return $purchase;
+            ->find($id);
     }
 
 

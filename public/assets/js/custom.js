@@ -389,53 +389,15 @@ $(document).ready(function () {
 
 
     function generateProduct(products, lang) {
-        var html = '';
-        console.log('products');
-        console.log(products);
+        var html = '<table class="w-100 table mt-4"><tr>' +
+            '<th scope="col">Title</th><th scope="col">Price</th><th scope="col">Quantity</th>' +
+            '</tr>';
+
         products.forEach(function(item) {
-
-            let title = item.product.title[lang];
-            console.log("title");
-            console.log(title);
-
-            let price = item.product.price[lang];
-            let description = item.product.description[lang];
-            html += '<h5>Product</h5>' +
-                '<div class="row">'+
-                '<div class="col-6">' +
-                '<div class="form-group">' +
-                '<label class="col-auto col-form-label font-weight-bold">Title</label>' +
-                '<div class="col-sm-12">' +
-                '<p>' + title + '</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-6">' +
-                '<div class="form-group">' +
-                '<label class="col-auto col-form-label font-weight-bold">Quantity</label>' +
-                '<div class="col-sm-12">' +
-                '<p>' + item.quantity + '</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-6">' +
-                '<div class="form-group">' +
-                '<label class="col-auto col-form-label font-weight-bold">Price</label>' +
-                '<div class="col-sm-12">' +
-                '<p>' + price + '</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-6">' +
-                '<div class="form-group">' +
-                '<label class="col-auto col-form-label font-weight-bold">Description</label>' +
-                '<div class="col-sm-12">' +
-                '<p>' + description + '</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '</div>'
+            html += '<tr><td>' + (item.product.title[lang] || '-') + '</td><td>' + (item.product.price[lang] || '-') + '</td><td>' + item.quantity + '</td></tr>';
         });
+
+        html += '</table>';
 
         document.getElementById('myproducts').innerHTML = html;
     }
