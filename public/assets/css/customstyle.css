@@ -1,12 +1,11 @@
 body{
-    font-family: 'Merriweather', serif;
     color: var(--calendar-primary-color);
     background-color: var(--calendar-background-color);
-    font-family: 'Merriweather', serif;
+    font-family: 'Outfit', sans-serif;
 
 }
 .MyContainer{
-    max-width: 550px;
+    max-width: 630px;
     width: 100%;
     padding: 25px;
 }
@@ -112,7 +111,6 @@ body{
 
 /*PRODUCTS*/
 .products{
-    max-width: 550px;
     width: 100%;
     padding: 0;
 }
@@ -127,10 +125,6 @@ button{
     font: inherit;
     color: inherit;
     background-color: transparent;
-}
-
-.product-price {
-    margin-top: 10px;
 }
 
 .product {
@@ -154,15 +148,19 @@ button{
     padding: 0;
 }
 
-
+.js-weeks, .js-weekdays {
+    margin-left: -10px;
+    margin-right: -10px;
+}
 
 
 .bootstrap-calendar-day {
-    margin: 5px;
+    margin: 10px;
     border-radius: 10%;
     background-color: #ffffff;
     color: #000000;
     font-size: 12px;
+    height: 66px !important;
 }
 
 .bootstrap-calendar-day:hover {
@@ -256,333 +254,337 @@ button{
 }
 
 .reserve {
-    padding: 10px;
+    padding-top: 8.5px;
+    padding-bottom: 8.5px;
     color: #fff;
     background-color: var(--calendar-primary-color);
-    border-radius: 10px 0 0 10px; /* top-right corner is 10px, others are 0 */
+    border-radius: 25px 0 0 25px; /* top-right corner is 10px, others are 0 */
+    text-transform: uppercase;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    max-height: 40px;
+}
+
+.reserve:after {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 9px;
+    right: -1px;
+    width: 2px;
+    height: 23px;
+    background: #fff;
 }
 
 .left-link-modifier {
-    color: #000000;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    margin-right: 10px;
+color: #000000;
+background-color: #fff;
+padding: 10px;
+border-radius: 10px;
+margin-right: 10px;
 }
 
 label.error {
-    margin-top: -15px;
+margin-top: -15px;
 }
 
 .disable_button {
-    pointer-events: none;
-    opacity: 0.5;
+pointer-events: none;
+opacity: 0.5;
 }
 
 .calendar-logo {
-    max-width: 300px;
+max-width: 300px;
 }
 
 .flag-icon {
-    width: 20px;
-    display: inline-block;
-    margin-top: -3px;
+width: 20px;
+display: inline-block;
+margin-top: -3px;
 }
 
 .language-selector {
-    background: var(--calendar-secondary-color);
-    border: none;
-    text-decoration: none;
-    color: #000;
-    padding: 13px 17px;
-    border-radius: 29px;
+background: var(--calendar-secondary-color);
+border: none;
+text-decoration: none;
+color: #000;
+padding: 13px 17px;
+border-radius: 29px;
 }
 
 .language-selector::after {
-    display: none;
+display: none;
 }
 
 .selector-arrow {
-    margin-left: 11px;
+margin-left: 11px;
 }
 
 .language-selector-container {
-    right: 0;
-    top: 30px;
+right: 0;
+top: 30px;
 }
 
 .language-selector-list {
-    background: var(--calendar-secondary-color);
-    border: none;
-}
-
-header {
-    border-bottom: 2px var(--calendar-primary-color) solid;
+background: var(--calendar-secondary-color);
+border: none;
 }
 
 .sub-title {
-    font-size: 21px;
-    color: #000;
+font-size: 28px;
+color: #000;
+max-width: 360px;
+line-height: 32px;
+font-family: 'Barlow Semi Condensed', sans-serif;
 }
 
 .btn-curr-month, .btn-curr-month:hover {
-    color: #000;
-    background: #fff;
-    text-transform: uppercase;
-    padding: 7px 26px;
-    border-radius: 25px;
+color: #000;
+background: #fff;
+text-transform: uppercase;
+padding: 7px 26px;
+border-radius: 25px;
 }
 
 .btn-prev-month, .btn-next-month, .btn-prev-month:hover, .btn-next-month:hover {
-    color: #000;
-    background: #fff;
-    text-transform: uppercase;
-    padding: 7px 16px;
-    border-radius: 25px;
+color: #000;
+background: #fff;
+text-transform: uppercase;
+padding: 7px 16px;
+border-radius: 25px;
 }
 
 .btn-next-month {
-    margin-left: 11px;
+margin-left: 11px;
 }
 
 .bootstrap-calendar-weekday-row {
-    margin-top: 20px;
+margin-top: 20px;
 }
 
 .bootstrap-calendar-weekday-row div {
-    height: auto !important;
-    line-height: unset !important;
+height: auto !important;
+line-height: unset !important;
 }
 
 .js-day-name-short {
-    color: #000 !important;
-    font-size: 0 !important;
-    margin-bottom: 5px;
-    margin-top: 13px;
-    font-weight: normal !important;
+color: #000 !important;
+font-size: 0 !important;
+margin-bottom: 5px;
+margin-top: 13px;
+font-weight: normal !important;
 
 }
 
 .js-day-name-short:first-letter {
-    font-size: 16px !important;
+font-size: 16px !important;
 }
 
 .bootstrap-calendar-day {
-    font-weight: normal !important;
+font-weight: normal !important;
 }
 
 .bootstrap-calendar-day.has-events {
-    border: 1px var(--calendar-primary-color) solid;
-    color: var(--calendar-primary-color) !important;
+border: 1px var(--calendar-primary-color) solid;
+color: #000 !important;
 }
 
 .bootstrap-calendar-day.has-events.active {
-    background-color: var(--calendar-primary-color);
-    color: #fff !important;
+background-color: var(--calendar-primary-color);
+color: #000 !important;
 }
 
 .js-count-events, .js-day-name {
-    display: none !important;
+display: none !important;
 }
 
 .js-events {
-    margin-top: 30px;
+margin-top: 30px;
 }
 
 .event-flag {
-    width: 17px;
-    margin-right: 10px;
-    vertical-align: text-bottom;
+width: 17px;
+margin-right: 10px;
+vertical-align: text-bottom;
 }
 
 .event-time {
-    border: 0;
-    color: #000000;
-    transition: width .3s,transform .3s;
-    font-size: 15px;
-    width: 100% !important;
-    font-weight: normal;
-    border-radius: 25px;
-    margin-bottom: 20px;
+border: 0;
+color: #000000;
+transition: width .3s,transform .3s;
+font-size: 15px;
+width: 100% !important;
+font-weight: normal;
+border-radius: 25px;
+margin-bottom: 20px;
 }
 
 .event-time.active, .event-time:hover {
-    text-decoration: none;
-    border: 1px var(--calendar-primary-color) solid;
+text-decoration: none;
+border: 1px var(--calendar-primary-color) solid;
 }
 
 .event-time.inactive {
-    background: transparent;
-    opacity: .5;
+background: transparent;
+opacity: .5;
 }
 
 .product-title, .brunch-title {
-    font-size: 18px;
-    color: #000;
+font-size: 18px;
+color: var(--calendar-primary-color);
 }
 
 .product-description {
-    color: #000;
-    font-size: 14px;
-    font-weight: normal;
+color: #000;
+font-size: 14px;
+font-weight: normal;
 }
 
 .product-price, .brunch-price {
     font-size: 18px;
     color: #000;
     font-weight: bold;
+    margin-top: 6px;
+    margin-right: 18px;
 }
 
 .white-circle {
-    color: #000;
-    background-color: #fff;
-    padding: 9px;
-    height: fit-content;
-    font-size: 14px;
+color: #000;
+background-color: #fff;
+padding: 9px;
+height: fit-content;
+font-size: 14px;
 }
 
 .product, .brunch {
-    border-radius: 10px;
-    background-color: transparent;
-    max-width: 550px;
-    width: 100%;
-    padding: 0 10px 0 10px;
-    border: 1px var(--calendar-primary-color) solid;
+background-color: transparent;
+width: 100%;
+border-bottom: 1px var(--calendar-primary-color) solid;
 }
 
 .brunch-qty {
-    border: 1px var(--calendar-primary-color) solid;
-    border-radius: 10px;
+border-bottom: 1px var(--calendar-primary-color) solid;
 }
 
 .brunch {
-    border: none;
-}
-
-.product:hover, .brunch:hover, .brunch-qty:hover {
-    color: #fff;
-    background-color: var(--calendar-primary-color);
-}
-
-.product:hover .product-title, .product:hover .product-price, .product:hover .product-description {
-    color: #fff;
-}
-
-.brunch:hover .brunch-title, .brunch:hover .brunch-price {
-    color: #fff;
+border: none;
 }
 
 .product-navigation-container {
-    height: fit-content;
-    width: fit-content;
-    float: right;
+height: fit-content;
+width: fit-content;
+float: right;
 }
 
 .right-icon {
-    border-radius: 9px 0 0 9px;
+border-radius: 9px 0 0 9px;
 }
 
 .left-icon {
-    border-radius: 0 9px 9px 0;
+border-radius: 0 9px 9px 0;
 }
 
 .total-sum-purchase {
     background-color: var(--calendar-primary-color);
-    padding: 10.75px;
-    border-radius: 0 10px 10px 0;
-    margin-left: 3px;
+    padding: 9px 10.75px;
+    border-radius: 0 25px 25px 0;
     color: #ffffff;
     font-weight: 600;
     text-align: center;
     font-size: 15px;
+    padding-top: 11px;
+    padding-bottom: 8px;
+    max-height: 40px;
 }
 
 .product-item-count {
-    margin-right: 6px;
-    font-size: 15px;
+margin-right: 6px;
+font-size: 15px;
 }
 
 .product-item-count span {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 5px 10px;
-    color: #000;
-    display: inline-block;
-    text-align: center;
-    font-weight: normal;
-    font-size: 15px;
+background-color: #fff;
+border-radius: 10px;
+padding: 5px 10px;
+color: #000;
+display: inline-block;
+text-align: center;
+font-weight: normal;
+font-size: 15px;
 }
 
 .product-item-text, .sous-total-item-text, .total-item-text {
-    font-size: 16px;
-    display: flex;
-    align-items: center;
+font-size: 16px;
+display: flex;
+align-items: center;
 }
 
 .products-items .product-item:hover {
-    background: var(--calendar-primary-color);
-    color: #fff;
-    border-radius: 0;
+background: var(--calendar-primary-color);
+color: #fff;
+border-radius: 0;
 }
 
 .product-item-mo i {
-    margin-top: 10px;
+margin-top: 10px;
 }
 
 .promocode-apply button {
-    padding: 5px 10px;
-    border-radius: 10px;
-    width: 85px;
+padding: 5px 10px;
+border-radius: 10px;
+width: 85px;
 }
 
 .promo-inner {
-    max-width: 91%;
-    margin-left: 13px;
+max-width: 91%;
+margin-left: 13px;
 }
 
 .promocode-input.wrong {
-    border-color: #de3603;
+border-color: #de3603;
 }
 
 .promocode-input.correct {
-    border-color: #00f169;
+border-color: #00f169;
 }
 
 .form-inner label.error {
-    display: none !important;
+display: none !important;
 }
 
 .form-inner input.error {
-    border-color: #de3603;
+border-color: #de3603;
 }
 
 .event-time .attendee-icon {
-    margin-left: 17px;
+margin-left: 17px;
 }
 
 .qty-inner {
-    display: inline-block;
+display: inline-block;
 }
 
 .qty-inner-text {
-    display: inline-block;
+display: inline-block;
 }
 
 .brunches {
-    border-top: 2px var(--calendar-primary-color) solid;
-    margin-top: 65px;
-    padding-top: 23px;
+margin-top: 30px;
+padding-top: 23px;
+margin-bottom: 23px;
 }
 
 .brunch-list .brunch {
-    width: 30%;
+    width: 145px;
     display: inline-block;
     background: #fff;
     color: #000;
     padding-top: 15px;
     padding-bottom: 15px;
     margin-bottom: 10px;
-    margin-right: 5px;
+    margin-right: 6px;
+    margin-left: 6px;
     text-decoration: none;
     border-radius: 10px;
     cursor: pointer;
@@ -591,50 +593,89 @@ header {
 .brunch-list .brunch .time {
     margin-top: 10px;
     margin-bottom: 6px;
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: bold;
 }
 
 .brunch-list .brunch .icon i {
-    color: var(--calendar-primary-color);
-    width: 30px;
-    font-size: 29px;
+color: var(--calendar-primary-color);
+width: 30px;
+font-size: 29px;
 }
 
 .brunch-list .brunch.selected {
     border: 2px var(--calendar-primary-color) solid;
 }
 
+.brunch-list .brunch.selected .time, .brunch-list .brunch.selected i, .brunch-list .brunch.selected img, .brunch-list .brunch.selected .qty-inner-text {
+    color: var(--calendar-primary-color);
+}
+
+.brunch-list .brunch .table-active {
+    display: none;
+}
+
+.brunch-list .brunch .table-not-active {
+    display: inline-block;
+}
+
+.brunch-list .brunch.selected .table-active {
+    display: inline-block;
+}
+
+.brunch-list .brunch.selected .table-not-active {
+    display: none;
+}
+
 .brunch.inactive {
-    background: transparent;
-    opacity: .5;
+background: transparent;
+opacity: .5;
 }
 
 .brunch-article {
-    width: 100%;
-    height: 170px;
-    border-radius: 10px;
-    background-size: cover;
-    background-position: center;
-    position: relative;
+width: 100%;
+height: 170px;
+border-radius: 10px;
+background-size: cover;
+background-position: center;
+position: relative;
 }
 
 .brunch-article .inner {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, .5);
-    color: #fff;
-    font-size: 28px;
-    padding: 20px;
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+background: rgba(0, 0, 0, .5);
+color: #fff;
+font-size: 28px;
+padding: 20px;
 }
 
 .makesPurchase {
-    background: var(--calendar-secondary-color);
+background: var(--calendar-secondary-color);
 }
 
 @media screen and (max-width:480px) {
-    .myDisp {
-        flex: 50%;
-    }
+.myDisp {
+    flex: 50%;
+}
+}
+
+.button-order {
+background: #fff;
+border-radius: 25px;
+padding: 6px;
+justify-content: end;
+}
+
+.brunch-list .brunch .icon {
+    margin-top: 9px;
+}
+
+.brunch-list .brunch .icon img {
+    margin-top: 9px;
+    width: 60px;
 }

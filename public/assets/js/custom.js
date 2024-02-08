@@ -323,14 +323,15 @@ $(document).ready(function () {
                     brunchHtml +=
                         '<a class="brunch text-center ' + (spacesLeft <= 0 ? 'inactive' : '') + '" data-id="' + item.id + '" data-price="' + item.price + '"' +
                         '    data-quantity="' + spacesLeft + '">' +
-                        '        <div class="icon">' +
-                        '             <i class="fa-solid fa-mug-hot"></i>' +
-                        '        </div>' +
-                        '        <div class="time">' + item.time + '</div>' +
                         '        <div class="qty-inner">\n' +
+                        '             <div class="time">' + item.time + '</div>' +
                         '             <i class="fa-regular fa-user attendee-icon"></i>' +
-                        '        <div class="qty-inner-text">' + spacesLeft + '</div>' +
-                        '    </div>' +
+                        '             <div class="qty-inner-text">' + spacesLeft + '</div>' +
+                        '       </div>' +
+                        '       <div class="icon">' +
+                        '             <img class="table-not-active" src="/assets/images/table.svg" />' +
+                        '             <img class="table-active" src="/assets/images/table-hover.svg" />' +
+                        '       </div>' +
                         '</a>';
                 });
 
