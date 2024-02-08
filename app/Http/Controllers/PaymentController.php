@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bookings;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,8 +109,13 @@ class PaymentController extends Controller
         }
     }
 
-    public function successPage()
+    public function successPage(Request $request)
     {
+        $data = $request->all();
+        $user = User::findOrFail(1);
+        return view('customer.payment.success', compact('user'));
         die('Payment was successful!');
     }
+
+
 }

@@ -685,3 +685,55 @@ justify-content: end;
     text-align: center;
     color: #000;
 }
+
+.successful-container{
+    background-color: #ffffff;
+    min-height: 300px;
+    border-radius: 10px;
+    border: 1px solid silver;
+    padding: 50px;
+}
+.successIcon{
+    font-size: 96px;
+    color: #0a0a0a;
+}
+
+.success-title{
+    font-size: 28px;
+    color: #000000;
+    font-weight: 600;
+}
+
+.success-subtitle{
+    font-size: 20px;
+    color: #000000;
+}
+
+.PurchaseContainer{
+    display: flex;
+    height: 100vh;
+    padding: 40px;
+}
+@media (max-width: 494px) {
+    .successIcon{
+        font-size: 76px;
+        color: #0a0a0a;
+    }
+
+    .success-title{
+        font-size: 24px;
+        color: #000000;
+        font-weight: 600;
+    }
+
+    .success-subtitle{
+        font-size: 18px;
+        color: #000000;
+    }
+    .successful-container{
+        padding: 20px;
+    }
+    .success-text{
+        text-align: center;
+    }
+}
