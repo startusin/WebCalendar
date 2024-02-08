@@ -343,8 +343,8 @@ class PurchaseController extends Controller
                     $month = intval($date->format('m'));
                     $day = intval($date->format('d'));
 
-                    list($rangeStartMonth, $rangeStartDay) = explode('/', $range->price['start']);
-                    list($rangeEndMonth, $rangeEndDay) = explode('/', $range->price['end']);
+                    list($rangeStartMonth, $rangeStartDay) = explode('-', $range->price['start']);
+                    list($rangeEndMonth, $rangeEndDay) = explode('-', $range->price['end']);
 
                     $rangeStartMonth = intval($rangeStartMonth);
                     $rangeStartDay = intval($rangeStartDay);
@@ -378,8 +378,6 @@ class PurchaseController extends Controller
                         }
                     }
                 }
-
-                break;
             }
         }
 
