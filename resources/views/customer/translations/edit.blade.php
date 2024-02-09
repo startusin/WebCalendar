@@ -59,7 +59,7 @@
                             <!-- /.card-body -->
                         </div>
                         <div class="text-center">
-                            <input class="btn btn-primary col-4 mt-3" form="formTranslations" type="submit" value="Edit">
+                            <input class="btn btn-primary col-4 mt-3" form="formTranslations" type="submit" value="Save">
                         </div>
                     </div>
                 </div>

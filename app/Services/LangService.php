@@ -7,6 +7,8 @@ class LangService
     public function EnglishWords(&$translations)
     {
         $translations['indicate-your']['en'] = "Indicate your dates and times";
+        $translations['choise1']['en'] = 'Choisissez une date et une heure de visite';
+        $translations['choise2']['en'] = 'Choisissez une date et une heure de visite';
         $translations['brunch']['en'] = "Brunch";
         $translations['select-product']['en'] = "Select the products";
         $translations['dont-miss']['en'] = "Don't miss...";
@@ -27,12 +29,18 @@ class LangService
         $translations['sous-total']['en'] = "Under total";
         $translations['total']['en'] = "Total";
         $translations['payer']['en'] = "Payer";
+        $translations['promocode']['en'] = "Promocode";
+        $translations['apply']['en'] = "Apply";
+        $translations['noAppointment']['en'] = "No appointment on this day";
+
     }
 
 
     public function FranceWords(&$translations)
     {
         $translations['indicate-your']['fr'] = "Indiques vos dates et holralres";
+        $translations['choise1']['fr'] = 'Choisissez une date et une heure de visite';
+        $translations['choise2']['fr'] = 'Choisissez une date et une heure de visite';
         $translations['brunch']['fr'] = "Brunch";
         $translations['select-product']['fr'] = "Sélectionnez les produits";
         $translations['dont-miss']['fr'] = "Ne manquez pas...";
@@ -53,5 +61,8 @@ class LangService
         $translations['sous-total']['fr'] = "Sous total";
         $translations['total']['fr'] = "Total";
         $translations['payer']['fr'] = "Payeur";
+        $translations['promocode']['fr'] = "Code promo";
+        $translations['apply']['fr'] = "Appliquer";
+        $translations['noAppointment']['fr'] = "pas de rendez-vous ce jour";
     }
 }

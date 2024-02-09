@@ -169,7 +169,7 @@
                                 </div>
                             </div>
 
-                            <input type="submit" class="btn btn-primary" value="Edit">
+                            <input type="submit" class="btn btn-primary" value="Save">
                         </form>
                     </div>
 

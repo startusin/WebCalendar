@@ -140,13 +140,13 @@
             </div>
 
             <div class="mt-3 mb-5 row d-flex flex-nowrap align-items-center d-none button-order">
-                <div class="col-6" style="width: 47.5%;">
+                <div id="ViewCurrentSlot" class="col-6" >
+                    3 janvier 2024 | 17h45
                 </div>
-                <div type="button" id="PurchaseButton" class="col-5 reserve text-start disable_button"
-                     style="width: 19%;">
+                <div type="button" id="PurchaseButton" class="col-5 reserve text-start disable_button">
                     {{$user->translations['translations']['reserver'][Cookie::get('locale')]??""}}
                 </div>
-                <div class="col-1 total-sum-purchase" style="width: 13.5%;">
+                <div id="TotalSlot" class="col-1 total-sum-purchase">
                     0.00€
                 </div>
             </div>
@@ -166,7 +166,7 @@
 @endsection
 @push('js')
     <script>
-
+        let currentNoAppointmentTranslate = "{{$user->translations['translations']['noAppointment'][Cookie::get('locale')]??""}}";
 
         $('#exampleCalendar').bsCalendar({
             locale: "{{$locale}}",

@@ -714,7 +714,28 @@ justify-content: end;
     height: 100vh;
     padding: 40px;
 }
-@media (max-width: 494px) {
+#ViewCurrentSlot{
+    width: 63%;
+}
+#PurchaseButton{
+    width: 19%;
+}
+#TotalSlot{
+    width: 18%;
+}
+
+@media (max-width: 568px) {
+
+    #ViewCurrentSlot{
+        width: 39%;
+    }
+    #PurchaseButton{
+        width: 32%;
+    }
+    #TotalSlot{
+        width: 29%;
+    }
+
     .successIcon{
         font-size: 76px;
         color: #0a0a0a;
@@ -737,3 +758,5 @@ justify-content: end;
         text-align: center;
     }
 }
+
+

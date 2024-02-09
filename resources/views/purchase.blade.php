@@ -13,7 +13,7 @@
             <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
             <div class="col-md-6 form-inner">
                 <div class="sub-title mt-5 mb-4">
-                    {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
+                    {{$user->translations['translations']['choise1'][Cookie::get('locale')]??""}}
                 </div>
                 <div class="row">
                     <div class="col-6">
@@ -84,7 +84,7 @@
 
             <div class="col-md-6">
                 <div class="sub-title mt-5 mb-4">
-                    {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
+                    {{$user->translations['translations']['choise2'][Cookie::get('locale')]??""}}
                 </div>
 
                 <div class="all-purchase mb-5">
@@ -129,11 +129,11 @@
                                 <div id="flush-collapse{{$product['product']->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$product['product']->id}}" data-bs-parent="#accordionFlushExample">
                                     <div class="row d-flex promo-inner">
                                         <div class="accordion-body col-8 my-2">
-                                            <input type="text" class="form-control promocode-input" data-product-id="{{$product['product']->id}}" placeholder="Promocode">
+                                            <input type="text" class="form-control promocode-input" data-product-id="{{$product['product']->id}}" placeholder="{{$user->translations['translations']['promocode'][Cookie::get('locale')]??""}}">
                                         </div>
                                         <div class="col-4 d-flex align-items-center promocode-apply text-center justify-content-center">
                                             <button style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">
-                                                Apply
+                                                {{$user->translations['translations']['apply'][Cookie::get('locale')]??""}}
                                             </button>
                                         </div>
                                     </div>

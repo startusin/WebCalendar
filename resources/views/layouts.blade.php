@@ -23,19 +23,20 @@
         }
     </style>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/customstyle.css') }}">
     <title>Calendar</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/customstyle.css') }}">
 
 </head>
 <body>
 
 
 @yield('content')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>

@@ -5,7 +5,7 @@ $(document).ready(function () {
     let productIds = [];
     let CurrentLang;
     let rememberDate = {};
-
+    let currentSlotOnView = {};
 
     if ($('.logoImage img').attr('src') === '') {
         $('.logoImage').css('display', 'none');
@@ -155,6 +155,11 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.bootstrap-calendar-day', function () {
+
+        let element = document.querySelector('.js-events');
+
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
         currentDate = $(this).data('date');
         $('.event-time').each(function (index, element) {
 
@@ -217,6 +222,10 @@ $(document).ready(function () {
         $('.event-time').removeClass('active');
         $(this).addClass('active');
         AddAndRemoveDate();
+
+
+
+
         let dateFromClick = $(this).text();
         let timestamp = $(this).data('id');
         let language = $(this).data('language');
@@ -236,18 +245,32 @@ $(document).ready(function () {
         if (!array[currentDate]) {
             array[currentDate] = {};
         }
-        if (!array[currentDate]['objects']) {
-            array[currentDate]['objects'] = [];
-        }
-            let indexOfElement = array[currentDate]['objects'].findIndex(item => item.timestamp === timestamp && item.language === language);
-            if (indexOfElement<0){
-                array[currentDate]['objects'].push(itemObject);
-            } else {
-                array[currentDate]['objects'].splice(indexOfElement,1);
-            }
-            if (array[currentDate]['objects'].length<=0){
-                delete array[currentDate];
-            }
+        array[currentDate]['objects'] = [];
+        array[currentDate]['objects'].push(itemObject);
+
+        let tempTime = moment(itemObject.startTime);
+        let formattedStartTime = tempTime.format('D MMMM YYYY HH[h]mm');
+        $("#ViewCurrentSlot").text(formattedStartTime);
+
+        console.log('currentSlotOnView');
+        console.log(currentSlotOnView);
+        // Мультивибір слотів
+        // if (!array[currentDate]['objects']) {
+        //     array[currentDate]['objects'] = [];
+        // }
+        //     let indexOfElement = array[currentDate]['objects'].findIndex(item => item.timestamp === timestamp && item.language === language);
+        //     if (indexOfElement<0){
+        //         array[currentDate]['objects'].push(itemObject);
+        //     } else {
+        //         array[currentDate]['objects'].splice(indexOfElement,1);
+        //     }
+        //     if (array[currentDate]['objects'].length<=0){
+        //         delete array[currentDate];
+        //     }
+            console.log('array');
+            console.log(array);
+            console.log('currentDate');
+            console.log(currentDate);
         EnabledOrDisabledButton();
 
         var params = {
@@ -293,6 +316,9 @@ $(document).ready(function () {
 
                 $('.products-area').removeClass('d-none');
                 $('.button-order').removeClass('d-none');
+                let ellement = document.querySelector('.button-order');
+                console.log("DASDASDASDASDASDASDAS");
+                ellement.scrollIntoView();
             },
             error: function(error) {
                 console.error('Помилка при відправленні запиту:', error);
