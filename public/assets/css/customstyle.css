@@ -726,13 +726,13 @@ justify-content: end;
 @media (max-width: 568px) {
 
     #ViewCurrentSlot{
-        width: 39%;
+        width: 49%;
     }
     #PurchaseButton{
-        width: 32%;
+        width: 24%;
     }
     #TotalSlot{
-        width: 29%;
+        width: 27%;
     }
 
     .successIcon{
@@ -759,3 +759,24 @@ justify-content: end;
 }
 
 
+
+@media (max-width: 494px) {
+    #ViewCurrentSlot {
+        width: 42%;
+    }
+    #PurchaseButton{
+        width: 27%;
+    }
+    #TotalSlot{
+        width: 32%;
+    }
+
+}
+@media (max-width: 434px) {
+    #ViewCurrentSlot {
+        width: 35%;
+    }
+    #PurchaseButton{
+        width: 34%;
+    }
+}
