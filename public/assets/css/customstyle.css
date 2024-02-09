@@ -710,7 +710,6 @@ justify-content: end;
 }
 
 .PurchaseContainer{
-    display: flex;
     height: 100vh;
     padding: 40px;
 }
