@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('/checkPromocode', [\App\Http\Controllers\PromocodeController::class, 'checkPromocode'])->name('checkPromocode');
     Route::get('/payment/{booking}', [\App\Http\Controllers\PaymentController::class, 'index']);
+    Route::post('/payment/update-intent', [\App\Http\Controllers\PaymentController::class, 'updateIntent']);
     Route::post('/stripe/hook', [\App\Http\Controllers\PaymentController::class, 'hook']);
     Route::get('/payment-success', [\App\Http\Controllers\PaymentController::class, 'successPage']);
 

@@ -81,7 +81,12 @@ $(document).ready(function () {
             console.log("selectPrice"+selectPrice);
             sum += selectQuantity * selectPrice;
         });
-        $('.total-sum').text((Math.round((sum) * 100) / 100).toFixed(2)+"€");
+
+        let totalSum = (Math.round((sum) * 100) / 100).toFixed(2);
+
+        $('.total-sum').text(totalSum + "€");
+
+        return totalSum;
     }
 
     function setActive() {
@@ -637,19 +642,34 @@ $(document).ready(function () {
             console.log(dataToSend);
 
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                url: '/makeSlot',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                url: '/payment/update-intent',
                 method: 'POST',
-                data: dataToSend,
-                success: function(response) {
-                    window.location.replace("/payment/" + response.id);
+                data: {
+                    totalSum: TotalSum(),
+                    intentId: $('.all-purchase').data('intent'),
+                    meta: dataToSend,
                 },
-                error: function(error) {
-                    console.error('Error:', error);
+                success: function() {
+                    $('#payment-form #submit').click();
                 }
             });
+
+
+            // $.ajax({
+            //     headers: {
+            //         'X-CSRF-TOKEN': csrfToken
+            //     },
+            //     url: '/makeSlot',
+            //     method: 'POST',
+            //     data: dataToSend,
+            //     success: function(response) {
+            //        // window.location.replace("/payment/" + response.id);
+            //     },
+            //     error: function(error) {
+            //         console.error('Error:', error);
+            //     }
+            // });
         }
     });
 
@@ -801,5 +821,11 @@ $(document).ready(function () {
         $('.brunch-price span').text(price);
 
         $(target).addClass('selected');
+    });
+
+    $('.make-purchase').click((e) => {
+        e.preventDefault();
+
+        $('form#form-data').submit();
     });
 });

@@ -15,6 +15,7 @@ use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Stripe\StripeClient;
 
 class PurchaseController extends Controller
 {
@@ -78,6 +79,7 @@ class PurchaseController extends Controller
         $data = $request->all();
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
 
         foreach ($data['slots'] as $key => $dateTime) {
             foreach ($dateTime as $items) {
@@ -106,7 +108,16 @@ class PurchaseController extends Controller
             $brunchId = $data['branchId'];
             $brunchPrice = $brunch->price;
 
-            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user'));
+            $intent = $stripe->paymentIntents->create([
+                'amount' => (float)$totalSum * 100,
+                'currency' => 'eur',
+                'automatic_payment_methods' => ['enabled' => true],
+//                'metadata' => [
+//                    'test' => '24353'
+//                ]
+            ]);
+
+            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -144,7 +155,13 @@ class PurchaseController extends Controller
 
         $isBrunch = false;
 
-        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData'));
+        $intent = $stripe->paymentIntents->create([
+            'amount' => (float)$totalSum * 100,
+            'currency' => 'eur',
+            'automatic_payment_methods' => ['enabled' => true],
+        ]);
+
+        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData', 'intent'));
     }
 
     public function makeSlot(Request $request)
