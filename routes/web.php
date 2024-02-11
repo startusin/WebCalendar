@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-    Route::get("/sendNotification", [\App\Http\Controllers\SlotController::class, 'sendNotification'])->name('sendNotification');
+    Route::get("/send-notification", [\App\Http\Controllers\TaskController::class, 'sendNotification'])->name('sendNotification');
 
     Route::get("/locale/{lange}", [\App\Http\Controllers\LocalizationController::class, 'setLang'])->name('setLang');
     Route::get("/currentLanguage", [\App\Http\Controllers\LocalizationController::class, 'getCurrentLanguage'])->name('getCurrentLanguage');
@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
+
+    Route::get('/calendar/emails/edit', [\App\Http\Controllers\EmailsController::class, 'edit'])->name('emails.edit');
+    Route::post('/calendar/emails/update', [\App\Http\Controllers\EmailsController::class, 'update'])->name('emails.update');
 
     Route::get('/calendar/translations/edit', [\App\Http\Controllers\TranslationsController::class, 'edit'])->name('translations.edit');
     Route::put('/calendar/translations/update', [\App\Http\Controllers\TranslationsController::class, 'update'])->name('translations.update');

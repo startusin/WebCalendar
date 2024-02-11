@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Emails\CSEmail;
+use App\Emails\PurchaseEmail;
 use App\Models\BookedBrunch;
 use App\Models\BookedSlots;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
 use App\Models\Brunch;
+use App\Models\CalendarSettings;
 use App\Models\Indent;
 use App\Models\Product;
 use App\Models\ProductPrice;
@@ -15,6 +18,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 use Stripe\StripeClient;
 
 //use Omnipay\Omnipay;
@@ -91,6 +96,37 @@ class PaymentController extends Controller
                 $booking = Bookings::find($piEntity->booking_id);
                 $booking->payment_status = 'paid';
                 $booking->save();
+
+
+                $calendarId = $booking->slots()->first()->calendar_id;
+                $settings = CalendarSettings::where('calendar_id', $calendarId)->first();
+
+                if ($settings) {
+                    $productsHTML = '';
+                    $language = $settings->language;
+                    $bookingProducts = BookingProduct::where('booking_id', $booking->id)->get() ?? [];
+                    $purchaseEmail = $settings->purchase_email[$language] ?? View::make('customer.emails.email.purchase')->render();
+                    $itemEmail = $settings->item_email[$language] ?? View::make('customer.emails.email.item')->render();
+
+                    foreach ($bookingProducts as $bookingProduct) {
+                        $quantity = $bookingProduct->quantity;
+                        $price = number_format($bookingProduct->sold_price / $quantity, 2);
+
+                        $itemEmailCopy = $itemEmail;
+                        $itemEmailCopy = str_replace('{:TITLE:}', $bookingProduct->product->title[$language] ?? 'No Title', $itemEmailCopy);
+                        $itemEmailCopy = str_replace('{:PRICE:}', $price, $itemEmailCopy);
+                        $itemEmailCopy = str_replace('{:QUANTITY:}', $quantity, $itemEmailCopy);
+                        $itemEmailCopy = str_replace('{:TOTAL_PRICE:}', $bookingProduct->sold_price, $itemEmailCopy);
+
+                        $productsHTML .= $itemEmailCopy;
+                    }
+
+                    $purchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $purchaseEmail);
+                    $purchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $purchaseEmail);
+                    $subject = $settings->cs_email_title[$language] ?? 'Purchase title';
+
+                    Mail::to($booking->email)->send(new PurchaseEmail($subject, $purchaseEmail));
+                }
 
                 break;
             case 'payment_intent.requires_action':

@@ -21,7 +21,14 @@ class CalendarSettings extends Model
         'working_hr_start',
         'working_hr_end',
         'interval',
-        'language'
+        'language',
+        'cs_email',
+        'purchase_email',
+        'item_email',
+        'cs_email_title',
+        'purchase_email_title',
+        'sms_reminder',
+        'remind_time'
     ];
 
     protected $casts = [
@@ -30,5 +37,11 @@ class CalendarSettings extends Model
         'default_quantity' => 'array',
         'working_hr_start' => 'array',
         'working_hr_end' => 'array',
+        'cs_email' => 'array',
+        'purchase_email' => 'array',
+        'item_email' => 'array',
+        'cs_email_title' => 'array',
+        'purchase_email_title' => 'array',
+        'sms_reminder' => 'array'
     ];
 }

@@ -100,6 +100,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{route('emails.edit')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-envelope text-dark"></i>
+                        <p class="text-dark">
+                            Emails
+                        </p>
+                    </a>
+                </li>
             @endif
         </ul>
 
