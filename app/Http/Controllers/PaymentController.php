@@ -69,17 +69,19 @@ class PaymentController extends Controller
         $endpointSecret = 'whsec_911f7bd8f396a4b56dba81150f41f06ebe2a1ff111a2eb1f41c55aea60b38920';
 
         $payload = @file_get_contents('php://input');
-        $sign = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+//        $sign = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+//
+//        try {
+//            $event = \Stripe\Webhook::constructEvent($payload, $sign, $endpointSecret);
+//        } catch(\UnexpectedValueException $e) {
+//            http_response_code(400);
+//            exit();
+//        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+//            http_response_code(400);
+//            exit();
+//        }
 
-        try {
-            $event = \Stripe\Webhook::constructEvent($payload, $sign, $endpointSecret);
-        } catch(\UnexpectedValueException $e) {
-            http_response_code(400);
-            exit();
-        } catch(\Stripe\Exception\SignatureVerificationException $e) {
-            http_response_code(400);
-            exit();
-        }
+        $event = json_decode($payload);
 
         switch ($event->type) {
             case 'payment_intent.succeeded':
