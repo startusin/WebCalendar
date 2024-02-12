@@ -484,7 +484,7 @@ $(document).ready(function () {
                 console.log('response.slots[0].start_date');
                 let dateTime = response.slots[0].start_date;
                 console.log(dateTime);
-                $('#SlotStarted').text(moment(dateTime).format('YYYY-MM-DD HH:mm:ss'));
+                $('#SlotStarted').text(moment.utc(dateTime).local().format('YYYY/MM/DD HH:mm'));
             }
         })
     });

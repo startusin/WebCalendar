@@ -5,10 +5,9 @@ $(document).ready(function() {
     function getAllData() {
         let last;
         $('tbody tr').each(function() {
-            let lastValue; // Змінна для зберігання останнього значення value
-            // Пройтися по всім елементам input з атрибутом name="priority" в поточному рядку
+            let lastValue;
             $(this).find('input[name="priority"]').each(function() {
-                last = $(this).val(); // Записати останнє значення value у змінну
+                last = $(this).val();
 
             });
         });
@@ -631,11 +630,13 @@ $(document).ready(function() {
         let isCanSend = true;
         $('tbody tr').each(function() {
             var rowData = {};
-
+            let IsAvailable = $(this).find('select[name="is_available"]').val();
+            console.log('IsAvailable');
+            console.log(IsAvailable);
             $(this).find('input, select').each(function() {
                 var name = $(this).attr('name');
                 var value = $(this).val();
-                if (value === "") {
+                if (value === "" && IsAvailable == 1) {
                     $(this).addClass('customError');
                     isCanSend = false;
                 } else {
