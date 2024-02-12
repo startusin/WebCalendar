@@ -19,6 +19,15 @@ use Stripe\StripeClient;
 
 class PurchaseController extends Controller
 {
+    public function changeStatus(Request $request){
+        $data = $request->all();
+        $booking = Bookings::find($data['id']);
+        $booking->update([
+            'payment_status' => $data['status']
+        ]);
+        return response()->json(['message' => 'Successfully updated'], 200);
+    }
+
     public function getAllPurchases()
     {
         $userId = auth()->user()->id;

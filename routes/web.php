@@ -59,6 +59,7 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'customer'], function () {
 
+            Route::post('changeStatus', [\App\Http\Controllers\PurchaseController::class, 'changeStatus']);
             Route::get('purchase/all', [\App\Http\Controllers\PurchaseController::class, 'getAllPurchases'])->name('purchase.index');
             Route::get('purchase/show/{id}', [\App\Http\Controllers\PurchaseController::class, 'getPurchase'])->name('purchase.show');
 

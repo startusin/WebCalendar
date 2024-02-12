@@ -148,6 +148,35 @@ $(document).ready(function () {
         console.log(rememberDate);
     }
 
+    $(document).on('change', '.Payments', function (){
+        let currentStatus = $(this).val();
+        let currentId = $(this).data('id');
+        console.log(currentStatus);
+        console.log(currentId);
+
+        let csrfToken = $('meta[name="csrf-token"]').attr('content');
+        console.log(csrfToken);
+
+        let dataToSend = {
+            id: currentId,
+            status: currentStatus
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            url: '/changeStatus',
+            method: 'POST',
+            data: dataToSend,
+            success: function(response) {
+                console.log("Good");
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
     $(document).on('click', '.btn-prev-month', function () {
         $('.bootstrap-calendar-day').removeClass('active');
 
