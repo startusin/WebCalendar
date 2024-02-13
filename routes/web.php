@@ -67,9 +67,8 @@ use Illuminate\Support\Facades\Route;
 
             Route::get('/languages', [\App\Http\Controllers\HomeController::class, 'languages']);
             Route::group(['prefix' => 'slots'], function () {
-                Route::get('', [\App\Http\Controllers\SlotController::class, 'index'])->name('customer.slot.index');
 
-                Route::get('/view', [\App\Http\Controllers\SlotController::class, 'view'])->name('customer.slot.view');
+                Route::get('', [\App\Http\Controllers\SlotController::class, 'view'])->name('customer.slot.view');
                 Route::post('/createOrUpdate', [\App\Http\Controllers\SlotController::class, 'createOrUpdate'])->name('customer.slot.createOrUpdate');
                 Route::get('/allCustomSlots', [\App\Http\Controllers\SlotController::class, 'allCustomSlots'])->name('customer.slot.allCustomSlots');
 

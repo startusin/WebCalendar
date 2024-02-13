@@ -637,7 +637,9 @@ $(document).ready(function() {
             $(this).find('input, select').each(function() {
                 var name = $(this).attr('name');
                 var value = $(this).val();
-                if (value === "" && IsAvailable == 1) {
+                console.log(IsAvailable !=0);
+
+                if ((value === "" && name!=='quantity' && IsAvailable !==0)||(value === "" && name==='quantity'&& +IsAvailable === 1)) {
                     $(this).addClass('customError');
                     isCanSend = false;
                 } else {

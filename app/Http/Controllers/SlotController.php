@@ -20,14 +20,7 @@ class SlotController extends Controller
     {
         $this->slotService = $slotService;
     }
-
-    public function index()
-    {
-        $slots = CustomSlot::where('calendar_id', auth()->id())
-            ->get();
-        return view('customer.slot.index', compact('slots'));
-    }
-
+    
     public function show($id)
     {
         $slot = CustomSlot::find($id);
@@ -49,7 +42,7 @@ class SlotController extends Controller
             $slots = $Fullslots['period_type'];
         }
 
-        return view('customer.slot.ncreate', compact('languages','slots'));
+        return view('customer.slot.index', compact('languages','slots'));
     }
 
     public function allCustomSlots()
