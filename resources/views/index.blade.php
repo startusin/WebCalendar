@@ -175,17 +175,14 @@
             showPopover: false,
 
             formatEvent: function (event) {
-                const startTime = new Date(event.start).toLocaleTimeString('fr-FR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+                const startTimeUtc = moment.utc(event.start);
+                const startTime = startTimeUtc.format('HH:mm');
                 const qty = (event.limit - event.booked) < 0 ? 0 : (event.limit - event.booked);
-
-                return '<button class="event-time meeting d-inline-block w-auto event-item ' + (qty <= 0 ? 'inactive' : '') + '" data-language = ' + event.language + '  data-id = ' + event.timestamp + ' data-start = ' + event.start + ' data-end=' + event.end + ' data-available=' + qty + '>' +
+                return '<button class="event-time meeting d-inline-block w-auto event-item ' + (qty <= 0 ? 'inactive' : '') + '" data-language="' + event.language + '"  data-id="' + event.timestamp + '" data-start="' + event.start + '" data-end="' + event.end + '" data-available="' + qty + '">' +
                     '<img class="event-flag" src="/assets/flags/' + event.language + '.png">' + startTime + '' +
                     '<div class="qty-inner"><i class="fa-regular fa-user attendee-icon"></i> <div class="qty-inner-text">' + qty +
-                    '</div></div></button>'
-            },
+                    '</div></div></button>';
+            }
         });
     </script>
 @endpush

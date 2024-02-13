@@ -6,6 +6,21 @@ $(document).ready(function () {
     let CurrentLang;
     let rememberDate = {};
     let currentSlotOnView = {};
+    let currentLanguage;
+
+    $.ajax({
+        url: '/currentLanguage',
+        async: false,
+        method: 'GET',
+        success: function(data) {
+            currentLanguage = data;
+            console.log("Current Language"+currentLanguage);
+        },
+        error: function(xhr, status, error) {
+
+            console.error(xhr.responseText);
+        }
+    });
 
     if ($('.logoImage img').attr('src') === '') {
         $('.logoImage').css('display', 'none');
@@ -282,8 +297,18 @@ $(document).ready(function () {
         array[currentDate]['objects'] = [];
         array[currentDate]['objects'].push(itemObject);
 
-        let tempTime = moment(itemObject.startTime);
-        let formattedStartTime = tempTime.format('D MMMM YYYY HH[h]mm');
+        let tempTime = moment.utc(itemObject.startTime);
+
+        if (currentLanguage==='fr') {
+            moment.updateLocale('fr', {
+                months: [
+                    "janvier", "février", "mars", "avril", "mai", "juin",
+                    "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+                ]
+            });
+        }
+        let formattedStartTime = tempTime.locale('fr').format('D MMMM YYYY HH[h]mm');
+
         $("#ViewCurrentSlot").text(formattedStartTime);
 
         console.log('currentSlotOnView');
@@ -484,7 +509,7 @@ $(document).ready(function () {
                 console.log('response.slots[0].start_date');
                 let dateTime = response.slots[0].start_date;
                 console.log(dateTime);
-                $('#SlotStarted').text(moment.utc(dateTime).local().format('YYYY/MM/DD HH:mm'));
+                $('#SlotStarted').text(moment.utc(dateTime).format('YYYY/MM/DD HH:mm'));
             }
         })
     });
@@ -498,8 +523,8 @@ $(document).ready(function () {
             success: function (response) {
                 $('#promocodePromocode').text(response.promocode);
                 $('#promocodePrice').text(response.price);
-                $('#promocodeStartDate').text(moment(response.start_date).format('YYYY-MM-DD HH:mm:ss'));
-                $('#promocodeEndDate').text(moment(response.end_date).format('YYYY-MM-DD HH:mm:ss'));
+                $('#promocodeStartDate').text(moment.utc(response.start_date).format('YYYY-MM-DD HH:mm:ss'));
+                $('#promocodeEndDate').text(moment.utc(response.end_date).format('YYYY-MM-DD HH:mm:ss'));
                 $('#promocodeProduct').text(response.product_title.title);
             }
         })
@@ -514,8 +539,8 @@ $(document).ready(function () {
                 $('#slotQuantity').text(response.attendee_qty);
                 $('#slotLanguage').text(response.language);
                 console.log(response.language);
-                $('#slotStartDate').text(moment(response.start_date).format('YYYY-MM-DD HH:mm:ss'));
-                $('#slotEndDate').text(moment(response.end_date).format('YYYY-MM-DD HH:mm:ss'));
+                $('#slotStartDate').text(moment.utc(response.start_date).format('YYYY-MM-DD HH:mm:ss'));
+                $('#slotEndDate').text(moment.utc(response.end_date).format('YYYY-MM-DD HH:mm:ss'));
             }
         })
     });

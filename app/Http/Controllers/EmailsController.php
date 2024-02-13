@@ -22,7 +22,6 @@ class EmailsController extends Controller
         $purchaseEmail = [];
         $purchaseEmailTitle = [];
         $itemEmail = [];
-        $smsReminder = [];
 
         foreach ($request->all() as $key => $value) {
 
@@ -50,23 +49,44 @@ class EmailsController extends Controller
                 $LangKey = explode("_", $key);
                 $csEmailTitle[$LangKey[1]] = $value;
             }
-
-            if (strpos($key, 'sms-reminder') !== false) {
-                $LangKey = explode("_", $key);
-                $smsReminder[$LangKey[1]] = $value;
-            }
         }
 
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+        $settings->main_name = $request->input('main_name');
+        $settings->main_email = $request->input('main_email');
         $settings->cs_email = $csEmail;
         $settings->cs_email_title = $csEmailTitle;
         $settings->purchase_email = $purchaseEmail;
         $settings->purchase_email_title = $purchaseEmailTitle;
         $settings->item_email = $itemEmail;
-        $settings->sms_reminder = $smsReminder;
         $settings->remind_time = (int)$request->get('remind-time');
         $settings->save();
 
         return response()->redirectToRoute('emails.edit');
+    }
+
+    public function editSms()
+    {
+        return view('customer.sms.edit', [
+            'languages' => auth()->user()->languages,
+            'settings' => CalendarSettings::where('calendar_id', auth()->user()->id)->first()
+        ]);
+    }
+
+
+    public function updateSms(Request $request) {
+
+        $smsReminder = [];
+
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'sms-reminder') !== false) {
+                $LangKey = explode("_", $key);
+                $smsReminder[$LangKey[1]] = $value;
+            }
+        }
+        $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+        $settings->sms_reminder = $smsReminder;
+        $settings->save();
+        return response()->redirectToRoute('sms.edit');
     }
 }

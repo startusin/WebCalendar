@@ -64,6 +64,7 @@ $(document).ready(function() {
     function weeks(period) {
         let select = document.createElement('select');
         select.className = "newSelect form-control";
+        select.name = period;
 
         if (period === "start") {
             let option = document.createElement('option');

@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
     Route::get('/calendar/emails/edit', [\App\Http\Controllers\EmailsController::class, 'edit'])->name('emails.edit');
+    Route::get('/calendar/sms/edit', [\App\Http\Controllers\EmailsController::class, 'editSms'])->name('sms.edit');
     Route::post('/calendar/emails/update', [\App\Http\Controllers\EmailsController::class, 'update'])->name('emails.update');
+    Route::post('/calendar/sms/update', [\App\Http\Controllers\EmailsController::class, 'updateSms'])->name('sms.update');
 
     Route::get('/calendar/translations/edit', [\App\Http\Controllers\TranslationsController::class, 'edit'])->name('translations.edit');
     Route::put('/calendar/translations/update', [\App\Http\Controllers\TranslationsController::class, 'update'])->name('translations.update');

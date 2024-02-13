@@ -111,7 +111,6 @@ class HomeController extends Controller
                 }
 
         }
-
         $dateRange = ['from' => $from, 'to' => $to];
 
         foreach ($user->settings->interval as $lang => $interval) {
@@ -194,7 +193,8 @@ class HomeController extends Controller
                         $ruleStart = new \DateTime($rule['start']);
                         $ruleEnd = new \DateTime($rule['end']);
 
-                        if ($timeSlotStart >= $ruleStart && $timeSlotEnd <= $ruleEnd) {
+
+                        if ($timeSlotStart >= $ruleStart && $timeSlotStart <= $ruleEnd) {
                             $excludeSlot = true;
                             break;
                         }

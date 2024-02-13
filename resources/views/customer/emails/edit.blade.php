@@ -40,6 +40,16 @@
                                     @csrf
                                     <input name="calendar_id" value="{{auth()->user()->id}}"  hidden>
 
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" value="{{$settings->main_name}}" name="main_name" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" value="{{$settings->main_email}}" name="main_email" class="form-control">
+                                    </div>
+
                                     <h4 class="mt-3 ml-3">Available shortcodes:</h4>
                                     <ul class="ml-2">
                                         <li>{:LOGOTYPE:}</li>
@@ -100,11 +110,6 @@
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">Purchase title - {{ $language }}</h5>
                                         <input type="text" class="w-100" name="title-email-purchase_{{ $language }}" value="{{ $settings->purchase_email_title[$language] ?? 'Purchase message' }}">
-                                    @endforeach
-
-                                    @foreach ($languages as $language)
-                                        <h5 class="text-center mt-4 mb-3">SMS Reminder - {{ $language }}</h5>
-                                        <input type="text" class="w-100" name="sms-reminder_{{ $language }}" value="{{ $settings->sms_reminder[$language] ?? 'Reminder sms' }}">
                                     @endforeach
 
                                     <h5 class="text-center mt-4 mb-3">Remind time (minutes)</h5>
