@@ -118,6 +118,16 @@
                         </p>
                     </a>
                 </li>
+
+
+                <li class="nav-item">
+                    <a href="{{route('makeOrder')}}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-envelope text-dark"></i>
+                        <p class="text-dark">
+                            Make order
+                        </p>
+                    </a>
+                </li>
             @endif
         </ul>
 

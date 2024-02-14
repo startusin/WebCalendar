@@ -11,6 +11,8 @@
                     <input type="hidden" name="slots" id="slots" value="{{ json_encode($slots) }}">
                     <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
 
+                    <input name="adminValue" id="adminValue" value="{{$admin}}" hidden>
+
                     <div class="sub-title mt-5 mb-4">
                         {{$user->translations['translations']['choise1'][Cookie::get('locale')]??""}}
                     </div>
@@ -216,7 +218,8 @@
             </div>
         </div>
     </div>
-
+    @if($admin == false)
     <script src="{{asset('assets/js/stripe.js')}}"></script>
+    @endif
 @endsection
 

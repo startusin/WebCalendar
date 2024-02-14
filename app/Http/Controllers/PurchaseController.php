@@ -19,6 +19,10 @@ use Stripe\StripeClient;
 
 class PurchaseController extends Controller
 {
+    public function makeOrder() {
+        return view('customer.orders.makeorder');
+    }
+
     public function changeStatus(Request $request){
         $data = $request->all();
         $booking = Bookings::find($data['id']);
@@ -86,6 +90,9 @@ class PurchaseController extends Controller
     public function index(Request $request)
     {
         $data = $request->all();
+
+        $admin = $data['adminValue']??false;
+
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);
         $stripe = new StripeClient(env('STRIPE_SECRET'));
@@ -125,8 +132,7 @@ class PurchaseController extends Controller
 //                    'test' => '24353'
 //                ]
             ]);
-
-            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent'));
+            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -170,14 +176,20 @@ class PurchaseController extends Controller
             'automatic_payment_methods' => ['enabled' => true],
         ]);
 
-        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData', 'intent'));
+        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin'));
+    }
+
+    public function storeOrder(Request $request){
+        dd($request->all());
     }
 
     public function makeSlot(Request $request)
     {
         $data = $request->all();
-        $data['slots'] = json_decode($data['slots']);
 
+        $adminValue = $data['adminValue']??false;
+        $data['calendarId'] = strstr($data['calendarId'], '?', true);
+        $data['slots'] = json_decode($data['slots']);
         $bookedSlot = BookedSlots::create([
             'start_date' => $data['slots']->startDateSlot->date,
             'end_date' => $data['slots']->endDateSlot->date,
@@ -216,8 +228,16 @@ class PurchaseController extends Controller
                 'brunch_id' => $brunch->id,
                 'total' => $brunch->price * (int)$data['qty'],
             ]);
+            if ($adminValue==false){
+                return $booking;
+            } else {
+                $routeParams = [
+                    'user' => $data['calendarId'],
+                    'admin' => 'true'
+                ];
 
-            return $booking;
+                return redirect()->route('index', $routeParams);
+            }
         }
 
         foreach ($data['ProductQuantity'] as $id => $item) {
@@ -239,7 +259,16 @@ class PurchaseController extends Controller
             ]);
         }
 
-        return $booking;
+        if ($adminValue==false){
+            return $booking;
+        } else {
+            $routeParams = [
+                'user' => $data['calendarId'],
+                'admin' => 'true'
+            ];
+
+            return redirect()->route('index', $routeParams);
+        }
     }
 
     public function loadBrunches(Request $request)

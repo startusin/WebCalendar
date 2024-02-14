@@ -26,8 +26,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(User $user)
+    public function index(Request $request,User $user)
     {
+        $admin = $request->input("admin")??false;
+
         if (!$user->settings || !$user->translations) {
             die('Calendar isn\'t configured. Login and go to Settings tab and configure it, and you must to save translations');
         }
@@ -55,7 +57,8 @@ class HomeController extends Controller
             'user' => $user,
             'logo' => $logo,
             'banner' => $banner,
-            'locale' => $locale
+            'locale' => $locale,
+            'admin' => $admin
         ]);
     }
     /**

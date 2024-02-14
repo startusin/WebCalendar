@@ -2,6 +2,7 @@
 @section('content')
     <div class="container MyContainer main-container" data-calendar-id="{{ $user->id }}">
         <div class="row justify-content-center">
+            <input name = 'admin' value="{{$admin}}" hidden>
             <header class="d-block my-header pb-4 mt-4 mb-3 text-center position-relative">
                 <img src="{{$logo!=null ? asset('storage/' . $logo): '/demologo.png' }}" class="calendar-logo"/>
 

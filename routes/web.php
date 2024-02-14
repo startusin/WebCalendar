@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 
     Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+    Route::get('/makeOrder', [App\Http\Controllers\PurchaseController::class, 'makeOrder'])->name('makeOrder');
     Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
     Route::get('/calendar/emails/edit', [\App\Http\Controllers\EmailsController::class, 'edit'])->name('emails.edit');
@@ -39,6 +40,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('/checkprice', [\App\Http\Controllers\PurchaseController::class, 'checkprice'])->name('checkprice');
     Route::get('/purchase', [\App\Http\Controllers\PurchaseController::class, 'index'])->name('purchase');
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
+    Route::post('/storeOrder', [\App\Http\Controllers\PurchaseController::class, 'storeOrder'])->name('storeOrder');
+    Route::get('/makeOrder', [App\Http\Controllers\PurchaseController::class, 'makeOrder'])->name('makeOrder');
 
     Route::get('/checkPromocode', [\App\Http\Controllers\PromocodeController::class, 'checkPromocode'])->name('checkPromocode');
     Route::get('/payment/{booking}', [\App\Http\Controllers\PaymentController::class, 'index']);
