@@ -651,7 +651,7 @@ $(document).ready(function () {
             let csrfToken = $('meta[name="csrf-token"]').attr('content');
             console.log('adminValue');
             console.log(adminValue);
-            if (adminValue === 'false') {
+            if (adminValue !== '1') {
                 if ($('.makesPurchase').data('type') === 'brunch') {
                     var dataToSend = {
                         calendarId: calendarId,
