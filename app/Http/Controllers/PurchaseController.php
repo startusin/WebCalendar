@@ -91,7 +91,7 @@ class PurchaseController extends Controller
     {
         $data = $request->all();
 
-        $admin = $data['adminValue']??false;
+        $admin = (bool)$request->get('direct-booking') && auth()->user();
 
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);

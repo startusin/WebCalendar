@@ -399,7 +399,7 @@ $(document).ready(function () {
                 $('.products-area').removeClass('d-none');
                 $('.button-order').removeClass('d-none');
                 let ellement = document.querySelector('.button-order');
-                console.log("DASDASDASDASDASDASDAS");
+
                 ellement.scrollIntoView();
             },
             error: function(error) {
@@ -577,6 +577,7 @@ $(document).ready(function () {
         }
     });
 
+    const directBooking = $('.main-container').data('direct-booking');
 
     $(document).on('click', '.reserve', function () {
         if ($('.brunch.selected').length > 0) {
@@ -588,7 +589,8 @@ $(document).ready(function () {
                 type: 'branch',
                 branchId: branchId,
                 branchQty: quantity,
-                calendarId: parseInt($('.main-container').data('calendar-id'), 10)
+                calendarId: parseInt($('.main-container').data('calendar-id'), 10),
+                'direct-booking': directBooking,
             });
 
             window.location.href = '/purchase?' + queryString;
@@ -617,7 +619,13 @@ $(document).ready(function () {
         });
 
 
-        let queryString = $.param({  slots: array, productIdsQuantity: dataIds, productPriceId: productPriceId, adminValue:adminValue, calendarId: lastPart });
+        let queryString = $.param({
+            slots: array,
+            productIdsQuantity: dataIds,
+            productPriceId: productPriceId,
+            calendarId: lastPart,
+            'direct-booking': directBooking
+        });
         console.log(queryString);
         window.location.href = '/purchase?' + queryString;
     });

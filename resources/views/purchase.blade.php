@@ -218,8 +218,9 @@
             </div>
         </div>
     </div>
-    @if($admin == false)
-    <script src="{{asset('assets/js/stripe.js')}}"></script>
+
+    @if(!$admin)
+        <script src="{{asset('assets/js/stripe.js')}}"></script>
     @endif
 @endsection
 

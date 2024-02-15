@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index(Request $request,User $user)
     {
-        $admin = $request->input("admin")??false;
+        $admin = (bool)$request->get('direct-booking');
 
         if (!$user->settings || !$user->translations) {
             die('Calendar isn\'t configured. Login and go to Settings tab and configure it, and you must to save translations');
