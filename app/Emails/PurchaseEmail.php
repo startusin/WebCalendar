@@ -6,10 +6,11 @@ use Illuminate\Mail\Mailable;
 
 class PurchaseEmail extends Mailable
 {
-    public function __construct(protected string $subj, protected string $htmlContent)
+    public function __construct(protected string $subj, protected string $htmlContent, protected string $fromAddress, protected string $fromName)
     {}
 
     public function build() {
-        return $this->html($this->htmlContent)->subject($this->subj);
+        return $this->from($this->fromAddress, $this->fromName)
+            ->html($this->htmlContent)->subject($this->subj);
     }
 }

@@ -127,7 +127,7 @@ class PaymentController extends Controller
                     $purchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $purchaseEmail);
                     $subject = $settings->cs_email_title[$language] ?? 'Purchase title';
 
-                    Mail::to($booking->email)->send(new PurchaseEmail($subject, $purchaseEmail));
+                    Mail::to($booking->email)->send(new PurchaseEmail($subject, $purchaseEmail, $settings->main_email, $settings->main_name));
                 }
 
                 break;
