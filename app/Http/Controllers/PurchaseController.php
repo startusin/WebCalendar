@@ -228,16 +228,8 @@ class PurchaseController extends Controller
                 'brunch_id' => $brunch->id,
                 'total' => $brunch->price * (int)$data['qty'],
             ]);
-            if ($adminValue==false){
-                return $booking;
-            } else {
-                $routeParams = [
-                    'user' => $data['calendarId'],
-                    'admin' => 'true'
-                ];
 
-                return redirect()->route('index', $routeParams);
-            }
+            return $booking;
         }
 
         foreach ($data['ProductQuantity'] as $id => $item) {
@@ -258,17 +250,7 @@ class PurchaseController extends Controller
                 'sold_price' => $soldPrice
             ]);
         }
-
-        if ($adminValue==false){
-            return $booking;
-        } else {
-            $routeParams = [
-                'user' => $data['calendarId'],
-                'admin' => 'true'
-            ];
-
-            return redirect()->route('index', $routeParams);
-        }
+        return $booking;
     }
 
     public function loadBrunches(Request $request)

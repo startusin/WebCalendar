@@ -1,13 +1,28 @@
 $(document).ready(function () {
     var array = {};
-    let currentDate;
+    var currentDate;
     let dataIds = {};
     let productIds = [];
     let CurrentLang;
     let rememberDate = {};
     let currentSlotOnView = {};
     let currentLanguage;
+    console.log(getCookie('currentDate'));
+    function getCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+        return null;
+    }
 
+
+
+    //tempTime.format('D MMMM YYYY HH[h]mm');
+    $('#SuccessDateId').text(getCookie('currentDate'));
     $.ajax({
         url: '/currentLanguage',
         async: false,
@@ -210,6 +225,7 @@ $(document).ready(function () {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         currentDate = $(this).data('date');
+
         $('.event-time').each(function (index, element) {
 
             let selectTimeDate = $(element).data('id');
@@ -304,10 +320,17 @@ $(document).ready(function () {
                 months: [
                     "janvier", "février", "mars", "avril", "mai", "juin",
                     "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+                ],
+                weekdays: [
+                    "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"
                 ]
             });
         }
+
         let formattedStartTime = tempTime.locale('fr').format('D MMMM YYYY HH[h]mm');
+        let formattedForSuccessPage = tempTime.locale('fr').format('dddd D MMMM YYYY HH[h]mm');
+
+        document.cookie = "currentDate=" + String(formattedForSuccessPage) + "; expires=" + 3600 + "; path=/";
 
         $("#ViewCurrentSlot").text(formattedStartTime);
 
@@ -618,8 +641,9 @@ $(document).ready(function () {
 
             let slotId = $('#slots').val();
             let csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-            if (adminValue == false) {
+            console.log('adminValue');
+            console.log(adminValue);
+            if (adminValue === 'false') {
                 if ($('.makesPurchase').data('type') === 'brunch') {
                     var dataToSend = {
                         calendarId: calendarId,
@@ -801,7 +825,9 @@ $(document).ready(function () {
                     method: 'POST',
                     data:  dataToSend,
                     success: function () {
-                        $('#payment-form #submit').click();
+                        alert("Order successfully processed");
+                        window.location.replace("/makeOrder");
+                        parent.location.reload();
                     }
                 });
             }

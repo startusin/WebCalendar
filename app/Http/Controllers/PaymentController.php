@@ -179,7 +179,11 @@ class PaymentController extends Controller
     public function successPage(Request $request)
     {
         $user = User::find((int)$request->calendar_id);
-        return view('customer.payment.success', compact('user'));
+        $logo = null;
+        if (isset($user->settings['logo'])){
+            $logo = $user->settings['logo'];
+        }
+        return view('customer.payment.success', compact('user','logo'));
     }
 
     public function updateIntent(Request $request)
