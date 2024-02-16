@@ -108,7 +108,7 @@ class PaymentController extends Controller
                     return response()->json(['success' => false, 422]);
                 }
 
-                $booking = Bookings::find($piEntity->booking_id);
+                $booking = Bookings::find($bookingId);
                 $booking->payment_status = 'paid';
                 $booking->save();
 
