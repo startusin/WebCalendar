@@ -184,6 +184,7 @@ class PaymentController extends Controller
         if (isset($user->settings['logo'])){
             $logo = $user->settings['logo'];
         }
+
         return view('customer.payment.success', compact('user','logo', 'date'));
     }
 

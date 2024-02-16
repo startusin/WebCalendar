@@ -37,6 +37,38 @@
 
 @push('firstJs')
     <script>
-        document.cookie = "currentDate=" + String({{$date}}) + "; expires=" + 3600 + "; path=/";
+        let currentLanguage;
+        $.ajax({
+            url: '/currentLanguage',
+            async: false,
+            method: 'GET',
+            success: function(data) {
+                currentLanguage = data;
+                console.log("Current Language"+currentLanguage);
+            },
+            error: function(xhr, status, error) {
+
+                console.error(xhr.responseText);
+            }
+        });
+
+        let tempTime =  moment('{{$date}}');
+
+        if (currentLanguage==='fr') {
+            moment.updateLocale('fr', {
+                months: [
+                    "janvier", "février", "mars", "avril", "mai", "juin",
+                    "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+                ],
+                weekdays: [
+                    "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"
+                ]
+            });
+        }
+
+        let formattedStartTime = tempTime.locale('fr').format('D MMMM YYYY HH[h]mm');
+        console.log(formattedStartTime);
+
+        document.cookie = "currentDate=" + String(formattedStartTime) + "; expires=" + 3600 + "; path=/";
     </script>
 @endpush
