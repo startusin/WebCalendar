@@ -94,6 +94,20 @@ class PaymentController extends Controller
                     $piEntity->save();
                 }
 
+                $bookingId = null;
+
+                if (isset($piEntity->booking_id)) {
+                    $bookingId = $piEntity->booking_id;
+                }
+
+                if (isset($paymentIntent->metadata->booking_id)) {
+                    $bookingId = $paymentIntent->metadata->booking_id;
+                }
+
+                if (!$bookingId) {
+                    return response()->json(['success' => false, 422]);
+                }
+
                 $booking = Bookings::find($piEntity->booking_id);
                 $booking->payment_status = 'paid';
                 $booking->save();
