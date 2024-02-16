@@ -42,7 +42,6 @@ class PaymentController extends Controller
         } else {
             $sum = $booking->products()->sum('sold_price');
         }
-
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 
         $product = $stripe->products->create(['name' => 'Booking ID: ' . $booking->id]);

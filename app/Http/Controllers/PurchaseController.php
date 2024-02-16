@@ -48,13 +48,17 @@ class PurchaseController extends Controller
                 $month = date('m', strtotime($booking->created_at));
                 $id = str_pad($booking->id, 4, '0', STR_PAD_LEFT);
                 $orderNumber = $year . $month . $id;
+
+                $paymentLinkEnd = $booking->type == 'brunch'? "?type=brunch" : "";
+                $paymentLinkStart = "/payment/".$booking->id;
+                //$paymentLinkStart = \request()->getHttpHost()."/payment/".$booking->id;
                 return (object)[
                     'booking' => $booking,
                     'total_sold_price' => $totalSoldPrice,
-                    'customId' => $orderNumber
+                    'customId' => $orderNumber,
+                    'paymentLink' => $paymentLinkStart.$paymentLinkEnd
                 ];
             });
-
         return view('customer.history.index', compact('purchases'));
     }
 

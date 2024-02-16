@@ -32,6 +32,7 @@
                                         <th class="col-2">Sold price</th>
                                         <th class="col-1">Status</th>
                                         <th class="col-3">Information</th>
+                                        <th class="col-3">Payment link</th>
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">
@@ -63,6 +64,7 @@
                                                     <i class="far fa-eye"></i>
                                                 </a>
                                             </td>
+                                            <td> <a href="{{$item->paymentLink}}"> <i class="fa-solid fa-wallet"></i> </a></td>
 
                                         </tr>
                                     @endforeach
