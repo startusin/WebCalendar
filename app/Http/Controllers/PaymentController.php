@@ -54,7 +54,7 @@ class PaymentController extends Controller
 
         $data = $stripe->checkout->sessions->create([
             'customer_email' => $booking->email,
-            'success_url' => url('/') . '/payment-success',
+            'success_url' => url('/') . '/payment-success?user_id='.$booking->slots[0]['calendar_id']."&date=".$booking->slots[0]['start_date'],
             'line_items' => [['price' => $price->id, 'quantity' => 1]],
             'mode' => 'payment',
             'payment_intent_data' => ['metadata' => ['booking_id' => $booking->id]]
@@ -177,12 +177,14 @@ class PaymentController extends Controller
 
     public function successPage(Request $request)
     {
-        $user = User::find((int)$request->calendar_id);
+        $user = User::find((int)$request->input('user_id'));
         $logo = null;
+
+        $date = $request->input('date');
         if (isset($user->settings['logo'])){
             $logo = $user->settings['logo'];
         }
-        return view('customer.payment.success', compact('user','logo'));
+        return view('customer.payment.success', compact('user','logo', 'date'));
     }
 
     public function updateIntent(Request $request)

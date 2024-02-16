@@ -33,6 +33,10 @@ class LangService
         $translations['apply']['en'] = "Apply";
         $translations['noAppointment']['en'] = "No appointment on this day";
 
+        $translations['thanks']['en'] = "Thanks !";
+        $translations['received-reservation']['en'] = "We have received your reservation to visit our cellars";
+        $translations['invite-meet-us']['en'] = "We therefore invite you to meet us on";
+        $translations['see-you-soon']['en'] = "You will receive a confirmation email today with the details of your order. See you soon";
     }
 
 
@@ -64,5 +68,10 @@ class LangService
         $translations['promocode']['fr'] = "Code promo";
         $translations['apply']['fr'] = "Appliquer";
         $translations['noAppointment']['fr'] = "pas de rendez-vous ce jour";
+
+        $translations['thanks']['fr'] = "Merci !";
+        $translations['received-reservation']['fr'] = "Nous avons blen receptionee votre reservation pour visitier nos caves";
+        $translations['invite-meet-us']['fr'] = "Nous vous donnons donc rendez vous le";
+        $translations['see-you-soon']['fr'] = "Vous allez recevoir ce jour un mail de confirmation avec le detail de votre commande. A bientot";
     }
 }

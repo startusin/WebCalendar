@@ -748,7 +748,9 @@ justify-content: end;
     font-weight: 400;
     font-style: normal;
 }
+
 .description-Success{
+    max-width: 500px;
     color:#000000;
     font-size:20px;
     font-family: "Merriweather", serif;
@@ -756,6 +758,7 @@ justify-content: end;
     font-style: normal;
 }
 .ending-Success{
+    max-width: 500px;
     font-size:18px;
     color:#000000;
     font-family: "Merriweather", serif;
