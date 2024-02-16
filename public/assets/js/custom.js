@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    let csrfToken = $('meta[name="csrf-token"]').attr('content');
     var array = {};
     var currentDate;
     let dataIds = {};
@@ -516,7 +517,10 @@ $(document).ready(function () {
             '</tr>';
 
         comments.forEach(function(item) {
-            html += '<tr><td>' + item.comment + '</td><td>' + item.created_at + '</td><td><a class="remove-comment" data-id="' + item.id + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>';
+            const timestamp = new Date(item.created_at);
+            const formattedDate = `${(timestamp.getDate()).toString().padStart(2, '0')}/${(timestamp.getMonth() + 1).toString().padStart(2, '0')}/${timestamp.getFullYear()} ${timestamp.getHours().toString().padStart(2, '0')}:${timestamp.getMinutes().toString().padStart(2, '0')}`;
+
+            html += '<tr><td>' + item.comment + '</td><td>' + formattedDate + '</td><td><a class="remove-comment" data-id="' + item.id + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>';
         });
 
         html += '</table>';
@@ -548,54 +552,11 @@ $(document).ready(function () {
                 let dateTime = response.slots[0].start_date;
                 console.log(dateTime);
 
+                $('.post-comment').data('id', response.id);
+
                 $('#SlotStarted').text(moment.utc(dateTime).format('YYYY/MM/DD HH:mm'));
 
                 let csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                $('.remove-comment').on('click', function(e) {
-                    e.preventDefault();
-
-                    const id = $(e.currentTarget).data('id');
-
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        url: '/purchase/comment/' + id,
-                        method: 'DELETE',
-                        success: function (response) {
-                            $(e.currentTarget).closest('tr').remove();
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                });
-
-                $('.post-comment').on('click', function(e) {
-                    e.preventDefault();
-
-                    const id = response.id;
-                    const text = $('.new-comment-content').val();
-
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        url: '/purchase/comment',
-                        data: {
-                            order_id: id,
-                            comment: text,
-                        },
-                        method: 'POST',
-                        success: function (response) {
-                            window.location.href = '/purchase/all';
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                });
             }
         })
     });
@@ -694,123 +655,87 @@ $(document).ready(function () {
     });
 
 
+    if ($("#form-data").length > 0) {
+        $("#form-data").validate({
+            submitHandler: function (form) {
+                let firstName = $('#First_NameInput').val();
+                let lastName = $('#Last_NameInput').val();
+                let companyName = $('#CompanyInput').val();
+                let RegionName = $('#RegionSelect').val();
+                let streetName = $('#StreetInput').val();
+                let placeName = $('#PlaceInput').val();
+                let postalCodeName = $('#PostalCode').val();
+                let villaName = $('#floatingInput').val();
+                let phoneName = $('#PhoneInput').val();
+                let emailName = $('#EmailInput').val();
+                let calendarId = $('#calendar_id').val();
+                let adminValue = $('#adminValue').val();
 
-    $("#form-data").validate({
-        submitHandler: function(form) {
-            let firstName = $('#First_NameInput').val();
-            let lastName = $('#Last_NameInput').val();
-            let companyName = $('#CompanyInput').val();
-            let RegionName = $('#RegionSelect').val();
-            let streetName = $('#StreetInput').val();
-            let placeName = $('#PlaceInput').val();
-            let postalCodeName = $('#PostalCode').val();
-            let villaName = $('#floatingInput').val();
-            let phoneName = $('#PhoneInput').val();
-            let emailName = $('#EmailInput').val();
-            let calendarId = $('#calendar_id').val();
-            let adminValue = $('#adminValue').val();
+                let slotId = $('#slots').val();
+                let csrfToken = $('meta[name="csrf-token"]').attr('content');
+                console.log('adminValue');
+                console.log(adminValue);
+                if (adminValue !== '1') {
+                    if ($('.makesPurchase').data('type') === 'brunch') {
+                        var dataToSend = {
+                            calendarId: calendarId,
+                            adminValue: adminValue,
+                            slots: slotId,
+                            csrfToken: csrfToken,
+                            firstName: firstName,
+                            lastName: lastName,
+                            companyName: companyName,
+                            RegionName: RegionName,
+                            streetName: streetName,
+                            placeName: placeName,
+                            postalCodeName: postalCodeName,
+                            villaName: villaName,
+                            phoneName: phoneName,
+                            emailName: emailName,
+                            brunchId: $('.prod-info').data('brunch-id'),
+                            type: 'brunch',
+                            qty: $('.prod-info').data('qty'),
+                        };
 
-            let slotId = $('#slots').val();
-            let csrfToken = $('meta[name="csrf-token"]').attr('content');
-            console.log('adminValue');
-            console.log(adminValue);
-            if (adminValue !== '1') {
-                if ($('.makesPurchase').data('type') === 'brunch') {
-                    var dataToSend = {
-                        calendarId: calendarId,
-                        adminValue: adminValue,
-                        slots: slotId,
-                        csrfToken: csrfToken,
-                        firstName: firstName,
-                        lastName: lastName,
-                        companyName: companyName,
-                        RegionName: RegionName,
-                        streetName: streetName,
-                        placeName: placeName,
-                        postalCodeName: postalCodeName,
-                        villaName: villaName,
-                        phoneName: phoneName,
-                        emailName: emailName,
-                        brunchId: $('.prod-info').data('brunch-id'),
-                        type: 'brunch',
-                        qty: $('.prod-info').data('qty'),
-                    };
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            url: '/makeSlot',
+                            method: 'POST',
+                            data: dataToSend,
+                            success: function (response) {
+                                window.location.replace("/payment/" + response.id + '?type=brunch');
+                            },
+                            error: function (error) {
+                                console.error('Error:', error);
+                            }
+                        });
 
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        url: '/makeSlot',
-                        method: 'POST',
-                        data: dataToSend,
-                        success: function (response) {
-                            window.location.replace("/payment/" + response.id + '?type=brunch');
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
+                        return;
+                    }
+
+                    let ProductQuantity = {}
+
+                    $('.products-items .accordion-item').each(function (index, element) {
+                        let productId = $(element).find('.prod-info').data('id');
+                        let productQuantity = $(element).find('.prod-info').data('quantity');
+                        let productPromo = $(element).find('.promocode-input.correct').data('promo');
+
+                        console.log("correct= ");
+                        console.log("PROMP= " + productPromo);
+
+                        if (productPromo === undefined) {
+                            productPromo = null;
                         }
+
+                        ProductQuantity[productId] = {
+                            productQuantity: productQuantity,
+                            productPromo: productPromo
+                        };
+
                     });
 
-                    return;
-                }
-
-                let ProductQuantity = {}
-
-                $('.products-items .accordion-item').each(function (index, element) {
-                    let productId = $(element).find('.prod-info').data('id');
-                    let productQuantity = $(element).find('.prod-info').data('quantity');
-                    let productPromo = $(element).find('.promocode-input.correct').data('promo');
-
-                    console.log("correct= ");
-                    console.log("PROMP= " + productPromo);
-
-                    if (productPromo === undefined) {
-                        productPromo = null;
-                    }
-
-                    ProductQuantity[productId] = {
-                        productQuantity: productQuantity,
-                        productPromo: productPromo
-                    };
-
-                });
-
-                var dataToSend = {
-                    calendarId: calendarId,
-                    adminValue: adminValue,
-                    slots: slotId,
-                    csrfToken: csrfToken,
-                    firstName: firstName,
-                    lastName: lastName,
-                    companyName: companyName,
-                    RegionName: RegionName,
-                    streetName: streetName,
-                    placeName: placeName,
-                    postalCodeName: postalCodeName,
-                    villaName: villaName,
-                    phoneName: phoneName,
-                    emailName: emailName,
-                    ProductQuantity: ProductQuantity
-                };
-
-                console.log(dataToSend);
-
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: '/payment/update-intent',
-                    method: 'POST',
-                    data: {
-                        totalSum: TotalSum(),
-                        intentId: $('.all-purchase').data('intent'),
-                        meta: dataToSend,
-                    },
-                    success: function () {
-                        $('#payment-form #submit').click();
-                    }
-                });
-            }
-            else {
-                if ($('.makesPurchase').data('type') === 'brunch') {
                     var dataToSend = {
                         calendarId: calendarId,
                         adminValue: adminValue,
@@ -826,86 +751,122 @@ $(document).ready(function () {
                         villaName: villaName,
                         phoneName: phoneName,
                         emailName: emailName,
-                        brunchId: $('.prod-info').data('brunch-id'),
-                        type: 'brunch',
-                        qty: $('.prod-info').data('qty'),
+                        ProductQuantity: ProductQuantity
                     };
 
+                    console.log(dataToSend);
+
                     $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url: '/payment/update-intent',
+                        method: 'POST',
+                        data: {
+                            totalSum: TotalSum(),
+                            intentId: $('.all-purchase').data('intent'),
+                            meta: dataToSend,
                         },
+                        success: function () {
+                            $('#payment-form #submit').click();
+                        }
+                    });
+                } else {
+                    if ($('.makesPurchase').data('type') === 'brunch') {
+                        var dataToSend = {
+                            calendarId: calendarId,
+                            adminValue: adminValue,
+                            slots: slotId,
+                            csrfToken: csrfToken,
+                            firstName: firstName,
+                            lastName: lastName,
+                            companyName: companyName,
+                            RegionName: RegionName,
+                            streetName: streetName,
+                            placeName: placeName,
+                            postalCodeName: postalCodeName,
+                            villaName: villaName,
+                            phoneName: phoneName,
+                            emailName: emailName,
+                            brunchId: $('.prod-info').data('brunch-id'),
+                            type: 'brunch',
+                            qty: $('.prod-info').data('qty'),
+                        };
+
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            url: '/makeSlot',
+                            method: 'POST',
+                            data: dataToSend,
+                            success: function (response) {
+                                alert("Order successfully processed");
+                                window.location.replace("/makeOrder");
+                                parent.location.reload();
+                            },
+                            error: function (error) {
+                                console.error('Error:', error);
+                            }
+                        });
+
+                        return;
+                    }
+
+                    let ProductQuantity = {}
+
+                    $('.products-items .accordion-item').each(function (index, element) {
+                        let productId = $(element).find('.prod-info').data('id');
+                        let productQuantity = $(element).find('.prod-info').data('quantity');
+                        let productPromo = $(element).find('.promocode-input.correct').data('promo');
+
+                        console.log("correct= ");
+                        console.log("PROMP= " + productPromo);
+
+                        if (productPromo === undefined) {
+                            productPromo = null;
+                        }
+
+                        ProductQuantity[productId] = {
+                            productQuantity: productQuantity,
+                            productPromo: productPromo
+                        };
+
+                    });
+
+                    var dataToSend = {
+                        calendarId: calendarId,
+                        adminValue: adminValue,
+                        slots: slotId,
+                        csrfToken: csrfToken,
+                        firstName: firstName,
+                        lastName: lastName,
+                        companyName: companyName,
+                        RegionName: RegionName,
+                        streetName: streetName,
+                        placeName: placeName,
+                        postalCodeName: postalCodeName,
+                        villaName: villaName,
+                        phoneName: phoneName,
+                        emailName: emailName,
+                        ProductQuantity: ProductQuantity
+                    };
+
+                    console.log(dataToSend);
+
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         url: '/makeSlot',
                         method: 'POST',
                         data: dataToSend,
-                        success: function (response) {
+                        success: function () {
                             alert("Order successfully processed");
                             window.location.replace("/makeOrder");
                             parent.location.reload();
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
                         }
                     });
-
-                    return;
                 }
-
-                let ProductQuantity = {}
-
-                $('.products-items .accordion-item').each(function (index, element) {
-                    let productId = $(element).find('.prod-info').data('id');
-                    let productQuantity = $(element).find('.prod-info').data('quantity');
-                    let productPromo = $(element).find('.promocode-input.correct').data('promo');
-
-                    console.log("correct= ");
-                    console.log("PROMP= " + productPromo);
-
-                    if (productPromo === undefined) {
-                        productPromo = null;
-                    }
-
-                    ProductQuantity[productId] = {
-                        productQuantity: productQuantity,
-                        productPromo: productPromo
-                    };
-
-                });
-
-                var dataToSend = {
-                    calendarId: calendarId,
-                    adminValue: adminValue,
-                    slots: slotId,
-                    csrfToken: csrfToken,
-                    firstName: firstName,
-                    lastName: lastName,
-                    companyName: companyName,
-                    RegionName: RegionName,
-                    streetName: streetName,
-                    placeName: placeName,
-                    postalCodeName: postalCodeName,
-                    villaName: villaName,
-                    phoneName: phoneName,
-                    emailName: emailName,
-                    ProductQuantity: ProductQuantity
-                };
-
-                console.log(dataToSend);
-
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: '/makeSlot',
-                    method: 'POST',
-                    data:  dataToSend,
-                    success: function () {
-                        alert("Order successfully processed");
-                        window.location.replace("/makeOrder");
-                        parent.location.reload();
-                    }
-                });
             }
-        }
-    });
+        });
+    }
 
 
 
@@ -1063,14 +1024,62 @@ $(document).ready(function () {
         $('form#form-data').submit();
     });
 
-    //
-    // $('.order-history').delegate('.post-comment', 'click', function (e) {
-    //     e.preventDefault();
-    //
-    //     const id = $('#order-comments').data('order-id');
-    //     const text = $('.new-comment-content').val();
-    //
-    //     alert(id);
-    //     alert(text);
-    // });
+    $('.payment-link-copy').on('click', function (e) {
+        e.preventDefault();
+
+        const href = $(e.currentTarget).attr('href');
+
+        navigator.clipboard.writeText(window.location.origin + href)
+            .then(() => {
+                alert('Payment link was copied!');
+            })
+            .catch((err) => {
+                console.error('Error copying payment link:', err);
+            });
+    });
+
+    $('.order-history').delegate('.post-comment', 'click', function (e) {
+        e.preventDefault();
+
+        const id = $('.post-comment').data('id');
+        const text = $('.new-comment-content').val();
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            url: '/purchase/comment',
+            data: {
+                order_id: id,
+                comment: text,
+            },
+            method: 'POST',
+            success: function (response) {
+                window.location.href = '/purchase/all';
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $('.order-history').delegate('.remove-comment', 'click', function (e) {
+        e.preventDefault();
+
+        const id = $(e.currentTarget).data('id');
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            url: '/purchase/comment/' + id,
+            method: 'DELETE',
+            success: function (response) {
+                window.location.href = '/purchase/all';
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
 });

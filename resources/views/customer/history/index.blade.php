@@ -64,8 +64,7 @@
                                                     <i class="far fa-eye"></i>
                                                 </a>
                                             </td>
-                                            <td> <a href="{{$item->paymentLink}}"> <i class="fa-solid fa-wallet"></i> </a></td>
-
+                                            <td> <a href="{{$item->paymentLink}}" class="payment-link-copy"> <i class="fa-solid fa-wallet"></i> </a></td>
                                         </tr>
                                     @endforeach
 
