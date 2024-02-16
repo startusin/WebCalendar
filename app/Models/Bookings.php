@@ -31,4 +31,9 @@ class Bookings extends Model
     {
         return $this->hasMany(BookedBrunch::class, 'booking_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(OrderComments::class, 'order_id');
+    }
 }

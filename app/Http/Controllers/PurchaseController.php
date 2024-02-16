@@ -8,6 +8,7 @@ use App\Models\Brunch;
 use App\Models\CustomSlot;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
+use App\Models\OrderComments;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\PromoCode;
@@ -66,9 +67,26 @@ class PurchaseController extends Controller
     {
         return Bookings::with('slots')
             ->with('bookingProducts.product')
+            ->with(['comments' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
             ->find($id);
     }
 
+    public function removeComment($id)
+    {
+        return OrderComments::find($id)->delete();
+    }
+
+    public function makeComment(Request $request)
+    {
+        $data = $request->all();
+
+        return OrderComments::create([
+            'order_id' => $data['order_id'],
+            'comment' => $data['comment']
+        ]);
+    }
 
     public function checkprice(Request $request)
     {

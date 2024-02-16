@@ -510,16 +510,31 @@ $(document).ready(function () {
         document.getElementById('myproducts').innerHTML = html;
     }
 
+    function generateComments(comments) {
+        var html = '<table class="w-100 table mt-2"><tr>' +
+            '<th scope="col">Comment</th><th scope="col">Date</th><th scope="col">Actions</th>' +
+            '</tr>';
+
+        comments.forEach(function(item) {
+            html += '<tr><td>' + item.comment + '</td><td>' + item.created_at + '</td><td><a class="remove-comment" data-id="' + item.id + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>';
+        });
+
+        html += '</table>';
+
+        $('#order-comments').html(html);
+    }
+
 
 
     $(document).on('click', '.showPurchase', function () {
         let route = $(this).data('route');
-        console.log(3234234234);
+
         $.ajax({
             url: route,
             success: function (response) {
                 console.log(response.booking_products);
                 generateProduct(response.booking_products,'en');
+                generateComments(response.comments);
                 console.log('response.booking.first_name');
                 console.log(response.first_name);
                 $('#FirstName').text(response.first_name);
@@ -532,7 +547,55 @@ $(document).ready(function () {
                 console.log('response.slots[0].start_date');
                 let dateTime = response.slots[0].start_date;
                 console.log(dateTime);
+
                 $('#SlotStarted').text(moment.utc(dateTime).format('YYYY/MM/DD HH:mm'));
+
+                let csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                $('.remove-comment').on('click', function(e) {
+                    e.preventDefault();
+
+                    const id = $(e.currentTarget).data('id');
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        url: '/purchase/comment/' + id,
+                        method: 'DELETE',
+                        success: function (response) {
+                            $(e.currentTarget).closest('tr').remove();
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                });
+
+                $('.post-comment').on('click', function(e) {
+                    e.preventDefault();
+
+                    const id = response.id;
+                    const text = $('.new-comment-content').val();
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        url: '/purchase/comment',
+                        data: {
+                            order_id: id,
+                            comment: text,
+                        },
+                        method: 'POST',
+                        success: function (response) {
+                            window.location.href = '/purchase/all';
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                });
             }
         })
     });
@@ -997,4 +1060,15 @@ $(document).ready(function () {
 
         $('form#form-data').submit();
     });
+
+    //
+    // $('.order-history').delegate('.post-comment', 'click', function (e) {
+    //     e.preventDefault();
+    //
+    //     const id = $('#order-comments').data('order-id');
+    //     const text = $('.new-comment-content').val();
+    //
+    //     alert(id);
+    //     alert(text);
+    // });
 });

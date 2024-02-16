@@ -1,4 +1,4 @@
-<div class="modal fade" id="showMyModal" tabindex="-1" role="dialog" aria-labelledby="updateModalTitle"
+<div class="modal fade order-history" id="showMyModal" tabindex="-1" role="dialog" aria-labelledby="updateModalTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -81,8 +81,18 @@
                                 </div>
                             </div>
 
-
                             <div class="col-12" id="myproducts"></div>
+
+                            <hr>
+
+                            <h5 class="form-group ml-2 mt-4">Comments</h5>
+
+                            <div class="col-12 ml-2" id="order-comments"></div>
+
+                            <div class="w-100 comment-form">
+                                <textarea class="w-100 new-comment-content" placeholder="Comment"></textarea>
+                                <button class="post-comment">Post Comment</button>
+                            </div>
                         </div>
                     </div>
                 </div>

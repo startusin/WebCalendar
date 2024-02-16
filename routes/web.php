@@ -67,6 +67,8 @@ use Illuminate\Support\Facades\Route;
             Route::post('changeStatus', [\App\Http\Controllers\PurchaseController::class, 'changeStatus']);
             Route::get('purchase/all', [\App\Http\Controllers\PurchaseController::class, 'getAllPurchases'])->name('purchase.index');
             Route::get('purchase/show/{id}', [\App\Http\Controllers\PurchaseController::class, 'getPurchase'])->name('purchase.show');
+            Route::delete('purchase/comment/{id}', [\App\Http\Controllers\PurchaseController::class, 'removeComment'])->name('purchase.removeComment');
+            Route::post('purchase/comment', [\App\Http\Controllers\PurchaseController::class, 'makeComment'])->name('purchase.makeComment');
 
             Route::get('/languages', [\App\Http\Controllers\HomeController::class, 'languages']);
             Route::group(['prefix' => 'slots'], function () {
