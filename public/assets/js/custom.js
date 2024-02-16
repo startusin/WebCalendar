@@ -645,8 +645,8 @@ $(document).ready(function () {
     $(document).on('click', '.reserve', function () {
         if ($('.brunch.selected').length > 0) {
             const branchId = parseInt($('.brunch.selected').data('id'), 10);
-            const quantity = parseInt($('.brunch.selected').data('quantity'), 10);
-
+            const quantity = parseInt($('.count-of-brunch').text(), 10);
+            console.log(quantity);
             const queryString = $.param({
                 slots: array,
                 type: 'branch',
@@ -839,7 +839,9 @@ $(document).ready(function () {
                         method: 'POST',
                         data: dataToSend,
                         success: function (response) {
-                            window.location.replace("/payment/" + response.id + '?type=brunch');
+                            alert("Order successfully processed");
+                            window.location.replace("/makeOrder");
+                            parent.location.reload();
                         },
                         error: function (error) {
                             console.error('Error:', error);

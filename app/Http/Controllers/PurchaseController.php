@@ -210,7 +210,8 @@ class PurchaseController extends Controller
         $data = $request->all();
 
         $adminValue = $data['adminValue']??false;
-        $data['calendarId'] = strstr($data['calendarId'], '?', true);
+        $data['calendarId'] = explode('?', $data['calendarId'])[0];
+
         $data['slots'] = json_decode($data['slots']);
         $bookedSlot = BookedSlots::create([
             'start_date' => $data['slots']->startDateSlot->date,
@@ -241,7 +242,6 @@ class PurchaseController extends Controller
             $brunch = Brunch::findOrFail((int)$data['brunchId']);
             $time = $brunch->time;
             $date = explode(' ', $data['slots']->startDateSlot->date);
-
             BookedBrunch::create([
                 'brunch_date' => $date[0] . ' ' . $time,
                 'quantity' => $data['qty'],
