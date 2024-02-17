@@ -77,6 +77,7 @@ class EmailsController extends Controller
     public function updateSms(Request $request) {
 
         $smsReminder = [];
+        $smsSender = [];
 
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'sms-reminder') !== false) {
@@ -84,8 +85,17 @@ class EmailsController extends Controller
                 $smsReminder[$LangKey[1]] = $value;
             }
         }
+
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'sms-sender') !== false) {
+                $LangKey = explode("_", $key);
+                $smsSender[$LangKey[1]] = $value;
+            }
+        }
+
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
         $settings->sms_reminder = $smsReminder;
+        $settings->sms_sender = $smsSender;
         $settings->save();
         return response()->redirectToRoute('sms.edit');
     }

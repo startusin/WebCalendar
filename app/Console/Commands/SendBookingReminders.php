@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use App\Models\Bookings;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Twilio\Rest\Client;
@@ -57,15 +58,17 @@ class SendBookingReminders extends Command
 
             print($booking->email . ' - Sent' . "\n");
 
-            try {
-                $client = new Client(getenv("TWILIO_SID"), getenv("TWILIO_TOKEN"));
-                $client->messages->create($booking->phone, [
-                    'from' => getenv("TWILIO_FROM"),
-                    'body' => $settings->sms_reminder[$language]]
-                );
-            } catch (\Throwable) {}
+            $response = Http::post('https://hooks.zapier.com/hooks/catch/2825064/3etuci4/', [
+                'sender' => $settings->sms_sender[$language] ?? 'SMS',
+                'phone' => $booking->phone,
+                'message' => $settings->sms_reminder[$language]
+            ]);
 
-            print($booking->phone . ' - SMS Sent' . "\n");
+            if ($response->successful()) {
+                echo 'Request successful. Response: ' . $response->body();
+            } else {
+                echo 'Request failed. Status Code: ' . $response->status();
+            }
         }
     }
 }

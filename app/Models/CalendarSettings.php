@@ -28,6 +28,7 @@ class CalendarSettings extends Model
         'cs_email_title',
         'purchase_email_title',
         'sms_reminder',
+        'sms_sender',
         'remind_time'
     ];
 
@@ -42,6 +43,7 @@ class CalendarSettings extends Model
         'item_email' => 'array',
         'cs_email_title' => 'array',
         'purchase_email_title' => 'array',
-        'sms_reminder' => 'array'
+        'sms_reminder' => 'array',
+        'sms_sender' => 'array'
     ];
 }
