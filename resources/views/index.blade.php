@@ -153,7 +153,11 @@
         </div>
     </div>
 
-    @if ($banner):
+    <div style="display: none">
+        time: {{ now() }}
+    </div>
+
+    @if ($banner)
         <style>
             .bootstrap-calendar-container .js-collapse .js-events {
                 background: url({{ asset('storage/' . $banner) }});
