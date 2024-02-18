@@ -105,7 +105,7 @@ class PaymentController extends Controller
                 }
 
                 if (!$bookingId) {
-                    return response()->json(['success' => false, 422]);
+                    return response()->json(['success' => false, 'message' => 'no booking id'], 422);
                 }
 
                 $booking = Bookings::find($bookingId);
@@ -120,8 +120,11 @@ class PaymentController extends Controller
                     $productsHTML = '';
                     $language = $settings->language;
                     $bookingProducts = BookingProduct::where('booking_id', $booking->id)->get() ?? [];
+
                     $purchaseEmail = $settings->purchase_email[$language] ?? View::make('customer.emails.email.purchase')->render();
                     $itemEmail = $settings->item_email[$language] ?? View::make('customer.emails.email.item')->render();
+
+                    $total = 0;
 
                     foreach ($bookingProducts as $bookingProduct) {
                         $quantity = $bookingProduct->quantity;
@@ -131,11 +134,15 @@ class PaymentController extends Controller
                         $itemEmailCopy = str_replace('{:TITLE:}', $bookingProduct->product->title[$language] ?? 'No Title', $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:PRICE:}', $price, $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:QUANTITY:}', $quantity, $itemEmailCopy);
-                        $itemEmailCopy = str_replace('{:TOTAL_PRICE:}', $bookingProduct->sold_price, $itemEmailCopy);
+                        $itemEmailCopy = str_replace('{:TOTAL_TTC:}', $bookingProduct->sold_price, $itemEmailCopy);
+                        $total += (double)$bookingProduct->sold_price;
 
                         $productsHTML .= $itemEmailCopy;
                     }
 
+                    $total = number_format($total, 2);
+
+                    $purchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $purchaseEmail);
                     $purchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $purchaseEmail);
                     $purchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $purchaseEmail);
                     $subject = $settings->cs_email_title[$language] ?? 'Purchase title';

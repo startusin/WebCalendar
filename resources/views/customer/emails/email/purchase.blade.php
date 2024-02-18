@@ -28,29 +28,29 @@
     </v:background>
     <![endif]--><table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td class="esd-email-paddings" valign="top"><table class="es-content" cellspacing="0" cellpadding="0" align="center"><tbody><tr><td class="esd-stripe" align="center"><table class="es-content-body" width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center"><tbody><tr><td class="es-p20t es-p20r es-p20l esd-structure" align="left" bgcolor="#FFF7E7" style="background-color:#FFF7E7"><table width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td class="esd-container-frame" width="560" valign="top" align="center"><table width="100%" cellspacing="0" cellpadding="0"><tbody><tr>
                                                             <td align="center" class="esd-block-image es-p45t es-p45b">
-                                                                <a target="_blank">
+                                                                <a target="_blank" style="margin-top: 40px; margin-bottom: 20px; display: block;">
                                                                     {:LOGOTYPE:}
                                                                 </a>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p10b">
-                                                                <h2 align="center">Merci !</h2>
+                                                                <h2 align="center" style="font-size: 25px; margin-bottom: 0;">Merci !</h2>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text">
-                                                                <p align="center">Nous avons bien réceptionné<br>votre réservation pour visiter les caves<br>de notre Maison.</p>
+                                                                <p align="center" style="font-size: 16px;">Nous avons bien réceptionné<br>votre réservation pour visiter les caves<br>de notre Maison.</p>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p25b es-p30t">
-                                                                <p align="center">Nous vous donnons rendez-vous le</p>
+                                                                <p align="center" style="margin-top: 25px; margin-bottom: 0;">Nous vous donnons rendez-vous le</p>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p15b">
-                                                                <h2 style="line-height:150% !important" align="center">Mardi 8 juin 2024<br>11h45</h2>
+                                                                <h2 style="font-size: 30px; margin-top: 5px; margin-bottom: 0;" align="center">Mardi 8 juin 2024<br>11h45</h2>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p25b">
-                                                                <p align="center">Créer une alerte dans l’agenda</p>
+                                                                <p align="center" style="margin-bottom: 36px; text-decoration: underline;">Créer une alerte dans l’agenda</p>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="center" class="esd-block-image es-p55b" style="font-size: 0">
@@ -60,7 +60,7 @@
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p30b">
-                                                                <h6 align="center">Expériences</h6>
+                                                                <h6 align="center" style="font-size: 16px; font-weight: normal; margin-top: 46px; margin-bottom: 26px;">Expériences</h6>
                                                             </td>
                                                         </tr>
 
@@ -71,29 +71,43 @@
                                                         </tr>
 
                                                         <tr>
+                                                            <td class="esd-block-text" align="left">
+                                                                <p align="center" style="margin-top: 25px;">Sous-total: &nbsp;{:TOTAL_PRICE:} &euro; &nbsp; &nbsp; &nbsp; &nbsp; Total: &nbsp;{:TOTAL_PRICE:} &euro;</p>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td style="margin: 0;">
+                                                                <hr style="height: 1px; width: 415px; border: none; background: #000; margin-top: 42px;">
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
                                                             <td align="left" class="esd-block-text es-p25b">
-                                                                <h6 align="center">67 avenue de Paris<br>à Châlons-en-Champagne</h6>
+                                                                <h6 align="center" style="font-size: 16px; font-weight: normal; line-height: 24px; margin-bottom: 3px;">67 avenue de Paris<br>à Châlons-en-Champagne</h6>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text">
-                                                                <p align="center">Situer sur une carte</p>
+                                                                <p align="center" style="text-decoration: underline; margin-bottom: 35px;">Situer sur une carte</p>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p50t es-p30b">
-                                                                <p align="center">Dans l'attente de vous rencontrer,<br>Salutations pétillantes,<br>Toute l'équipe Joseph Perrier.</p>
+                                                                <p align="center" style="font-size: 16px; margin-bottom: 0;">Dans l'attente de vous rencontrer,<br>Salutations pétillantes,<br>Toute l'équipe Joseph Perrier.</p>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="center" class="esd-block-spacer es-p20" style="font-size: 0">
                                                                 <table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" class="es-spacer">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="border-bottom: 1px solid #cccccc;; background: none; height: 1px; width: 100%; margin: 0px 0px 0px 0px"></td>
+                                                                        <td style="margin: 0;">
+                                                                            <hr style="height: 1px; width: 415px; border: none; background: #000; margin-top: 42px;">
+                                                                        </td>
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p20l es-p20r es-p25b">
-                                                                <p>© 2024 Joseph Perrier</p>
+                                                                <p style="font-size: 16px; margin-top: 19px; margin-bottom: 19px; text-align: center;">© 2024 Joseph Perrier</p>
                                                             </td>
                                                         </tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></div></body></html>
