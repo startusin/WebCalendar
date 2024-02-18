@@ -82,6 +82,20 @@
                                         </textarea>
                                     @endforeach
 
+                                    <hr class="my-5" />
+
+                                    @foreach ($languages as $language)
+                                        <h5 class="text-center mt-4 mb-3">Purchase mail admin - {{ $language }}</h5>
+
+                                        <textarea class="email-templates" name="admin-email_{{ $language }}">
+                                            @if (isset($settings->admin_email[$language]) && !empty($settings->admin_email[$language]))
+                                                {{ $settings->admin_email[$language] }}
+                                            @else
+                                                @include('customer.emails.email.admin')
+                                            @endif
+                                        </textarea>
+                                    @endforeach
+
                                     <h4 class="mt-5 ml-3">Available shortcodes:</h4>
                                     <ul class="ml-2">
                                         <li>{:TITLE:}</li>
@@ -110,6 +124,11 @@
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">Purchase title - {{ $language }}</h5>
                                         <input type="text" class="w-100" name="title-email-purchase_{{ $language }}" value="{{ $settings->purchase_email_title[$language] ?? 'Purchase message' }}">
+                                    @endforeach
+
+                                    @foreach ($languages as $language)
+                                        <h5 class="text-center mt-4 mb-3">Purchase admin title - {{ $language }}</h5>
+                                        <input type="text" class="w-100" name="title-admin-purchase_{{ $language }}" value="{{ $settings->purchase_admin_title[$language] ?? 'Purchase admin message' }}">
                                     @endforeach
 
                                     <h5 class="text-center mt-4 mb-3">Remind time (minutes)</h5>

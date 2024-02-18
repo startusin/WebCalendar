@@ -29,7 +29,9 @@ class CalendarSettings extends Model
         'purchase_email_title',
         'sms_reminder',
         'sms_sender',
-        'remind_time'
+        'remind_time',
+        'admin_email',
+        'admin_email_title'
     ];
 
     protected $casts = [
@@ -44,6 +46,8 @@ class CalendarSettings extends Model
         'cs_email_title' => 'array',
         'purchase_email_title' => 'array',
         'sms_reminder' => 'array',
-        'sms_sender' => 'array'
+        'sms_sender' => 'array',
+        'admin_email' => 'array',
+        'admin_email_title' => 'array'
     ];
 }

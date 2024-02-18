@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
       // Payment succeeded, you can handle it here
       console.log('Payment succeeded !!!!');
-
     } else {
+      alert(result.error.message);
       submitted = false;
       form.querySelector('button').disabled = false;
       return;

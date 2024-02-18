@@ -20,6 +20,8 @@ class EmailsController extends Controller
         $csEmail = [];
         $csEmailTitle = [];
         $purchaseEmail = [];
+        $adminEmail = [];
+        $adminEmailTitle = [];
         $purchaseEmailTitle = [];
         $itemEmail = [];
 
@@ -35,6 +37,11 @@ class EmailsController extends Controller
                 $purchaseEmail[$LangKey[1]] = $value;
             }
 
+            if (strpos($key, 'admin-email') !== false) {
+                $LangKey = explode("_", $key);
+                $adminEmail[$LangKey[1]] = $value;
+            }
+
             if (strpos($key, 'item-email') !== false) {
                 $LangKey = explode("_", $key);
                 $itemEmail[$LangKey[1]] = $value;
@@ -43,6 +50,11 @@ class EmailsController extends Controller
             if (strpos($key, 'title-email-purchase') !== false) {
                 $LangKey = explode("_", $key);
                 $purchaseEmailTitle[$LangKey[1]] = $value;
+            }
+
+            if (strpos($key, 'title-admin-purchase') !== false) {
+                $LangKey = explode("_", $key);
+                $adminEmailTitle[$LangKey[1]] = $value;
             }
 
             if (strpos($key, 'title-email-cs') !== false) {
@@ -54,6 +66,8 @@ class EmailsController extends Controller
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
         $settings->main_name = $request->input('main_name');
         $settings->main_email = $request->input('main_email');
+        $settings->admin_email = $adminEmail;
+        $settings->admin_email_title = $adminEmailTitle;
         $settings->cs_email = $csEmail;
         $settings->cs_email_title = $csEmailTitle;
         $settings->purchase_email = $purchaseEmail;

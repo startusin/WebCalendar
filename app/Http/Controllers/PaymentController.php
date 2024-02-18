@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Emails\AdminPurchaseEmail;
 use App\Emails\CSEmail;
 use App\Emails\PurchaseEmail;
 use App\Models\BookedBrunch;
@@ -121,6 +122,7 @@ class PaymentController extends Controller
                     $language = $settings->language;
                     $bookingProducts = BookingProduct::where('booking_id', $booking->id)->get() ?? [];
 
+                    $adminPurchaseEmail = $settings->admin_email[$language] ?? View::make('customer.emails.email.admin')->render();
                     $purchaseEmail = $settings->purchase_email[$language] ?? View::make('customer.emails.email.purchase')->render();
                     $itemEmail = $settings->item_email[$language] ?? View::make('customer.emails.email.item')->render();
 
@@ -145,9 +147,15 @@ class PaymentController extends Controller
                     $purchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $purchaseEmail);
                     $purchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $purchaseEmail);
                     $purchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $purchaseEmail);
-                    $subject = $settings->cs_email_title[$language] ?? 'Purchase title';
+
+                    $adminPurchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $adminPurchaseEmail);
+                    $adminPurchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $adminPurchaseEmail);
+                    $adminPurchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $adminPurchaseEmail);
+
+                    $subject = $settings->admin_email_title[$language] ?? 'Purchase title';
 
                     Mail::to($booking->email)->send(new PurchaseEmail($subject, $purchaseEmail, $settings->main_email, $settings->main_name));
+                    Mail::to($settings->main_email)->send(new AdminPurchaseEmail($subject, $adminPurchaseEmail, $settings->main_email, $settings->main_name));
                 }
 
                 break;
