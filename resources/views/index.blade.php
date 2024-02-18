@@ -2,7 +2,7 @@
 @section('content')
     <div class="container MyContainer main-container" data-calendar-id="{{ $user->id }}" data-direct-booking="{{$admin ? 'true' : 'false'}}">
         <div class="row justify-content-center">
-            <header class="d-block my-header pb-4 mt-4 mb-3 text-center position-relative">
+            <header class="d-block my-header pb-md-4 mt-md-4 mb-md-3 text-center position-relative">
                 <img src="{{$logo!=null ? asset('storage/' . $logo): '/demologo.png' }}" class="calendar-logo"/>
 
                 <div class="dropdown language-selector-container position-absolute">
@@ -26,12 +26,12 @@
                 </div>
             </header>
 
-            <div class="sub-title mt-1 mb-2 text-center mb-4 fw-bold text-uppercase">
+            <div class="sub-title mt-1 mb-2 text-center mb-md-4 fw-bold text-uppercase">
                 {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
             </div>
 
             <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar"
-                 data-bs-target="{{ route('slots', ['user' => $user]) }}" class="mt-4"></div>
+                 data-bs-target="{{ route('slots', ['user' => $user]) }}" class="mt-md-4"></div>
 
             <div class="brunches d-flex flex-wrap justify-content-center d-none brunches-area">
                 <div class="col-12">
@@ -139,7 +139,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-3 mb-5 row d-flex flex-nowrap align-items-center d-none button-order">
+            <div class="mt-3 mb-2 mb-md-5 row d-flex flex-nowrap align-items-center d-none button-order">
                 <div id="ViewCurrentSlot" class="col-6" >
                     3 janvier 2024 | 17h45
                 </div>

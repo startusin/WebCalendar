@@ -9,6 +9,16 @@ body{
     width: 100%;
     padding: 25px;
 }
+
+@media (max-width: 991px) {
+    .MyContainer {
+        padding-bottom: 10px;
+        padding-top: 0;
+        padding-right: 25px;
+        padding-left: 25px;
+    }
+}
+
 .calendar .day:not(.prev-date,.nxt-date,.active,.tillCurrentDate,.futureDays):hover {
     background: #ffffff;
     border: 2px solid  var(--calendar-primary-color);
@@ -163,6 +173,13 @@ button{
     height: 66px !important;
 }
 
+@media (max-width: 991px) {
+    .bootstrap-calendar-day {
+        margin: 5px;
+        height: 50px !important;
+    }
+}
+
 .bootstrap-calendar-day:hover {
    border: 1px solid var(--calendar-primary-color);
 }
@@ -295,7 +312,13 @@ opacity: 0.5;
 }
 
 .calendar-logo {
-max-width: 300px;
+    max-width: 300px;
+}
+
+@media (max-width: 991px) {
+    .calendar-logo {
+        max-width: 200px;
+    }
 }
 
 .flag-icon {
@@ -332,11 +355,17 @@ border: none;
 }
 
 .sub-title {
-font-size: 28px;
-color: #000;
-max-width: 360px;
-line-height: 32px;
-font-family: 'Barlow Semi Condensed', sans-serif;
+    font-size: 28px;
+    color: #000;
+    max-width: 360px;
+    line-height: 32px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+}
+
+@media (max-width: 991px) {
+    .sub-title {
+        font-size: 25px;
+    }
 }
 
 .btn-curr-month, .btn-curr-month:hover {
@@ -766,14 +795,6 @@ justify-content: end;
     font-style: normal;
 }
 @media (max-width: 568px) {
-
-    .MyContainer{
-        padding-left: 25px;
-        padding-right: 25px;
-        padding-bottom: 25px;
-        padding-top: 0px;
-    }
-
     #ViewCurrentSlot{
         width: 49%;
     }
