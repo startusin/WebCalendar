@@ -22,7 +22,7 @@
                     <div class="title-payment-succusess"> {{$user->translations['translations']['invite-meet-us'][Cookie::get('locale')]??""}}</div>
                 </div>
                 <div class="d-flex justify-content-center col-12 text-center success-textmt-1">
-                    <div id="SuccessDateId" class="success-date">Mardi juin 2024 11h45</div>
+                    <div id="SuccessDateId" class="success-date"></div>
                 </div>
             </div>
             </div>

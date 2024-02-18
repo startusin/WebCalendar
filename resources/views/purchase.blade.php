@@ -89,7 +89,7 @@
                     {{$user->translations['translations']['choise2'][Cookie::get('locale')]??""}}
                 </div>
 
-                <div class="all-purchase mb-5" data-intent="{{ $intent->id }}" data-token="{{ $intent->client_secret }}" data-locale="{{ Cookie::get('locale') ?? 'en' }}">
+                <div class="all-purchase mb-5" data-intent="{{ $intent->id }}" data-token="{{ $intent->client_secret }}" data-locale="{{ Cookie::get('locale') ?? 'en' }}" data-slot-date="{{ $slots['startDateSlot']->format('Y-m-d H:i:s') }}" data-calendar-id="{{ $user->id }}">
                     <div class="products-items">
 
                     @if(!$isBrunch)

@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // When the form is submitted...
   const form = document.getElementById('payment-form');
   let submitted = false;
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/payment-success`,
+        return_url: `${window.location.origin}/payment-success?date=` + $('.all-purchase').data('slot-date') + '&user_id=' + $('.all-purchase').data('calendar-id'),
       }
     });
 
