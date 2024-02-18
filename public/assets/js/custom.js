@@ -554,7 +554,7 @@ $(document).ready(function () {
 
                 $('.post-comment').data('id', response.id);
 
-                $('#SlotStarted').text(moment.utc(dateTime).format('YYYY/MM/DD HH:mm'));
+                $('#SlotStarted').text(moment.utc(dateTime).format('DD/MM/YYYY HH:mm'));
 
                 let csrfToken = $('meta[name="csrf-token"]').attr('content');
             }
