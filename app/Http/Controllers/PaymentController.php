@@ -47,7 +47,7 @@ class PaymentController extends Controller
         $product = $stripe->products->create(['name' => 'Booking ID: ' . $booking->id]);
 
         $price = $stripe->prices->create([
-            'currency' => 'usd',
+            'currency' => 'eur',
             'unit_amount_decimal' => $sum * 100,
             'product' => $product->id,
         ]);
