@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->hasOne(CalendarSettings::class, 'calendar_id', 'id');
     }
 
+    public function formSettings(): HasMany
+    {
+        return $this->hasMany(FormSettings::class, 'calendar_id', 'id');
+    }
+
     public function translations(): HasOne
     {
         return $this->hasOne(Translations::class, 'calendar_id', 'id');

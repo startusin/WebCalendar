@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Enums\Languages;
 use App\Models\CalendarSettings;
+use App\Models\FormSettings;
 use App\Models\User;
+use App\Services\FormsSettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CalendarSettingsController extends Controller
 {
+    private FormsSettingsService $formsSettingsService;
+    public function __construct(FormsSettingsService $formsSettingsService)
+    {
+        $this->formsSettingsService = $formsSettingsService;
+    }
+
     public function deleteCountry(Request $request) {
         $country = $request->input('country');
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
@@ -175,10 +183,43 @@ class CalendarSettingsController extends Controller
             $calendarSettings->update($dataForUpdateOrCreate);
         }
 
+        $settings = FormSettings::all();
+        $lenght = count( $settings);
+        if ($lenght == 0) {
+            $calendar_id = auth()->user()->id;
+            foreach ($this->formsSettingsService->GetAllKeys() as $key => $isRequired){
+                FormSettings::create([
+                    'key' => $key,
+                    'is_required' => $isRequired,
+                    'calendar_id' => $calendar_id
+                ]);
+            }
+        }
+
         return redirect()->route('calendarSettings.edit');
     }
 
     public function embedded() {
         return view('customer.calendarSettings.embedded');
+    }
+
+    public function getFormsSettings()
+    {
+        $settings = FormSettings::all();
+        return view('customer.formSettings.index', compact('settings'));
+    }
+    public function changeFormSettings(Request $request)
+    {
+        $data = $request->all();
+        $settingsForm = FormSettings::find($data['id']);
+        if ($settingsForm) {
+            if ($settingsForm['is_required'] == 0){
+                $settingsForm['is_required'] = 1;
+            } else{
+                $settingsForm['is_required'] = 0;
+            }
+            $settingsForm->save();
+        }
+        return response()->json(200);
     }
 }

@@ -64,6 +64,9 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'customer'], function () {
 
+            Route::get('/getFormsSettings', [\App\Http\Controllers\CalendarSettingsController::class, 'getFormsSettings'])->name('getFormsSettings');
+            Route::put('/changeFormSettings', [\App\Http\Controllers\CalendarSettingsController::class, 'changeFormSettings'])->name('changeFormSettings');
+
             Route::delete('/deleteCountry', [\App\Http\Controllers\CalendarSettingsController::class,'deleteCountry']);
             Route::post('/store/country', [\App\Http\Controllers\CalendarSettingsController::class,'storeCountry'])->name('store.country');
             Route::get('/create/country', [\App\Http\Controllers\CalendarSettingsController::class,'createCountry'])->name('create.country');

@@ -136,6 +136,12 @@ class PurchaseController extends Controller
 
         $calendarId = $data['calendarId'];
         $slots = $slotsFront[0];
+        $formSettings = [];
+
+
+        foreach ($user->formSettings as $item) {
+            $formSettings["$item->key"] = $item->is_required;
+        }
 
         if (isset($data['type']) && $data['type'] === 'branch') {
             $brunch = Brunch::findOrFail((int)$data['branchId']);
@@ -154,7 +160,8 @@ class PurchaseController extends Controller
 //                    'test' => '24353'
 //                ]
             ]);
-            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin'));
+
+            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -198,7 +205,7 @@ class PurchaseController extends Controller
             'automatic_payment_methods' => ['enabled' => true],
         ]);
 
-        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin'));
+        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings'));
     }
 
     public function storeOrder(Request $request){
