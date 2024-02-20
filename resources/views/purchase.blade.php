@@ -39,8 +39,9 @@
                     <div class="col-12">
                         <div class="form-floating mb-3">
                             <select class="form-select"  id="RegionSelect"  name="RegionSelect" aria-label="Floating label select example">
-                                <option value="1" selected>France</option>
-                                <option value="2">England</option>
+                                @foreach($user->settings['countries'] as $item)
+                                    <option value="{{$item}}" selected>{{$item}}</option>
+                                @endforeach
                             </select>
                             <label for="floatingSelect">{{$user->translations['translations']['works-with-selectes'][Cookie::get('locale')]??""}}</label>
                         </div>

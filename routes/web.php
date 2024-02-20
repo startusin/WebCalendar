@@ -64,6 +64,10 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'customer'], function () {
 
+            Route::delete('/deleteCountry', [\App\Http\Controllers\CalendarSettingsController::class,'deleteCountry']);
+            Route::post('/store/country', [\App\Http\Controllers\CalendarSettingsController::class,'storeCountry'])->name('store.country');
+            Route::get('/create/country', [\App\Http\Controllers\CalendarSettingsController::class,'createCountry'])->name('create.country');
+
             Route::post('changeStatus', [\App\Http\Controllers\PurchaseController::class, 'changeStatus']);
             Route::get('purchase/all', [\App\Http\Controllers\PurchaseController::class, 'getAllPurchases'])->name('purchase.index');
             Route::get('purchase/show/{id}', [\App\Http\Controllers\PurchaseController::class, 'getPurchase'])->name('purchase.show');

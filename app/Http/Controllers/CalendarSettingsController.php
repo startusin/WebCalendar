@@ -11,6 +11,37 @@ use Illuminate\Support\Facades\Validator;
 
 class CalendarSettingsController extends Controller
 {
+    public function deleteCountry(Request $request) {
+        $country = $request->input('country');
+        $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+        $countriesArray = $settings['countries'] ?? [];
+        $index = array_search($country, $countriesArray);
+
+        if ($index !== false) {
+            unset($countriesArray[$index]);
+        }
+
+        $settings->countries = $countriesArray;
+        $settings->save();
+        return response()->json(['message' => 'Country deleted successfully'], 200);
+    }
+
+    public function storeCountry(Request $request) {
+        $country = $request->input('country');
+        if ($country != null) {
+            $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+            $countriesArray = $settings['countries'] ?? [];
+            array_push($countriesArray, $country);
+            $settings['countries'] = $countriesArray;
+            $settings->save();
+        }
+        return redirect()->route('calendarSettings.edit');
+    }
+
+    public function createCountry() {
+        return view('customer.calendarSettings.CreateCountry');
+    }
+
     public function edit() {
         $langs = Languages::getMyLanguages(auth()->user()->languages);
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
@@ -28,6 +59,7 @@ class CalendarSettingsController extends Controller
                 $settings['working_hr_start'][$key] = '08:00';
                 $settings['working_hr_end'][$key] = '20:00';
             }
+            $settings['countries'] = ['France', 'English'];
             $settings['language'] = 'en';
         }
 
@@ -111,22 +143,26 @@ class CalendarSettingsController extends Controller
             $data['banner'] = $oldData['banner'];
         }
 
-        CalendarSettings::updateOrCreate([
-            'calendar_id' => auth()->user()->id
-        ],[
-            'calendar_id' => $data['calendar_id'],
-            'primary_color' => $data['primary_color'],
-            'working_hr_start' => $workingHrStart,
-            'working_hr_end' => $workingHrEnd,
-            'secondary_color' => $data['secondary_color'],
-            'bg_color' => $data['bg_color'],
-            'logo' => $data['logo'] ?? null,
-            'default_quantity' => $Quantity,
-            'banner' => $data['banner'] ?? null,
-            'excluded_days' => $data['excluded_days'] ?? null,
-            'interval' => $IntervalLang,
-            'language' => $data['language'],
-        ]);
+        $calendarSettings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+        $dataForUpdateOrCreate['calendar_id'] = $data['calendar_id'];
+        $dataForUpdateOrCreate['primary_color'] = $data['primary_color'];
+        $dataForUpdateOrCreate['working_hr_start'] = $workingHrStart;
+        $dataForUpdateOrCreate['working_hr_end'] = $workingHrEnd;
+        $dataForUpdateOrCreate['secondary_color'] = $data['secondary_color'];
+        $dataForUpdateOrCreate['bg_color'] = $data['bg_color'];
+        $dataForUpdateOrCreate['logo'] = $data['logo'] ?? null;
+        $dataForUpdateOrCreate['default_quantity'] = $Quantity;
+        $dataForUpdateOrCreate['banner'] = $data['banner'] ?? null;
+        $dataForUpdateOrCreate['excluded_days'] = $data['excluded_days'] ?? null;
+        $dataForUpdateOrCreate['interval'] = $IntervalLang;
+        $dataForUpdateOrCreate['language'] = $data['language'];
+
+        if (!$calendarSettings) {
+            $dataForUpdateOrCreate['countries'] = ['English', 'France'];
+            CalendarSettings::create($dataForUpdateOrCreate);
+        } else {
+            $calendarSettings->update($dataForUpdateOrCreate);
+        }
 
         return redirect()->route('calendarSettings.edit');
     }
