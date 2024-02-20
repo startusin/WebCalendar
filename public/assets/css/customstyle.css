@@ -1,10 +1,10 @@
 body{
-    color: var(--calendar-primary-color);
-    background-color: var(--calendar-background-color);
     font-family: 'Outfit', sans-serif;
 
 }
 .MyContainer{
+    margin-top: 25px;
+    margin-bottom: 25px;
     max-width: 630px;
     width: 100%;
     padding: 25px;

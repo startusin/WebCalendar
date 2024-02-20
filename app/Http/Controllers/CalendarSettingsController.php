@@ -74,6 +74,7 @@ class CalendarSettingsController extends Controller
             'secondary_color' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
+            'bg_image' => ['file'],
             'en-default_quantity' => ['numeric'],
             'fr-default_quantity' => ['numeric'],
             'es-default_quantity' => ['numeric'],
@@ -143,6 +144,15 @@ class CalendarSettingsController extends Controller
             $data['banner'] = $oldData['banner'];
         }
 
+        if (isset($data['bg_image'])) {
+            if ($oldData !=null &&$oldData['bg_image'] != null) {
+                Storage::disk('public')->delete($oldData['bg_image']);
+            }
+            $data['bg_image'] = Storage::disk('public')->put('/images', $data['bg_image']);
+        } elseif ( $oldData!=null &&$oldData['bg_image'] != null) {
+            $data['bg_image'] = $oldData['bg_image'];
+        }
+
         $calendarSettings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
         $dataForUpdateOrCreate['calendar_id'] = $data['calendar_id'];
         $dataForUpdateOrCreate['primary_color'] = $data['primary_color'];
@@ -150,6 +160,7 @@ class CalendarSettingsController extends Controller
         $dataForUpdateOrCreate['working_hr_end'] = $workingHrEnd;
         $dataForUpdateOrCreate['secondary_color'] = $data['secondary_color'];
         $dataForUpdateOrCreate['bg_color'] = $data['bg_color'];
+        $dataForUpdateOrCreate['bg_image'] = $data['bg_image'] ?? null;
         $dataForUpdateOrCreate['logo'] = $data['logo'] ?? null;
         $dataForUpdateOrCreate['default_quantity'] = $Quantity;
         $dataForUpdateOrCreate['banner'] = $data['banner'] ?? null;

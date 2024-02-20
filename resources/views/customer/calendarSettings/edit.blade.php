@@ -134,11 +134,11 @@
                                     @foreach($settings['countries'] as $item)
                                         <tr>
                                         <td class="pr-2">{{$item}} </td>
-                                        <td><i class="nav-icon fa-solid fa-envelope text-dark"></i></td>
+                                        <td><i class="fa-solid fa-trash"></i></td>
                                         </tr>
                                     @endforeach
                                 </table>
-                                <a class="btn btn-primary" href="{{route('create.country')}}">Create Country</a>
+                                <a class="mt-2 btn btn-primary" href="{{route('create.country')}}">Create Country</a>
                             </div>
 
 
@@ -150,6 +150,26 @@
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
+
+
+
+                            <div>
+                                <label >Background Image</label>
+                            </div>
+                            <div class="myImage BgImage">
+                                <img src="{{ isset($settings['bg_image']) ? asset('storage/' . $settings['bg_image']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
+                            </div>
+
+                            <div class="input-group mt-3 mb-3">
+                                <div class="custom-file">
+                                    <input type="file" name="bg_image" id="bg_image" class="custom-file-input">
+                                    <label class="custom-file-label">File</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+
 
                             <div>
                                 <label >Logotype</label>

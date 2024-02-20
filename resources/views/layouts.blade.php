@@ -17,10 +17,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 
     <style>
+
         :root {
             --calendar-primary-color: {{ isset($user) && isset($user->settings['primary_color']) ? $user->settings['primary_color'] : "#cca646" }};
             --calendar-secondary-color: {{isset($user) &&  isset($user->settings['secondary_color'])? $user->settings['secondary_color']:"#e9d9a7" }};
             --calendar-background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
+        }
+        body{
+
+            background-image: url('{{isset($user) &&  isset($user->settings['bg_image'])? asset('storage/' .  $user->settings['bg_image']):"" }}');
+            background-size: cover;
+        }
+        .MyContainer {
+            background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
     </style>
 
@@ -35,9 +44,11 @@
 </head>
 <body>
 
+<div class="fullScreen">
 
 @yield('content')
 
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>

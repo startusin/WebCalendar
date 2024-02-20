@@ -26,4 +26,19 @@ $(document).ready(function() {
             reader.readAsDataURL(file);
         }
     });
+
+
+    $('#bg_image').change(function() {
+        var file = this.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var imageUrl = e.target.result;
+                $('.BgImage img').attr('src', imageUrl);
+                $('.BgImage').css('display', 'block');
+
+            }
+            reader.readAsDataURL(file);
+        }
+    });
 });
