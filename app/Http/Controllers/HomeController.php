@@ -35,7 +35,7 @@ class HomeController extends Controller
         }
 
         $brunches = $user->brunches;
-        $products = $user->products;
+        $products = $user->products()->orderBy('priority')->get();
         $slots = $user->slots;
 
         $logo = null;
