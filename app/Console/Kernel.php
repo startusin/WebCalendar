@@ -4,6 +4,8 @@ namespace App\Console;
 
 use App\Console\Commands\FlushPendingBookings;
 use App\Console\Commands\SendBookingReminders;
+use App\Console\Commands\SendEmailBookingReminders;
+use App\Console\Commands\SendSMSBookingReminders;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -11,7 +13,8 @@ class Kernel extends ConsoleKernel
 {
     protected $commands = [
         FlushPendingBookings::class,
-        SendBookingReminders::class,
+        SendEmailBookingReminders::class,
+        SendSMSBookingReminders::class,
     ];
 
     /**

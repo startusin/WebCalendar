@@ -33,7 +33,8 @@ class CalendarSettings extends Model
         'admin_email',
         'admin_email_title',
         'countries',
-        'bg_image'
+        'bg_image',
+        'sms_remind_time',
     ];
 
     protected $casts = [
