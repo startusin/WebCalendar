@@ -29,7 +29,7 @@
                                     <thead class="text-center">
                                     <tr>
                                         <th class="col-6">Key</th>
-                                        <th class="col-6">Is_require</th>
+                                        <th class="col-6">Is_required</th>
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">
