@@ -11,6 +11,7 @@ use App\Models\Brunch;
 use App\Models\CalendarSettings;
 use App\Models\CustomSlot;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -75,14 +76,14 @@ class HomeController extends Controller
 
         $from = $request->get('from');
         $to = $request->get('to');
-
+        
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
 
         $excludingDays = $settings->excluded_days ?? [];
 
-        $result = [];
+       // $result = [];
 
-        $rules = CustomSlot::where('calendar_id', $user->id)->get();
+        $rules = CustomSlot::where('calendar_id', $user->id)->orderBy('id', 'desc')->get();
 
         $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -93,46 +94,71 @@ class HomeController extends Controller
                     $startDateTime = implode('-', [$currentYear, $rule['period_type']['start']]);
                     $endDateTime = implode('-', [$currentYear, $rule['period_type']['end']]);
                     $arr = generateCustomsSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
-                    $result = array_merge($result,$arr);
+                   // $result = array_merge($result,$arr);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'days' || in_array( strtolower($rule['period_type']['dynamicSelect']), $daysOfWeek):
                     $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
-                    $result = array_merge($result,$arr);
+                   // $result = array_merge($result,$arr);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'allWeeks':
                     $arr = generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
-                    $result = array_merge($result,$arr);
+                   // $result = array_merge($result,$arr);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'months':
                     $arr = generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
-                    $result = array_merge($result,$arr);
+                   // $result = array_merge($result,$arr);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
+            }
+        }
+
+        $filteredSlots = [];
+
+        foreach ($queriedSlots as $index => $queriedSlot) {
+            foreach ($queriedSlots as $subindex => $subQueriedSlot) {
+                if ($subindex >= $index) {
+                    continue;
                 }
 
+                $start = new \DateTime($queriedSlot['start']);
+                $end = new \DateTime($queriedSlot['end']);
+                $subStart = new \DateTime($subQueriedSlot['start']);
+                $subEnd = new \DateTime($subQueriedSlot['end']);
+
+                if (($start <= $subStart) && ($end >= $subEnd) && ($queriedSlot['language'] === $subQueriedSlot['language'])) {
+                    unset($queriedSlots[$subindex]);
+
+                    $filteredSlots[] = [
+                        'index' => $subindex,
+                        'start' => $queriedSlot['start'],
+                        'end' => $queriedSlot['end'],
+                        'subStart' => $subQueriedSlot['start'],
+                        'subEnd' => $subQueriedSlot['end']
+                    ];
+                }
+            }
         }
+
         $dateRange = ['from' => $from, 'to' => $to];
 
         foreach ($user->settings->interval as $lang => $interval) {
             $availableTime = ['from' => $settings['working_hr_start'][$lang], 'to' => $settings['working_hr_end'][$lang]];
-            $resFunc = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $interval, $queriedSlots, $user,$lang);
-            $result = array_merge($result,$resFunc);
+            $resFunc = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $interval, $queriedSlots, $user, $lang);
+            $queriedSlots = array_merge($queriedSlots, $resFunc);
         }
 
-        $mergedSlots = array_merge($result, $availableSlots);
+        $mergedSlots = array_merge($queriedSlots, $availableSlots);
+
         usort($mergedSlots, function ($a, $b) {
             return $a['timestamp'] > $b['timestamp'];
         });
 
-        foreach ($mergedSlots as $slot) {
-            $finalSlots[] = $slot;
-        }
         $transformed = [];
 
-        foreach ($finalSlots as $slot) {
+        foreach ($mergedSlots as $slot) {
             $slot['calendar_id'] = $user->id;
             $start = new \DateTime($slot['start']);
             $end = new \DateTime($slot['end']);
@@ -159,10 +185,12 @@ class HomeController extends Controller
             $sumQuantity = BookingProduct::whereIn('slot_id', $slotQuery)->sum('quantity');
 
             $slot['booked'] = (int)$sumQuantity;
+
             if ($slot['is_available'] == 1) {
-            $transformed[] = $slot;
+                $transformed[] = $slot;
             }
         }
+
         return response()->json($transformed);
     }
 
@@ -179,6 +207,7 @@ class HomeController extends Controller
 
         while ($currentDate <= $endDate) {
             $dayOfWeek = strtolower($currentDate->format('l'));
+
             if (!in_array($dayOfWeek, $excludingDays)) {
                 $currentTime = clone $startTime;
 
@@ -192,15 +221,14 @@ class HomeController extends Controller
                     $excludeSlot = false;
 
                     foreach ($rewritingRules as $rule) {
-                        if ($rule['language']==$lang) {
-                        $ruleStart = new \DateTime($rule['start']);
-                        $ruleEnd = new \DateTime($rule['end']);
+                        if ($rule['language'] == $lang) {
+                            $ruleStart = new \DateTime($rule['start']);
+                            $ruleEnd = new \DateTime($rule['end']);
 
-
-                        if ($timeSlotStart >= $ruleStart && $timeSlotStart <= $ruleEnd) {
-                            $excludeSlot = true;
-                            break;
-                        }
+                            if ($timeSlotStart >= $ruleStart && $timeSlotStart <= $ruleEnd) {
+                                $excludeSlot = true;
+                                break;
+                            }
                         }
                     }
 
@@ -220,6 +248,7 @@ class HomeController extends Controller
 
             $currentDate->add(new \DateInterval('P1D'));
         }
+
         return $result;
     }
 }
