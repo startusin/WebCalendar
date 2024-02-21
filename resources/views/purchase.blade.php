@@ -72,8 +72,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="tel"  {{$formSettings['PhoneInput']==1?"required":""}} class="form-control" id="PhoneInput" name="PhoneInput" placeholder="name@example.com">
-                            <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>
+                            <input  id="phone" type="tel"  {{$formSettings['PhoneInput']==1?"required":""}} class="form-control" name="PhoneInput">
+{{--                            <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>--}}
                         </div>
                     </div>
                     <div class="col-12">
