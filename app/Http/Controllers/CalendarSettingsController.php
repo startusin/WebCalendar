@@ -70,7 +70,10 @@ class CalendarSettingsController extends Controller
             $settings['countries'] = ['France', 'English'];
             $settings['language'] = 'en';
         }
-
+        if ($settings['countries'] == null) {
+            $settings['countries'] = ['France', 'English'];
+            $settings->save();
+        }
         return view('customer.calendarSettings.edit', compact('settings', 'langs'));
     }
 
