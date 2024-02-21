@@ -19,65 +19,66 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-floating mb-3">
-                                <input type="text" required class="form-control" id="First_NameInput" name="First_NameInput" placeholder="name@example.com">
+                                <input type="text" {{$formSettings['First_Name']==1?"required":""}}  class="form-control" id="First_NameInput" name="First_NameInput" placeholder="name@example.com">
                                 <label for="floatingInput">{{$user->translations['translations']['prenom'][Cookie::get('locale')]??""}}</label>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-floating mb-3">
-                                <input type="text" required class="form-control" id="Last_NameInput" name="Last_NameInput" placeholder="name@example.com">
+                                <input type="text" {{$formSettings['Last_Name']==1?"required":""}} class="form-control" id="Last_NameInput" name="Last_NameInput" placeholder="name@example.com">
                                 <label for="floatingInput">{{$user->translations['translations']['perrier'][Cookie::get('locale')]??""}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text" required class="form-control" id="CompanyInput" name="CompanyInput" placeholder="name@example.com">
+                            <input type="text"  {{$formSettings['Company']==1?"required":""}} class="form-control" id="CompanyInput" name="CompanyInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['nam-de-enterprise'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
                             <select class="form-select"  id="RegionSelect"  name="RegionSelect" aria-label="Floating label select example">
-                                <option value="1" selected>France</option>
-                                <option value="2">England</option>
+                                @foreach($user->settings['countries'] as $item)
+                                    <option value="{{$item}}" selected>{{$item}}</option>
+                                @endforeach
                             </select>
                             <label for="floatingSelect">{{$user->translations['translations']['works-with-selectes'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text"required class="form-control" id="StreetInput" name="StreetInput" placeholder="name@example.com">
+                            <input type="text" {{$formSettings['Street']==1?"required":""}} class="form-control" id="StreetInput" name="StreetInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['numero-de-voie'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text"required class="form-control" id="PlaceInput" name="PlaceInput" placeholder="name@example.com">
+                            <input type="text" {{$formSettings['Place']==1?"required":""}} class="form-control" id="PlaceInput" name="PlaceInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['appartnent'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text"required class="form-control" id="PostalCode"  name="PostalCode" placeholder="name@example.com">
+                            <input type="text"{{$formSettings['PostalCode']==1?"required":""}} class="form-control" id="PostalCode"  name="PostalCode" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['code-postal'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="floatingInput" name=floatingInput" placeholder="name@example.com">
+                            <input type="text" {{$formSettings['Ville']==1?"required":""}} class="form-control" id="floatingInput" name=floatingInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['ville'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="tel" required class="form-control" id="PhoneInput" name="PhoneInput" placeholder="name@example.com">
-                            <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>
+                            <input  id="phone" type="tel"  {{$formSettings['PhoneInput']==1?"required":""}} class="form-control" name="PhoneInput">
+{{--                            <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>--}}
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="email"required class="form-control" id="EmailInput"  name="EmailInput" placeholder="name@example.com">
+                            <input type="email"{{$formSettings['EmailInput']==1?"required":""}} class="form-control" id="EmailInput"  name="EmailInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['addresse-de'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>

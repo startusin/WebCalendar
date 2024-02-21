@@ -11,7 +11,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        $products = Product::where('calendar_id', auth()->user()->id)
+            ->orderBy('priority')
+            ->get();
 
         return view('customer.product.index', compact('products'));
     }
@@ -134,5 +136,18 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         return redirect()->route('customer.product.index');
+    }
+
+    public function changePriority(Request $request)
+    {
+        $data = $request->all();
+        foreach ($data['idsArray'] as $key => $priority) {
+            $product = Product::find($key);
+            if ($product) {
+                $product['priority'] = $priority;
+                $product->save();
+            }
+        }
+        return response()->json('200');
     }
 }

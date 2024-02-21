@@ -19,6 +19,8 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+                <meta name="csrf-token" content="{{ csrf_token() }}">
+
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-1">
@@ -39,9 +41,9 @@
                                         <th class="col-4"  colspan="3">Actions</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="text-center">
+                                    <tbody id="sortable" style="cursor: pointer;" class="text-center">
                                     @foreach($products as $key => $product)
-                                        <tr>
+                                        <tr data-id="{{$product->id}}">
                                             <td  class="col-1">{{$product->id}}</td>
                                             @foreach($product['title'] as $lg => $item)
                                                 @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
@@ -77,6 +79,7 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
+                        <button class="btn btn-primary SaveProducts">Save priority</button>
                     </div>
                 </div>
                 <!-- /.row -->
@@ -87,3 +90,37 @@
         <!-- /.content -->
     </div>
 @endsection
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $(".SaveProducts").click(function() {
+                let idsArray = {};
+                let i = 1;
+                $("#sortable tr").each(function() {
+                    let id = $(this).data('id');
+                    idsArray[id] = i;
+                    i++;
+                });
+                let csrfToken = $('meta[name="csrf-token"]').attr('content');
+                let dataToSend = {
+                    idsArray: idsArray
+                }
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    url: '/product/changePriority',
+                    method: 'PUT',
+                    data: dataToSend,
+                    success: function(response) {
+                        console.log("Good");
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

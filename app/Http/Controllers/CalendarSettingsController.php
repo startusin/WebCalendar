@@ -4,13 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Enums\Languages;
 use App\Models\CalendarSettings;
+use App\Models\FormSettings;
 use App\Models\User;
+use App\Services\FormsSettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CalendarSettingsController extends Controller
 {
+    private FormsSettingsService $formsSettingsService;
+    public function __construct(FormsSettingsService $formsSettingsService)
+    {
+        $this->formsSettingsService = $formsSettingsService;
+    }
+
+    public function deleteCountry(Request $request) {
+        $country = $request->input('country');
+        $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+        $countriesArray = $settings['countries'] ?? [];
+        $index = array_search($country, $countriesArray);
+
+        if ($index !== false) {
+            unset($countriesArray[$index]);
+        }
+
+        $settings->countries = $countriesArray;
+        $settings->save();
+        return response()->json(['message' => 'Country deleted successfully'], 200);
+    }
+
+    public function storeCountry(Request $request) {
+        $country = $request->input('country');
+        if ($country != null) {
+            $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+            $countriesArray = $settings['countries'] ?? [];
+            array_push($countriesArray, $country);
+            $settings['countries'] = $countriesArray;
+            $settings->save();
+        }
+        return redirect()->route('calendarSettings.edit');
+    }
+
+    public function createCountry() {
+        return view('customer.calendarSettings.CreateCountry');
+    }
+
     public function edit() {
         $langs = Languages::getMyLanguages(auth()->user()->languages);
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
@@ -28,6 +67,7 @@ class CalendarSettingsController extends Controller
                 $settings['working_hr_start'][$key] = '08:00';
                 $settings['working_hr_end'][$key] = '20:00';
             }
+            $settings['countries'] = ['France', 'English'];
             $settings['language'] = 'en';
         }
 
@@ -42,6 +82,7 @@ class CalendarSettingsController extends Controller
             'secondary_color' => ['string'],
             'bg_color' => ['string'],
             'logo' => ['file'],
+            'bg_image' => ['file'],
             'en-default_quantity' => ['numeric'],
             'fr-default_quantity' => ['numeric'],
             'es-default_quantity' => ['numeric'],
@@ -111,27 +152,74 @@ class CalendarSettingsController extends Controller
             $data['banner'] = $oldData['banner'];
         }
 
-        CalendarSettings::updateOrCreate([
-            'calendar_id' => auth()->user()->id
-        ],[
-            'calendar_id' => $data['calendar_id'],
-            'primary_color' => $data['primary_color'],
-            'working_hr_start' => $workingHrStart,
-            'working_hr_end' => $workingHrEnd,
-            'secondary_color' => $data['secondary_color'],
-            'bg_color' => $data['bg_color'],
-            'logo' => $data['logo'] ?? null,
-            'default_quantity' => $Quantity,
-            'banner' => $data['banner'] ?? null,
-            'excluded_days' => $data['excluded_days'] ?? null,
-            'interval' => $IntervalLang,
-            'language' => $data['language'],
-        ]);
+        if (isset($data['bg_image'])) {
+            if ($oldData !=null &&$oldData['bg_image'] != null) {
+                Storage::disk('public')->delete($oldData['bg_image']);
+            }
+            $data['bg_image'] = Storage::disk('public')->put('/images', $data['bg_image']);
+        } elseif ( $oldData!=null &&$oldData['bg_image'] != null) {
+            $data['bg_image'] = $oldData['bg_image'];
+        }
+
+        $calendarSettings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
+        $dataForUpdateOrCreate['calendar_id'] = $data['calendar_id'];
+        $dataForUpdateOrCreate['primary_color'] = $data['primary_color'];
+        $dataForUpdateOrCreate['working_hr_start'] = $workingHrStart;
+        $dataForUpdateOrCreate['working_hr_end'] = $workingHrEnd;
+        $dataForUpdateOrCreate['secondary_color'] = $data['secondary_color'];
+        $dataForUpdateOrCreate['bg_color'] = $data['bg_color'];
+        $dataForUpdateOrCreate['bg_image'] = $data['bg_image'] ?? null;
+        $dataForUpdateOrCreate['logo'] = $data['logo'] ?? null;
+        $dataForUpdateOrCreate['default_quantity'] = $Quantity;
+        $dataForUpdateOrCreate['banner'] = $data['banner'] ?? null;
+        $dataForUpdateOrCreate['excluded_days'] = $data['excluded_days'] ?? null;
+        $dataForUpdateOrCreate['interval'] = $IntervalLang;
+        $dataForUpdateOrCreate['language'] = $data['language'];
+
+        if (!$calendarSettings) {
+            $dataForUpdateOrCreate['countries'] = ['English', 'France'];
+            CalendarSettings::create($dataForUpdateOrCreate);
+        } else {
+            $calendarSettings->update($dataForUpdateOrCreate);
+        }
+
+        $settings = FormSettings::all();
+        $lenght = count( $settings);
+        if ($lenght == 0) {
+            $calendar_id = auth()->user()->id;
+            foreach ($this->formsSettingsService->GetAllKeys() as $key => $isRequired){
+                FormSettings::create([
+                    'key' => $key,
+                    'is_required' => $isRequired,
+                    'calendar_id' => $calendar_id
+                ]);
+            }
+        }
 
         return redirect()->route('calendarSettings.edit');
     }
 
     public function embedded() {
         return view('customer.calendarSettings.embedded');
+    }
+
+    public function getFormsSettings()
+    {
+        $settings = FormSettings::all();
+        return view('customer.formSettings.index', compact('settings'));
+    }
+    public function changeFormSettings(Request $request)
+    {
+        $data = $request->all();
+        $settingsForm = FormSettings::find($data['id']);
+        if ($settingsForm) {
+            if ($settingsForm['is_required'] == 0){
+                $settingsForm['is_required'] = 1;
+            } else{
+                $settingsForm['is_required'] = 0;
+            }
+            $settingsForm->save();
+        }
+        return response()->json(200);
     }
 }

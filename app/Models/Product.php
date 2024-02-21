@@ -16,6 +16,7 @@ class Product extends Model
         'description',
         'price',
         'max_qty',
+        'priority'
     ];
 
     public function promocodes()

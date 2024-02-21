@@ -26,6 +26,7 @@
                     <div class="col-12">
                         <form action="{{route('calendarSettings.update')}}" method="POST" class="w-50" enctype="multipart/form-data">
                             @csrf
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
                             @method('PUT')
                             <input name="calendar_id" value="{{auth()->user()->id}}" hidden >
 
@@ -128,12 +129,47 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Country</label>
+                                <table>
+                                    @foreach($settings['countries'] as $item)
+                                        <tr>
+                                        <td class="pr-2">{{$item}} </td>
+                                        <td><i class="fa-solid fa-trash"></i></td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                                <a class="mt-2 btn btn-primary" href="{{route('create.country')}}">Create Country</a>
+                            </div>
+
+
+
+                            <div class="form-group">
                                 <label>Background color</label>
                                 <input type="color" name="bg_color" value="{{$settings['bg_color']}}" class="form-control" required >
                                 @error('bg_color')
                                 <div class="text-danger">{{@$message}}</div>
                                 @enderror
                             </div>
+
+
+
+                            <div>
+                                <label >Background Image</label>
+                            </div>
+                            <div class="myImage BgImage">
+                                <img src="{{ isset($settings['bg_image']) ? asset('storage/' . $settings['bg_image']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
+                            </div>
+
+                            <div class="input-group mt-3 mb-3">
+                                <div class="custom-file">
+                                    <input type="file" name="bg_image" id="bg_image" class="custom-file-input">
+                                    <label class="custom-file-label">File</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+
 
                             <div>
                                 <label >Logotype</label>
@@ -181,3 +217,33 @@
     </div>
 
 @endsection
+@push('js')
+    <script>
+        let icons = document.querySelectorAll('.form-group table tr td i');
+
+        let csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        icons.forEach(function(icon) {
+            icon.addEventListener('click', function() {
+                let countryName = this.parentElement.previousElementSibling.textContent.trim();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    url: '/deleteCountry',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ country: countryName }),
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Помилка під час видалення країни ' + countryName);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+@endpush

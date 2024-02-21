@@ -15,12 +15,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&family=Outfit:wght@300;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+
+    @stack('css')
 
     <style>
+
         :root {
             --calendar-primary-color: {{ isset($user) && isset($user->settings['primary_color']) ? $user->settings['primary_color'] : "#cca646" }};
             --calendar-secondary-color: {{isset($user) &&  isset($user->settings['secondary_color'])? $user->settings['secondary_color']:"#e9d9a7" }};
             --calendar-background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
+        }
+        body{
+            background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
+        }
+        .MyContainer {
+            background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
+        }
+        .PurchaseContainer{
+            background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
+        }
+        .iti{
+            display:block;
+        }
+        #phone{
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
     </style>
 
@@ -35,9 +55,11 @@
 </head>
 <body>
 
+<div class="fullScreen">
 
 @yield('content')
 
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -51,6 +73,29 @@
 <script src="{{asset('assets/js/сalendarProduct.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script>
+    const input = document.querySelector("#phone");
+    window.intlTelInput(input, {
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+    });
+
+    intlTelInput(input, {
+        initialCountry: "fr",
+        geoIpLookup: function (callback) {
+            fetch("https://ipapi.co/json")
+                .then(function (res) {
+                    return res.json();
+                })
+                .then(function (data) {
+                    callback(data.country_code);
+                })
+                .catch(function () {
+                    callback("us");
+                });
+        }
+    });
+</script>
 @stack('js')
 
 </body>

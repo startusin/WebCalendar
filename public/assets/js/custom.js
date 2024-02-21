@@ -38,6 +38,9 @@ $(document).ready(function () {
         }
     });
 
+    if ($('.BgImage img').attr('src') === '') {
+        $('.BgImage').css('display', 'none');
+    }
     if ($('.logoImage img').attr('src') === '') {
         $('.logoImage').css('display', 'none');
     }

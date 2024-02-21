@@ -64,6 +64,13 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'customer'], function () {
 
+            Route::get('/getFormsSettings', [\App\Http\Controllers\CalendarSettingsController::class, 'getFormsSettings'])->name('getFormsSettings');
+            Route::put('/changeFormSettings', [\App\Http\Controllers\CalendarSettingsController::class, 'changeFormSettings'])->name('changeFormSettings');
+
+            Route::delete('/deleteCountry', [\App\Http\Controllers\CalendarSettingsController::class,'deleteCountry']);
+            Route::post('/store/country', [\App\Http\Controllers\CalendarSettingsController::class,'storeCountry'])->name('store.country');
+            Route::get('/create/country', [\App\Http\Controllers\CalendarSettingsController::class,'createCountry'])->name('create.country');
+
             Route::post('changeStatus', [\App\Http\Controllers\PurchaseController::class, 'changeStatus']);
             Route::get('purchase/all', [\App\Http\Controllers\PurchaseController::class, 'getAllPurchases'])->name('purchase.index');
             Route::get('purchase/show/{id}', [\App\Http\Controllers\PurchaseController::class, 'getPurchase'])->name('purchase.show');
@@ -86,7 +93,8 @@ use Illuminate\Support\Facades\Route;
 
             });
 
-            Route::group(['prefix' => 'product'],function (){
+            Route::group(['prefix' => 'product'],function () {
+                Route::put('/changePriority', [\App\Http\Controllers\ProductController::class, 'changePriority']);
                 Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('customer.product.index');
                 Route::get('/getMyProducts', [\App\Http\Controllers\ProductController::class, 'getMyProducts'])->name('customer.product.getMyProducts');
                 Route::get('show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('customer.product.show');

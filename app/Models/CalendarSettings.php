@@ -31,7 +31,9 @@ class CalendarSettings extends Model
         'sms_sender',
         'remind_time',
         'admin_email',
-        'admin_email_title'
+        'admin_email_title',
+        'countries',
+        'bg_image'
     ];
 
     protected $casts = [
@@ -48,6 +50,7 @@ class CalendarSettings extends Model
         'sms_reminder' => 'array',
         'sms_sender' => 'array',
         'admin_email' => 'array',
-        'admin_email_title' => 'array'
+        'admin_email_title' => 'array',
+        'countries' => 'array'
     ];
 }
