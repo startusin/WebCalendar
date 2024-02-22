@@ -49,7 +49,7 @@ $(document).ready(function () {
     }
 
     $(document).ready(function() {
-        $('#PhoneInput').on('input', function() {
+        $('#phone').on('input', function() {
             $(this).val($(this).val().replace(/[^0-9+]/g,''));
         });
     });
@@ -102,7 +102,9 @@ $(document).ready(function () {
 
     function TotalSum() {
         let sum = 0;
-
+        let vat = $("#vat").val();
+        console.log('vat');
+        console.log(vat);
         $('.prod-info').each(function(index, element) {
             let selectQuantity = $(element).data('quantity');
             let selectPrice = $(element).data('temp-price');
@@ -116,7 +118,7 @@ $(document).ready(function () {
             sum += selectQuantity * selectPrice;
         });
 
-        let totalSum = (Math.round((sum) * 100) / 100).toFixed(2);
+        let totalSum = ((Math.round((sum) * 100) / 100) + ((Math.round((sum) * 100) / 100)*vat/100)).toFixed(2);
 
         $('.total-sum').text(totalSum + "€");
 
@@ -559,6 +561,9 @@ $(document).ready(function () {
 
                 $('#SlotStarted').text(moment.utc(dateTime).format('DD/MM/YYYY HH:mm'));
 
+                $('#SentMail').text(response.sent_email!=null?moment.utc(response.sent_email).format('DD/MM/YYYY HH:mm'):"Not Sent");
+
+
                 let csrfToken = $('meta[name="csrf-token"]').attr('content');
             }
         })
@@ -650,7 +655,7 @@ $(document).ready(function () {
             slots: array,
             productIdsQuantity: dataIds,
             productPriceId: productPriceId,
-            calendarId: lastPart,
+            calendarId: parseInt($('.main-container').data('calendar-id'), 10),
             'direct-booking': directBooking
         });
         console.log(queryString);
@@ -669,7 +674,10 @@ $(document).ready(function () {
                 let placeName = $('#PlaceInput').val();
                 let postalCodeName = $('#PostalCode').val();
                 let villaName = $('#floatingInput').val();
-                let phoneName = $('#PhoneInput').val();
+                let phoneName = $('#phone').val();
+                console.log('phoneName');
+                console.log(phoneName);
+
                 let emailName = $('#EmailInput').val();
                 let calendarId = $('#calendar_id').val();
                 let adminValue = $('#adminValue').val();

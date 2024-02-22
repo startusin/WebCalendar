@@ -101,10 +101,16 @@ class CalendarSettingsController extends Controller
             'fr-interval' => ['numeric'],
             'es-interval' => ['numeric'],
             'language' => ['string'],
+            'vat' => ['numeric'],
+            'alias' =>  'unique:users,alias,' . auth()->user()->id
         ])->validated();
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
-
+        $user = User::find(auth()->user()->id);
+        if ($user) {
+            $user['alias'] = $data['alias'];
+            $user->save();
+        }
         $IntervalLang = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'interval') !== false) {
@@ -178,6 +184,7 @@ class CalendarSettingsController extends Controller
         $dataForUpdateOrCreate['excluded_days'] = $data['excluded_days'] ?? null;
         $dataForUpdateOrCreate['interval'] = $IntervalLang;
         $dataForUpdateOrCreate['language'] = $data['language'];
+        $dataForUpdateOrCreate['vat'] = $data['vat'];
 
         if (!$calendarSettings) {
             $dataForUpdateOrCreate['countries'] = ['English', 'France'];

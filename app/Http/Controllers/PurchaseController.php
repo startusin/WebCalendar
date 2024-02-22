@@ -44,7 +44,7 @@ class PurchaseController extends Controller
             })->get()
             ->map(function ($booking) {
                 $totalSoldPrice = $booking->bookingProducts->sum('sold_price');
-
+                $totalSum = ($totalSoldPrice * auth()->user()->settings['vat'] / 100) +$totalSoldPrice;
                 $year = substr($booking->created_at, 2, 2);
                 $month = date('m', strtotime($booking->created_at));
                 $id = str_pad($booking->id, 4, '0', STR_PAD_LEFT);
@@ -55,7 +55,7 @@ class PurchaseController extends Controller
                 //$paymentLinkStart = \request()->getHttpHost()."/payment/".$booking->id;
                 return (object)[
                     'booking' => $booking,
-                    'total_sold_price' => $totalSoldPrice,
+                    'total_sold_price' => $totalSum,
                     'customId' => $orderNumber,
                     'paymentLink' => $paymentLinkStart.$paymentLinkEnd
                 ];
@@ -117,6 +117,7 @@ class PurchaseController extends Controller
 
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);
+        $vat = $user->settings['vat'];
         $stripe = new StripeClient(env('STRIPE_SECRET'));
 
         foreach ($data['slots'] as $key => $dateTime) {
@@ -148,9 +149,10 @@ class PurchaseController extends Controller
 
             $isBrunch = true;
             $totalQuantity = (int)$data['branchQty'];
-            $totalSum = (int)$data['branchQty'] * ($brunch->price);
+            $sousSum = (int)$data['branchQty'] * ($brunch->price);
             $brunchId = $data['branchId'];
             $brunchPrice = $brunch->price;
+            $totalSum = ($sousSum * $vat / 100) + $sousSum;
 
             $intent = $stripe->paymentIntents->create([
                 'amount' => (float)$totalSum * 100,
@@ -161,7 +163,7 @@ class PurchaseController extends Controller
 //                ]
             ]);
 
-            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
+            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -184,6 +186,7 @@ class PurchaseController extends Controller
         }
 
         $totalQuantity = 0;
+        $sousSum = 0;
         $totalSum = 0;
 
         $productData = [];
@@ -192,11 +195,11 @@ class PurchaseController extends Controller
             $price = $this->calculateProductPrice($item, $slots['language'], $slots['startDateSlot']);
 
             $totalQuantity += (int)$item['quantity'];
-            $totalSum += (int)$item['quantity'] * (float)$price['price'][$slots['language']];
+            $sousSum += (int)$item['quantity'] * (float)$price['price'][$slots['language']];
 
             $productData[] = ['product' => $item, 'price' => (float)$price['price'][$slots['language']]];
         }
-
+        $totalSum = ($sousSum * $vat / 100) + $sousSum;
         $isBrunch = false;
 
         $intent = $stripe->paymentIntents->create([
@@ -205,7 +208,7 @@ class PurchaseController extends Controller
             'automatic_payment_methods' => ['enabled' => true],
         ]);
 
-        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings'));
+        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings'));
     }
 
     public function storeOrder(Request $request){
@@ -215,7 +218,6 @@ class PurchaseController extends Controller
     public function makeSlot(Request $request)
     {
         $data = $request->all();
-
         $adminValue = $data['adminValue']??false;
         $data['calendarId'] = explode('?', $data['calendarId'])[0];
 

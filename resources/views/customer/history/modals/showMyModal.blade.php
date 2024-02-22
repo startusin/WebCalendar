@@ -78,6 +78,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Is sent email</label>
+                                            <div class="col-sm-12">
+                                                <p id="SentMail"></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

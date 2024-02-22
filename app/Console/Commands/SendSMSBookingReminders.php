@@ -15,12 +15,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Twilio\Rest\Client;
 
-class SendBookingReminders extends Command
+class SendSMSBookingReminders extends Command
 {
     const CRON_TIME_MINUTES = 10;
 
-    protected $signature = 'send-booking-reminders';
-    protected $description = 'Send reminders for upcoming bookings';
+    protected $signature = 'send-sms-booking-reminders';
+    protected $description = 'Send sms reminders for upcoming bookings';
 
     public function handle()
     {
@@ -30,14 +30,13 @@ class SendBookingReminders extends Command
                 $query->where('payment_status', 'paid');
             })->get();
         foreach ($bookedSlots as $slot) {
-
             $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
-            $configTime = $settings->remind_time;
+            $configTime = $settings->sms_remind_time;
+
             $notificationEndTime = Carbon::now()->addMinutes($configTime - self::CRON_TIME_MINUTES);
-
             $notificationTime = Carbon::now()->addMinutes($configTime);
-
             if ($slot->start_date > $notificationEndTime && $slot->start_date < $notificationTime) {
+
                 $this->sendNotification($slot);
             }
         }
@@ -49,19 +48,18 @@ class SendBookingReminders extends Command
         if ($settings) {
             $language = $settings->language;
             $booking = $slot->booking;
-            $csEmail = $settings->cs_email[$language] ?? View::make('customer.emails.email.cs')->render();
 
-            $csEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $csEmail);
-            $subject = $settings->cs_email_title[$language] ?? 'Customer satisfaction title';
-
-            Mail::to($booking->email)->send(new CSEmail($subject, $csEmail, $settings->main_email, $settings->main_name));
-
-            print($booking->email . ' - Sent' . "\n");
+            $message = $settings->sms_reminder[$language];
+            $start_date = $slot->start_date;
+            $start_time = date("H:i", strtotime($start_date));
+            $start_date_only = date("Y-m-d", strtotime($start_date));
+            $message = str_replace('{:DATE:}', $start_date_only, $message);
+            $message = str_replace('{:HOUR:}', $start_time, $message);
 
             $response = Http::post('https://hooks.zapier.com/hooks/catch/2825064/3etuci4/', [
                 'sender' => $settings->sms_sender[$language] ?? 'SMS',
                 'phone' => $booking->phone,
-                'message' => $settings->sms_reminder[$language]
+                'message' => $message
             ]);
 
             if ($response->successful()) {

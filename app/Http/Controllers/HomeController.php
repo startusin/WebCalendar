@@ -27,9 +27,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request,User $user)
+    public function index(Request $request, $alias)
     {
         $admin = $request->get('direct-booking') === 'true';
+
+        $user = User::where('alias', $alias)->first();
+
+        if (!$user) {
+            abort(404);
+        }
 
         if (!$user->settings || !$user->translations) {
             die('Calendar isn\'t configured. Login and go to Settings tab and configure it, and you must to save translations');
@@ -76,7 +82,7 @@ class HomeController extends Controller
 
         $from = $request->get('from');
         $to = $request->get('to');
-        
+
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
 
         $excludingDays = $settings->excluded_days ?? [];
@@ -159,35 +165,37 @@ class HomeController extends Controller
         $transformed = [];
 
         foreach ($mergedSlots as $slot) {
-            $slot['calendar_id'] = $user->id;
-            $start = new \DateTime($slot['start']);
-            $end = new \DateTime($slot['end']);
+            if ($slot['start'] > Carbon::now()) {
+                $slot['calendar_id'] = $user->id;
+                $start = new \DateTime($slot['start']);
+                $end = new \DateTime($slot['end']);
 
-            $slotQuery = BookedSlots::where('start_date', '=', $start->format('Y-m-d H:i:s'))
-                ->where('end_date', '=', $end->format('Y-m-d H:i:s'))
-                ->where('language', '=', $slot['language'])
-                ->where('calendar_id', '=', $user->id)
-                ->pluck('id')
-                ->toArray();
-            if (!isset($slot['limit'])) {
-                foreach ($user->languages as $lang) {
-                    if ($lang == $slot['language']) {
-                        $slot['limit'] = $user->settings['default_quantity'][$lang];
+                $slotQuery = BookedSlots::where('start_date', '=', $start->format('Y-m-d H:i:s'))
+                    ->where('end_date', '=', $end->format('Y-m-d H:i:s'))
+                    ->where('language', '=', $slot['language'])
+                    ->where('calendar_id', '=', $user->id)
+                    ->pluck('id')
+                    ->toArray();
+                if (!isset($slot['limit'])) {
+                    foreach ($user->languages as $lang) {
+                        if ($lang == $slot['language']) {
+                            $slot['limit'] = $user->settings['default_quantity'][$lang];
+                        }
                     }
                 }
-            }
-            if (!$slotQuery && $slot['is_available'] == 1) {
-                $slot['booked'] = 0;
-                $transformed[] = $slot;
-                continue;
-            }
+                if (!$slotQuery && $slot['is_available'] == 1) {
+                    $slot['booked'] = 0;
+                    $transformed[] = $slot;
+                    continue;
+                }
 
-            $sumQuantity = BookingProduct::whereIn('slot_id', $slotQuery)->sum('quantity');
+                $sumQuantity = BookingProduct::whereIn('slot_id', $slotQuery)->sum('quantity');
 
-            $slot['booked'] = (int)$sumQuantity;
+                $slot['booked'] = (int)$sumQuantity;
 
-            if ($slot['is_available'] == 1) {
-                $transformed[] = $slot;
+                if ($slot['is_available'] == 1) {
+                    $transformed[] = $slot;
+                }
             }
         }
 

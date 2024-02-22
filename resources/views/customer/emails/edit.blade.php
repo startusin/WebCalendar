@@ -54,6 +54,7 @@
                                     <ul class="ml-2">
                                         <li>{:LOGOTYPE:}</li>
                                         <li>{:ITEMS:}</li>
+                                        <li>{:LANGUAGE:}</li>
                                     </ul>
 
                                     @foreach ($languages as $language)
@@ -102,6 +103,7 @@
                                         <li>{:QUANTITY:}</li>
                                         <li>{:PRICE:}</li>
                                         <li>{:TOTAL_PRICE:}</li>
+                                        <li>{:LANGUAGE:}</li>
                                     </ul>
 
                                     @foreach ($languages as $language)
@@ -132,7 +134,7 @@
                                     @endforeach
 
                                     <h5 class="text-center mt-4 mb-3">Remind time (minutes)</h5>
-                                    <input type="text" class="w-100" name="remind-time" value="{{ $settings->remind_time ?? '60' }}">
+                                    <input type="number" class="w-100" name="remind-time" value="{{ $settings->remind_time ?? '60' }}">
                                 </form>
 
                             </div>

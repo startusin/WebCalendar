@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-12 mt-2">
                         <div class="card">
-                            <textarea style="height: 400px;"><iframe src="{{ url('/') }}/calendar/{{ auth()->user()->id }}" style="width: 100%; min-height: 800px;"></iframe></textarea>
+                            <textarea style="height: 400px;"><iframe src="{{ url('/') }}/calendar/{{ auth()->user()->alias }}" style="width: 100%; min-height: 800px;"></iframe></textarea>
                             <!-- /.card-body -->
                         </div>
                     </div>

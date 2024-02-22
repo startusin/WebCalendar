@@ -29,12 +29,13 @@ class UserController extends Controller
             "last_name" => ['required', 'string'],
             "email" => ['required', 'email', Rule::unique('users', 'email')],
             "password" => ['required', 'string'],
-            "languages" =>['required', 'array']
+            "languages" =>['required', 'array'],
         ])->validated();
 
         $data['role'] = Role::customer;
-        User::create($data);
-
+        $user = User::create($data);
+        $user['alias'] = $user->id;
+        $user->save();
         return redirect()->route('admin.user.index');
     }
 
