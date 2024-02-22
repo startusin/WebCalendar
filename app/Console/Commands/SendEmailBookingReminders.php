@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Emails\CSEmail;
+use App\Enums\Languages;
 use App\Models\BookedSlots;
 use App\Models\BookingProduct;
 use App\Models\CalendarSettings;
@@ -48,6 +49,7 @@ class SendEmailBookingReminders extends Command
             $booking = $slot->booking;
             $csEmail = $settings->cs_email[$language] ?? View::make('customer.emails.email.cs')->render();
             $csEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $csEmail);
+            $csEmail = str_replace('{:LANGUAGE:}', Languages::getStringLanguage($slot->language), $csEmail);
             $subject = $settings->cs_email_title[$language] ?? 'Customer satisfaction title';
             Mail::to($booking->email)->send(new CSEmail($subject, $csEmail, $settings->main_email, $settings->main_name));
             print($booking->email . ' - Sent' . "\n");

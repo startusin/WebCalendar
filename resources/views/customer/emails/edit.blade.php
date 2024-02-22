@@ -54,6 +54,7 @@
                                     <ul class="ml-2">
                                         <li>{:LOGOTYPE:}</li>
                                         <li>{:ITEMS:}</li>
+                                        <li>{:LANGUAGE:}</li>
                                     </ul>
 
                                     @foreach ($languages as $language)
@@ -102,6 +103,7 @@
                                         <li>{:QUANTITY:}</li>
                                         <li>{:PRICE:}</li>
                                         <li>{:TOTAL_PRICE:}</li>
+                                        <li>{:LANGUAGE:}</li>
                                     </ul>
 
                                     @foreach ($languages as $language)

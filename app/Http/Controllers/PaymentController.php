@@ -115,6 +115,7 @@ class PaymentController extends Controller
 
 
                 $calendarId = $booking->slots()->first()->calendar_id;
+                $SlotLanguage = $booking->slots()->first()->language;
                 $settings = CalendarSettings::where('calendar_id', $calendarId)->first();
 
                 if ($settings) {
@@ -135,6 +136,7 @@ class PaymentController extends Controller
                         $itemEmailCopy = $itemEmail;
                         $itemEmailCopy = str_replace('{:TITLE:}', $bookingProduct->product->title[$language] ?? 'No Title', $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:PRICE:}', $price, $itemEmailCopy);
+                        $itemEmailCopy = str_replace('{:LANGUAGE:}', $SlotLanguage, $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:QUANTITY:}', $quantity, $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:TOTAL_TTC:}', $bookingProduct->sold_price, $itemEmailCopy);
                         $total += (double)$bookingProduct->sold_price;
@@ -146,9 +148,11 @@ class PaymentController extends Controller
 
                     $purchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $purchaseEmail);
                     $purchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $purchaseEmail);
+                    $purchaseEmail = str_replace('{:LANGUAGE:}', $SlotLanguage, $purchaseEmail);
                     $purchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $purchaseEmail);
 
                     $adminPurchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $adminPurchaseEmail);
+                    $adminPurchaseEmail = str_replace('{:LANGUAGE:}', $SlotLanguage, $adminPurchaseEmail);
                     $adminPurchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $adminPurchaseEmail);
                     $adminPurchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $adminPurchaseEmail);
 

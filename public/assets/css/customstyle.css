@@ -841,6 +841,10 @@ justify-content: end;
     #TotalSlot{
         width: 32%;
     }
+    .button-order{
+        position: fixed;
+        bottom: 10px;
+    }
 
 }
 @media (max-width: 434px) {

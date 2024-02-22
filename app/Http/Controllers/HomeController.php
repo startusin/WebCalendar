@@ -11,6 +11,7 @@ use App\Models\Brunch;
 use App\Models\CalendarSettings;
 use App\Models\CustomSlot;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -136,6 +137,10 @@ class HomeController extends Controller
         $transformed = [];
 
         foreach ($finalSlots as $slot) {
+
+            $DateNow = Carbon::now();
+            if ($slot['start']>$DateNow) {
+
             $slot['calendar_id'] = $user->id;
             $start = new \DateTime($slot['start']);
             $end = new \DateTime($slot['end']);
@@ -164,6 +169,7 @@ class HomeController extends Controller
             $slot['booked'] = (int)$sumQuantity;
             if ($slot['is_available'] == 1) {
             $transformed[] = $slot;
+            }
             }
         }
         return response()->json($transformed);
