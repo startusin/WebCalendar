@@ -559,6 +559,9 @@ $(document).ready(function () {
 
                 $('#SlotStarted').text(moment.utc(dateTime).format('DD/MM/YYYY HH:mm'));
 
+                $('#SentMail').text(response.sent_email!=null?moment.utc(response.sent_email).format('DD/MM/YYYY HH:mm'):"Not Sent");
+
+
                 let csrfToken = $('meta[name="csrf-token"]').attr('content');
             }
         })

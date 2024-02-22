@@ -46,12 +46,16 @@ class SendEmailBookingReminders extends Command
         $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
         if ($settings) {
             $language = $settings->language;
+            $DateNow = Carbon::now();
             $booking = $slot->booking;
+
             $csEmail = $settings->cs_email[$language] ?? View::make('customer.emails.email.cs')->render();
             $csEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo): '/demologo.png') . '" />', $csEmail);
             $csEmail = str_replace('{:LANGUAGE:}', Languages::getStringLanguage($slot->language), $csEmail);
             $subject = $settings->cs_email_title[$language] ?? 'Customer satisfaction title';
             Mail::to($booking->email)->send(new CSEmail($subject, $csEmail, $settings->main_email, $settings->main_name));
+            $booking->sent_email = $DateNow;
+            $booking->save();
             print($booking->email . ' - Sent' . "\n");
         }
     }
