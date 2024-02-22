@@ -215,7 +215,6 @@ class PurchaseController extends Controller
     public function makeSlot(Request $request)
     {
         $data = $request->all();
-
         $adminValue = $data['adminValue']??false;
         $data['calendarId'] = explode('?', $data['calendarId'])[0];
 

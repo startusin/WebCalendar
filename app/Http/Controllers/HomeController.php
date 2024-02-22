@@ -26,10 +26,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request,User $user)
+    public function index(Request $request, $alias)
     {
         $admin = $request->get('direct-booking') === 'true';
-
+        $user = User::where('alias', $alias)->first();
+        if (!$user) {
+            abort(404);
+        }
         if (!$user->settings || !$user->translations) {
             die('Calendar isn\'t configured. Login and go to Settings tab and configure it, and you must to save translations');
         }

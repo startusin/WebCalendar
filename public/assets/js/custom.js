@@ -49,7 +49,7 @@ $(document).ready(function () {
     }
 
     $(document).ready(function() {
-        $('#PhoneInput').on('input', function() {
+        $('#phone').on('input', function() {
             $(this).val($(this).val().replace(/[^0-9+]/g,''));
         });
     });
@@ -650,7 +650,7 @@ $(document).ready(function () {
             slots: array,
             productIdsQuantity: dataIds,
             productPriceId: productPriceId,
-            calendarId: lastPart,
+            calendarId: parseInt($('.main-container').data('calendar-id'), 10),
             'direct-booking': directBooking
         });
         console.log(queryString);
@@ -669,7 +669,10 @@ $(document).ready(function () {
                 let placeName = $('#PlaceInput').val();
                 let postalCodeName = $('#PostalCode').val();
                 let villaName = $('#floatingInput').val();
-                let phoneName = $('#PhoneInput').val();
+                let phoneName = $('#phone').val();
+                console.log('phoneName');
+                console.log(phoneName);
+
                 let emailName = $('#EmailInput').val();
                 let calendarId = $('#calendar_id').val();
                 let adminValue = $('#adminValue').val();
