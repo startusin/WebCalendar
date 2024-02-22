@@ -102,7 +102,9 @@ $(document).ready(function () {
 
     function TotalSum() {
         let sum = 0;
-
+        let vat = $("#vat").val();
+        console.log('vat');
+        console.log(vat);
         $('.prod-info').each(function(index, element) {
             let selectQuantity = $(element).data('quantity');
             let selectPrice = $(element).data('temp-price');
@@ -116,7 +118,7 @@ $(document).ready(function () {
             sum += selectQuantity * selectPrice;
         });
 
-        let totalSum = (Math.round((sum) * 100) / 100).toFixed(2);
+        let totalSum = ((Math.round((sum) * 100) / 100) + ((Math.round((sum) * 100) / 100)*vat/100)).toFixed(2);
 
         $('.total-sum').text(totalSum + "€");
 

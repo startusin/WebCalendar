@@ -10,6 +10,7 @@
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     <input type="hidden" name="slots" id="slots" value="{{ json_encode($slots) }}">
                     <input name="calendar_id" id="calendar_id" value="{{$calendarId}}" hidden>
+                    <input name="vat" id="vat" value="{{$user->settings['vat']}}" hidden>
 
                     <input name="adminValue" id="adminValue" value="{{$admin}}" hidden>
 
@@ -177,7 +178,7 @@
                             </div>
 
                             <div class="product-item-price d-inline-block">
-                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$totalSum}}€</span>
+                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$sousSum}}€</span>
                             </div>
                         </div>
 

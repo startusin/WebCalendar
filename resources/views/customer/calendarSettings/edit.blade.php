@@ -53,6 +53,16 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-sm-{{ 12 / count($langs) }}">
+                                    <div class="form-group">
+                                        <label>VAT</label>
+                                        <input type="number" name="vat" value="{{$settings['vat']}}" class="form-control" required >
+                                        @error('vat')
+                                        <div class="text-danger">{{@$message}}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">

@@ -37,11 +37,15 @@ class PaymentController extends Controller
         }
 
         $isBrunch = $request->type === 'brunch' ?? false;
+        $user = User::find($booking->slots()->first()->calendar_id);
+        $vat = $user->settings['vat'];
 
         if ($isBrunch) {
             $sum = $booking->brunches()->sum('total');
+            $sum = $sum + ($sum * $vat / 100);
         } else {
             $sum = $booking->products()->sum('sold_price');
+            $sum = $sum + ($sum * $vat / 100);
         }
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 

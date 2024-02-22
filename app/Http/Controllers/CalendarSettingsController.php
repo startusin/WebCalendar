@@ -101,6 +101,7 @@ class CalendarSettingsController extends Controller
             'fr-interval' => ['numeric'],
             'es-interval' => ['numeric'],
             'language' => ['string'],
+            'vat' => ['numeric'],
             'alias' =>  'unique:users,alias,' . auth()->user()->id
         ])->validated();
 
@@ -183,6 +184,7 @@ class CalendarSettingsController extends Controller
         $dataForUpdateOrCreate['excluded_days'] = $data['excluded_days'] ?? null;
         $dataForUpdateOrCreate['interval'] = $IntervalLang;
         $dataForUpdateOrCreate['language'] = $data['language'];
+        $dataForUpdateOrCreate['vat'] = $data['vat'];
 
         if (!$calendarSettings) {
             $dataForUpdateOrCreate['countries'] = ['English', 'France'];

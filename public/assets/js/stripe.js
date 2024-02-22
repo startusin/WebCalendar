@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const stripe = Stripe('pk_test_51OXkgXBmxlF8ZCLH9ugOpdrq9GrRI2X4oqhyl6gIwr2ujoLjV2UXEjwh2fZCD82JMx9PUhGv0wZtQ21oA1GlYp4i00KkvVBDxf', {
+  const stripe = Stripe('pk_test_51OiyHuEzSS8t3azgqTFIaQ2LgPcXUqx5Ih2F9Iesd4MHLpze7qonhEumbfILq9Z4W1Ioq1cG5beDdCXV0JRGW8pI00bc869aCP', {
       locale: $('.all-purchase').data('locale')
   });
 

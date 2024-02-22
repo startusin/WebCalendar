@@ -35,6 +35,7 @@ class CalendarSettings extends Model
         'countries',
         'bg_image',
         'sms_remind_time',
+        'vat',
     ];
 
     protected $casts = [
