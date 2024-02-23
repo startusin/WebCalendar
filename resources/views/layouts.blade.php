@@ -71,31 +71,19 @@
 @stack('firstJs')
 
 <script src="{{asset('assets/js/сalendarProduct.js')}}"></script>
-<script src="{{asset('assets/js/custom.js')}}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
 <script>
-    const input = document.querySelector("#phone");
-    window.intlTelInput(input, {
+    var input = document.querySelector("#phone");
+
+    var iti = window.intlTelInput(input, {
         utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+        initialCountry: "fr",
     });
 
-    intlTelInput(input, {
-        initialCountry: "fr",
-        geoIpLookup: function (callback) {
-            fetch("https://ipapi.co/json")
-                .then(function (res) {
-                    return res.json();
-                })
-                .then(function (data) {
-                    callback(data.country_code);
-                })
-                .catch(function () {
-                    callback("us");
-                });
-        }
-    });
 </script>
+<script src="{{asset('assets/js/custom.js')}}"></script>
+
 @stack('js')
 
 </body>
