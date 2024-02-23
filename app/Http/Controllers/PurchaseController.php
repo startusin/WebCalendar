@@ -152,7 +152,8 @@ class PurchaseController extends Controller
             $sousSum = (int)$data['branchQty'] * ($brunch->price);
             $brunchId = $data['branchId'];
             $brunchPrice = $brunch->price;
-            $totalSum = ($sousSum * $vat / 100) + $sousSum;
+            $vat =  ($sousSum * $vat / 100);
+            $totalSum = $vat + $sousSum;
 
             $intent = $stripe->paymentIntents->create([
                 'amount' => (float)$totalSum * 100,
@@ -163,7 +164,7 @@ class PurchaseController extends Controller
 //                ]
             ]);
 
-            return view('purchase', compact('calendarId', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
+            return view('purchase', compact('calendarId', 'vat', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -199,7 +200,8 @@ class PurchaseController extends Controller
 
             $productData[] = ['product' => $item, 'price' => (float)$price['price'][$slots['language']]];
         }
-        $totalSum = ($sousSum * $vat / 100) + $sousSum;
+        $vat =  ($sousSum * $vat / 100);
+        $totalSum = $vat + $sousSum;
         $isBrunch = false;
 
         $intent = $stripe->paymentIntents->create([
@@ -208,7 +210,7 @@ class PurchaseController extends Controller
             'automatic_payment_methods' => ['enabled' => true],
         ]);
 
-        return view('purchase', compact('calendarId', 'products', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings'));
+        return view('purchase', compact('calendarId', 'vat', 'products', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings'));
     }
 
     public function storeOrder(Request $request){

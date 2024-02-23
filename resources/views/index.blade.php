@@ -182,6 +182,24 @@
 @endsection
 @push('js')
     <script>
+        $(document).ready(function() {
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+            console.log('currentDate:');
+            console.log(currentDate);
+
+            $('.bootstrap-calendar-day').each(function() {
+                let date = new Date($(this).attr('data-date'));
+                date.setHours(0, 0, 0, 0);
+                if (date < currentDate) {
+                    console.log("GOOD");
+                    $(this).addClass("disable-calendar-date");
+                }
+                console.log(date);
+            });
+        });
+
+
         let currentNoAppointmentTranslate = "{{$user->translations['translations']['noAppointment'][Cookie::get('locale')]??""}}";
 
         $('#exampleCalendar').bsCalendar({
@@ -200,5 +218,23 @@
                     '</div></div></button>';
             }
         });
+        $('#exampleCalendar')
+            .on('change-month', function (e) {$(document).ready(function() {
+                let currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
+                console.log('currentDate:');
+                console.log(currentDate);
+
+                $('.bootstrap-calendar-day').each(function() {
+                    let date = new Date($(this).attr('data-date'));
+                    date.setHours(0, 0, 0, 0);
+                    if (date < currentDate) {
+                        console.log("GOOD");
+                        $(this).addClass("disable-calendar-date");
+                    }
+                    console.log(date);
+                });
+            });
+            })
     </script>
 @endpush

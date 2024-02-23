@@ -675,9 +675,8 @@ $(document).ready(function () {
                 let postalCodeName = $('#PostalCode').val();
                 let villaName = $('#floatingInput').val();
                 let phoneName = $('#phone').val();
-                console.log('phoneName');
-                console.log(phoneName);
-
+                let inputObject = iti.getSelectedCountryData().dialCode;
+                phoneName = `+${inputObject}${phoneName}`;
                 let emailName = $('#EmailInput').val();
                 let calendarId = $('#calendar_id').val();
                 let adminValue = $('#adminValue').val();

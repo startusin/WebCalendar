@@ -73,14 +73,15 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input  id="phone" type="tel"  {{$formSettings['PhoneInput']==1?"required":""}} class="form-control" name="PhoneInput">
-{{--                            <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>--}}
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-floating mb-3">
                             <input type="email"{{$formSettings['EmailInput']==1?"required":""}} class="form-control" id="EmailInput"  name="EmailInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['addresse-de'][Cookie::get('locale')]??""}}</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <input  id="phone" type="tel"  {{$formSettings['PhoneInput']==1?"required":""}} class="form-control" name="PhoneInput">
+                            {{--                            <label for="floatingInput">{{$user->translations['translations']['telephone'][Cookie::get('locale')]??""}}</label>--}}
                         </div>
                     </div>
                 </form>
@@ -184,6 +185,27 @@
 
                         <div class="col-1 text-end"></div>
                     </div>
+
+
+                    <div class="sous-total d-flex">
+                        <div class="col-7 sous-total-item-text">
+                            VAT
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="product-item-count d-inline-block">
+
+                            </div>
+
+                            <div class="product-item-price d-inline-block">
+                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$vat}}€</span>
+                            </div>
+                        </div>
+
+                        <div class="col-1 text-end"></div>
+                    </div>
+
+
+
                     <div class="total d-flex">
                         <div class="col-7 total-item-text">
                             {{$user->translations['translations']['total'][Cookie::get('locale')]??""}}
