@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const stripe = Stripe('pk_test_51OiyHuEzSS8t3azgqTFIaQ2LgPcXUqx5Ih2F9Iesd4MHLpze7qonhEumbfILq9Z4W1Ioq1cG5beDdCXV0JRGW8pI00bc869aCP', {
+  const client_secret = $('.all-purchase').data('token');
+  const pk_js = $('.all-purchase').data('pk-js');
+
+  const stripe = Stripe(pk_js, {
       locale: $('.all-purchase').data('locale')
   });
 
   //const { client_secret } = await fetch('/intent.php').then(r => r.json());
-  const client_secret = $('.all-purchase').data('token');
 
   const options = {
       layout: "tabs"
