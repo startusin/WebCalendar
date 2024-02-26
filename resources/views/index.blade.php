@@ -39,7 +39,7 @@
             </header>
 
             <div class="sub-title mt-1 mb-2 text-center mb-md-4 fw-bold text-uppercase">
-                {{$user->translations['translations']['indicate-your'][Cookie::get('locale')]??""}}
+                {{$user->translations['translations']['indicate-your'][$locale]??""}}
             </div>
 
             <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar"
@@ -48,7 +48,7 @@
             <div class="brunches d-flex flex-wrap justify-content-center d-none brunches-area">
                 <div class="col-12">
                     <div class="brunch-title-head mb-4">
-                        {{$user->translations['translations']['brunch'][Cookie::get('locale')]??""}}
+                        {{$user->translations['translations']['brunch'][$locale]??""}}
                     </div>
 
                     <div class="brunch-list text-center"></div>
@@ -73,7 +73,7 @@
                     <div class="up-card d-flex mb-2 items-center align-items-center">
                         <div class="col-7">
                             <div class="brunch-title">
-                                {{$user->translations['translations']['select-brunch'][Cookie::get('locale')]??""}}
+                                {{$user->translations['translations']['select-brunch'][$locale]??""}}
                             </div>
                         </div>
 
@@ -100,7 +100,7 @@
 
             <div class="products d-flex flex-wrap justify-content-center mt-3 d-none products-area">
                 <div class="sub-title mt-3 mb-2 text-center mb-4 fw-bold text-uppercase">
-                    {{$user->translations['translations']['select-product'][Cookie::get('locale')]??""}}
+                    {{$user->translations['translations']['select-product'][$locale]??""}}
                 </div>
 
                 @foreach($products as $product)
@@ -108,7 +108,7 @@
                         <div class="up-card d-flex mb-2 align-items-center">
                             <div class="col-7">
                                 @foreach($product['title'] as $key => $item)
-                                    @if(\Illuminate\Support\Facades\Cookie::get('locale') == $key)
+                                    @if($locale == $key)
                                         <div class="product-title">{{$item}}</div>
                                     @endif
                                 @endforeach
@@ -116,7 +116,7 @@
                             <div class="product-navigation col-5">
                                 <div class="d-flex justify-content-center product-navigation-container">
                                     @foreach($product['price'] as $key => $item)
-                                        @if(\Illuminate\Support\Facades\Cookie::get('locale') == $key)
+                                        @if($locale == $key)
                                             <div class="product-price" data-id="{{ $product->id }}" data-price="{{$item}}">
                                                 {{ (double)$item }}€
                                             </div>
@@ -140,7 +140,7 @@
                         <div class="down-card">
 
                             @foreach($product['description'] as $key => $item)
-                                @if(\Illuminate\Support\Facades\Cookie::get('locale')== $key)
+                                @if($locale == $key)
                                     <div class="product-description">
                                         {{ $item }}
                                     </div>
@@ -156,7 +156,7 @@
                     3 janvier 2024 | 17h45
                 </div>
                 <div type="button" id="PurchaseButton" class="col-5 reserve text-start disable_button">
-                    {{$user->translations['translations']['reserver'][Cookie::get('locale')]??""}}
+                    {{$user->translations['translations']['reserver'][$locale]??""}}
                 </div>
                 <div id="TotalSlot" class="col-1 total-sum-purchase">
                     0.00€
@@ -200,7 +200,7 @@
         });
 
 
-        let currentNoAppointmentTranslate = "{{$user->translations['translations']['noAppointment'][Cookie::get('locale')]??""}}";
+        let currentNoAppointmentTranslate = "{{$user->translations['translations']['noAppointment'][$locale]??""}}";
 
         $('#exampleCalendar').bsCalendar({
             locale: "{{$locale}}",

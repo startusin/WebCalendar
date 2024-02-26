@@ -27,7 +27,6 @@ class LocalizationMiddleware
             Cookie::queue(Cookie::forever('locale', $locale));
             App::setLocale($locale);
         }
-
         return $next($request);
     }
 }
