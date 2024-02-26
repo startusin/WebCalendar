@@ -12,7 +12,8 @@ body{
 
 @media (max-width: 991px) {
     .MyContainer {
-        padding-bottom: 10px;
+        margin-bottom: 0px;
+        padding-bottom: 65px;
         padding-top: 0;
         padding-right: 25px;
         padding-left: 25px;
@@ -844,6 +845,7 @@ justify-content: end;
     .button-order{
         position: fixed;
         bottom: 10px;
+        width: 95%;
     }
 
 }

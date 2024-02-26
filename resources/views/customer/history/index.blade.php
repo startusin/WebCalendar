@@ -22,17 +22,25 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-12 mt-2">
+                            <form class="col-12" action="{{route('purchase.index')}}" method="GET">
+                                <div class="row form-group justify-content-between">
+
+                                <input class="col-11" name="search"  value="{{$search??""}}" type="text"> <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+
                         <div class="card">
                             <div class="card-body table-responsive p-0">
                                 <table class="table table-hover text-nowrap ">
                                     <thead class="text-center">
                                     <tr>
-                                        <th class="col-1">ID</th>
+                                        <th class="col-1"><a href="{{route('purchase.index', ['SortName'=>"customId", "SortBy" => $sortBy??"asc"])}}">ID</a></th>
                                         <th class="col-2">Buyer</th>
-                                        <th class="col-2">Sold price</th>
-                                        <th class="col-1">Status</th>
-                                        <th class="col-3">Information</th>
-                                        <th class="col-3">Payment link</th>
+                                        <th class="col-2"><a href="{{route('purchase.index', ['SortName'=>"total_sold_price", "SortBy" => $sortBy??"asc"])}}">Sold price</a></th>
+                                        <th class="col-1"><a href="{{route('purchase.index', ['SortName'=>"status", "SortBy" => $sortBy??"asc"])}}">Status</a></th>
+                                        <th class="col-2">Date</th>
+                                        <th class="col-2">Information</th>
+                                        <th class="col-2">Payment link</th>
                                     </tr>
                                     </thead>
                                     <tbody class="text-center">
@@ -58,7 +66,9 @@
                                                     <option value="pending" {{$item->booking['payment_status']=='pending'?'selected':''}} >Pending</option>
                                                 </select>
                                             </td>
-
+                                            <td>
+                                                {{$item->created_at}}
+                                            </td>
                                             <td>
                                                 <a class="showPurchase" href="#" data-route="{{ route('purchase.show', $item->booking['id']) }}" data-toggle="modal" data-target="#showMyModal">
                                                     <i class="far fa-eye"></i>

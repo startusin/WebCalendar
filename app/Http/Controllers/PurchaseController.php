@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Stripe\StripeClient;
+use function Laravel\Prompts\search;
 
 class PurchaseController extends Controller
 {
@@ -54,13 +55,35 @@ class PurchaseController extends Controller
                 $paymentLinkStart = "/payment/".$booking->id;
                 //$paymentLinkStart = \request()->getHttpHost()."/payment/".$booking->id;
                 return (object)[
+                    'created_at'=>$booking->created_at,
                     'booking' => $booking,
+                    'status' => $booking['payment_status'],
                     'total_sold_price' => $totalSum,
                     'customId' => $orderNumber,
                     'paymentLink' => $paymentLinkStart.$paymentLinkEnd
                 ];
             });
-        return view('customer.history.index', compact('purchases'));
+
+        $sortBy = \request()->input('SortBy');
+       // dd(\request()->all());
+        if ($sortBy == 'asc') {
+            $sortBy = 'desc';
+            $purchases = $purchases->sortBy(\request()->input('SortName'));
+        }
+        else if ($sortBy == 'desc') {
+            $sortBy = 'asc';
+            $purchases = $purchases->sortByDesc(\request()->input('SortName'));
+        }
+        //dd($sortBy);
+
+        $search = \request()->input('search')??"";
+        $purchases = collect($purchases)->filter(function ($item) use ($search) {
+            return stripos($item->status, $search) !== false ||
+                stripos($item->customId, $search) !== false ||
+                stripos($item->created_at, $search) !==false;
+        });
+
+        return view('customer.history.index', compact('purchases', 'sortBy', 'search'));
     }
 
     public function getPurchase($id)
