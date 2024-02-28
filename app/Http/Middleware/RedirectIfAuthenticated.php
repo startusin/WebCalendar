@@ -25,8 +25,7 @@ class RedirectIfAuthenticated
                 $url = match($role) {
                     'admin' => '/user',
                     'customer' => '/slots',
-                    'invited' => '/slots',
-                    default => '/',
+                    default => '/slots',
                 };
 
                 return redirect($url);
