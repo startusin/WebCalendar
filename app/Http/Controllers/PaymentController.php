@@ -227,6 +227,7 @@ class PaymentController extends Controller
 
     public function updateIntent(Request $request)
     {
+        dd($request->all());
         $stripe = new StripeClient(env('STRIPE_SECRET'));
 
         $updatedPaymentIntent = $stripe->paymentIntents->update(

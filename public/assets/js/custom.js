@@ -675,10 +675,10 @@ $(document).ready(function () {
                 let lastName = $('#Last_NameInput').val();
                 let companyName = $('#CompanyInput').val();
                 let RegionName = $('#RegionSelect').val();
-                let streetName = $('#StreetInput').val();
+                let streetName = $('#ship-address').val();
                 let placeName = $('#PlaceInput').val();
-                let postalCodeName = $('#PostalCode').val();
-                let villaName = $('#floatingInput').val();
+                let postalCodeName = $('#postcode').val();
+                let villaName = $('#locality').val();
                 let phoneName = $('#phone').val();
                 let inputObject = iti.getSelectedCountryData().dialCode;
                 phoneName = `+${inputObject}${phoneName}`;

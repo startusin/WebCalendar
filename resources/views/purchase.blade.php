@@ -49,7 +49,13 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text" {{$formSettings['Street']==1?"required":""}} class="form-control" id="StreetInput" name="StreetInput" placeholder="name@example.com">
+{{--                            id="StreetInput"--}}
+                            <input type="text" {{$formSettings['Street']==1?"required":""}} class="form-control"  name="StreetInput"
+                                   id="ship-address"
+                                   name="ship-address"
+                                   required
+                                   autocomplete="off"
+                            >
                             <label for="floatingInput">{{$user->translations['translations']['numero-de-voie'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
@@ -61,13 +67,15 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text"{{$formSettings['PostalCode']==1?"required":""}} class="form-control" id="PostalCode"  name="PostalCode" placeholder="name@example.com">
+{{--                            id="PostalCode"--}}
+                            <input type="text"{{$formSettings['PostalCode']==1?"required":""}} class="form-control"  id="postcode"  name="PostalCode" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['code-postal'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input type="text" {{$formSettings['Ville']==1?"required":""}} class="form-control" id="floatingInput" name=floatingInput" placeholder="name@example.com">
+{{--                            id="floatingInput"--}}
+                            <input type="text" {{$formSettings['Ville']==1?"required":""}} class="form-control" id="locality" name=floatingInput" placeholder="name@example.com">
                             <label for="floatingInput">{{$user->translations['translations']['ville'][Cookie::get('locale')]??""}}</label>
                         </div>
                     </div>
@@ -235,7 +243,6 @@
                         <!-- Display error message to your customers here -->
                     </div>
                 </form>
-
                 <div class="col-12 d-md-flex justify-content-md-end mt-3 mb-5">
                     <button data-type="{{ $isBrunch ? 'brunch' : 'items' }}" type="submit" class="makesPurchase submit-form btn text-end make-purchase"><i class="fa-solid fa-check"></i> {{$user->translations['translations']['payer'][Cookie::get('locale')]??""}}</button>
                 </div>
@@ -247,4 +254,70 @@
         <script src="{{asset('assets/js/stripe.js')}}"></script>
     @endif
 @endsection
+@push('js')
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
 
+<script>
+    let autocomplete;
+    let address1Field;
+    let address2Field;
+    let postalField;
+
+    function initAutocomplete() {
+        address1Field = document.querySelector("#ship-address");
+        address2Field = document.querySelector("#address2");
+        postalField = document.querySelector("#postcode");
+        autocomplete = new google.maps.places.Autocomplete(address1Field, {
+
+            fields: ["address_components", "geometry"],
+            types: ["address"],
+        });
+        address1Field.focus();
+        autocomplete.addListener("place_changed", fillInAddress);
+    }
+
+    function fillInAddress() {
+        const place = autocomplete.getPlace();
+        let address1 = "";
+        let postcode = "";
+
+        for (const component of place.address_components) {
+            const componentType = component.types[0];
+            switch (componentType) {
+                case "street_number": {
+                    address1 = `${component.long_name} ${address1}`;
+                    break;
+                }
+
+                case "route": {
+                    address1 += component.short_name;
+                    break;
+                }
+
+                case "postal_code": {
+                    postcode = `${component.long_name}${postcode}`;
+                    break;
+                }
+
+                case "postal_code_suffix": {
+                    postcode = `${postcode}-${component.long_name}`;
+                    break;
+                }
+                case "locality":
+                    document.querySelector("#locality").value = component.long_name;
+                    break;
+
+            }
+        }
+
+        address1Field.value = address1;
+        postalField.value = postcode;
+    }
+
+    window.initAutocomplete = initAutocomplete;
+
+</script>
+@endpush
