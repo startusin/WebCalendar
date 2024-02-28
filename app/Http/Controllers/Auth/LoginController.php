@@ -35,6 +35,7 @@ class LoginController extends Controller
             case 'admin':
                 return '/user';
             case 'customer':
+            case 'invited':
                 return '/slots';
             default:
                 return '/';
