@@ -10,7 +10,12 @@
             </div>
 
 
-            <div class="modal-body">
+            @php
+                $settings = \App\Models\CalendarSettings::where('calendar_id', request()->calendar_user->id)->first();
+                $vat = $settings->vat ?? 0;
+            @endphp
+
+            <div class="modal-body" data-vat="{{ $vat }}">
                 <div class="tab-content" id="createTabContent">
                     <div class="tab-pane fade show active" id="general_tab" role="tabpanel">
                         <div class="row">

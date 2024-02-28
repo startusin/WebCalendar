@@ -176,7 +176,7 @@ class PurchaseController extends Controller
             $brunchId = $data['branchId'];
             $brunchPrice = $brunch->price;
             $vat =  ($sousSum * $vat / 100);
-            $totalSum = $vat + $sousSum;
+            $totalSum = $sousSum;
 
             $intent = $stripe->paymentIntents->create([
                 'amount' => (float)$totalSum * 100,
@@ -224,7 +224,7 @@ class PurchaseController extends Controller
             $productData[] = ['product' => $item, 'price' => (float)$price['price'][$slots['language']]];
         }
         $vat =  ($sousSum * $vat / 100);
-        $totalSum = $vat + $sousSum;
+        $totalSum = $sousSum;
         $isBrunch = false;
 
         $intent = $stripe->paymentIntents->create([
