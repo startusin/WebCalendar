@@ -431,6 +431,11 @@ $(document).ready(function() {
             productSelector(MyObj.product_id,currentLanguage,MyProducts).outerHTML +
             '</div>' +
             '</td>' +
+            '<td>' +
+            '<div>' +
+            '<input value="'+ (MyObj?.price?.participants || 0)+'" type="number"  name="participants" class="form-control" required >' +
+            '</div>' +
+            '</td>' +
             '<td class="align-middle">' +
             '<button type="submit" class="bg-transparent border-0 deleteBut">' +
             '<i class="fas fa-trash text-danger"></i>' +
@@ -612,6 +617,11 @@ $(document).ready(function() {
             '<td>' +
             '<div>' +
             productSelector("d",currentLanguage,MyProducts).outerHTML +
+            '</div>' +
+            '</td>' +
+            '<td>' +
+            '<div>' +
+            '<input type="number" name="participants" class="form-control" required value="0">' +
             '</div>' +
             '</td>' +
             '<td class="align-middle">' +
