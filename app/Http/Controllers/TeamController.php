@@ -83,7 +83,7 @@ class TeamController extends Controller
             "excluded_permissions" => ['array']
         ])->validated();
 
-        if (!$data['excluded_permissions']) {
+        if (!isset($data['excluded_permissions'])) {
             $data['excluded_permissions'] = [];
         }
 
