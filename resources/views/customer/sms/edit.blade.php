@@ -42,11 +42,14 @@
                                 </ul>
                                 <form id="formEmails" method="POST" action="{{route('sms.update')}}">
                                     @csrf
-                                    <input name="calendar_id" value="{{request()->calendar_user->id}}"  hidden>
+                                    <input name="calendar_id" value="{{auth()->user()->id}}"  hidden>
 
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">SMS Reminder - {{ $language }}</h5>
-                                        <input type="text" class="w-100" name="sms-reminder_{{ $language }}" value="{{ $settings->sms_reminder[$language] ?? 'Reminder sms' }}">
+
+                                        <textarea name="sms-reminder_{{ $language }}" class="w-100" rows="4">
+                                            {{ $settings->sms_reminder[$language] ?? 'Reminder sms' }}
+                                        </textarea>
                                     @endforeach
 
                                     @foreach ($languages as $language)

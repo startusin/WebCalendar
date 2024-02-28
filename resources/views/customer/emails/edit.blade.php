@@ -38,7 +38,7 @@
                             <div class="card-body table-responsive p-0">
                                 <form id="formEmails" method="POST" action="{{route('emails.update')}}">
                                     @csrf
-                                    <input name="calendar_id" value="{{request()->calendar_user->id}}"  hidden>
+                                    <input name="calendar_id" value="{{auth()->user()->id}}"  hidden>
 
                                     <div class="form-group">
                                         <label>Name</label>
@@ -130,7 +130,7 @@
 
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">Purchase admin title - {{ $language }}</h5>
-                                        <input type="text" class="w-100" name="title-admin-purchase_{{ $language }}" value="{{ $settings->purchase_admin_title[$language] ?? 'Purchase admin message' }}">
+                                        <input type="text" class="w-100" name="title-admin-purchase_{{ $language }}" value="{{ $settings->admin_email_title[$language] ?? 'Purchase admin message' }}">
                                     @endforeach
 
                                     <h5 class="text-center mt-4 mb-3">Remind time (minutes)</h5>

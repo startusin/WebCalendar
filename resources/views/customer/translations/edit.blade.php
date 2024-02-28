@@ -31,7 +31,7 @@
                                 <form  id="formTranslations" action="{{route('translations.update')}}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input name="calendar_id" value="{{request()->calendar_user->id}}"  hidden>
+                                    <input name="calendar_id" value="{{auth()->user()->id}}"  hidden>
                                 <table class="table table-hover text-nowrap ">
                                     <thead class="text-center">
                                     <tr>
