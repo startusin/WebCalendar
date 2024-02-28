@@ -102,7 +102,7 @@ $(document).ready(function () {
 
     function TotalSum() {
         let sum = 0;
-        let vat = $("#vat").val();
+        let vat = 0;
         console.log('vat');
         console.log(vat);
         $('.prod-info').each(function(index, element) {
@@ -508,15 +508,32 @@ $(document).ready(function () {
 
 
     function generateProduct(products, lang) {
+        let totalWithVat = 0;
+
         var html = '<table class="w-100 table mt-4"><tr>' +
-            '<th scope="col">Title</th><th scope="col">Price</th><th scope="col">Quantity</th>' +
+            '<th scope="col">Title</th><th scope="col">Price</th><th scope="col">Quantity</th><th scope="col">VAT</th><th scope="col">Total</th>' +
             '</tr>';
 
         products.forEach(function(item) {
-            html += '<tr><td>' + (item.product.title[lang] || '-') + '</td><td>' + (item.product.price[lang] || '-') + '</td><td>' + item.quantity + '</td></tr>';
+            totalWithVat += (item.product.price[lang] * item.quantity);
+
+            html += '<tr><td>' + (item.product.title[lang] || '-') + '</td><td>' + (item.product.price[lang] || '-') + '</td><td>' + item.quantity + '</td><td>' + ((item.product.price[lang] * item.quantity) / (parseFloat($('.modal-body').data('vat')))) + '</td><td>' + (item.product.price[lang] * item.quantity) + '</td></tr>';
         });
 
         html += '</table>';
+
+        totalWithVat = totalWithVat.toFixed(2);
+
+        let vat = (totalWithVat / parseFloat($('.modal-body').data('vat'))).toFixed(2);
+        let totalNoVat = (totalWithVat - vat).toFixed(2);
+
+        html += '<div style="text-align: right; margin-right: 5px;  margin-top: 30px; font-weight: bold;">' +
+            '<div>Total Without VAT: ' + totalNoVat + '</div>' +
+            '<div>VAT (' + vat + '%): ' + vat + '</div>' +
+            '<div>Total (VAT Included): ' + totalWithVat + '</div>' +
+        '</div>';
+
+
 
         document.getElementById('myproducts').innerHTML = html;
     }

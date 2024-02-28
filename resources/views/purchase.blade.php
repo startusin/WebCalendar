@@ -186,26 +186,6 @@
                         <div class="col-1 text-end"></div>
                     </div>
 
-
-                    <div class="sous-total d-flex">
-                        <div class="col-7 sous-total-item-text">
-                            VAT
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="product-item-count d-inline-block">
-
-                            </div>
-
-                            <div class="product-item-price d-inline-block">
-                                <span style="background-color: var(--calendar-primary-color); color: white; font-weight: 600">{{$vat}}€</span>
-                            </div>
-                        </div>
-
-                        <div class="col-1 text-end"></div>
-                    </div>
-
-
-
                     <div class="total d-flex">
                         <div class="col-7 total-item-text">
                             {{$user->translations['translations']['total'][Cookie::get('locale')]??""}}

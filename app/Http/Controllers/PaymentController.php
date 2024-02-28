@@ -38,7 +38,7 @@ class PaymentController extends Controller
 
         $isBrunch = $request->type === 'brunch' ?? false;
         $user = User::find($booking->slots()->first()->calendar_id);
-        $vat = $user->settings['vat'];
+        $vat = 0;
 
         if ($isBrunch) {
             $sum = $booking->brunches()->sum('total');
