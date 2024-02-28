@@ -404,9 +404,14 @@ $(document).ready(function () {
 
                 $('.products-area').removeClass('d-none');
                 $('.button-order').removeClass('d-none');
-                let ellement = document.querySelector('.button-order');
 
-                ellement.scrollIntoView();
+                let scrollToEl = $('.brunches');
+
+                if (scrollToEl.length <= 0) {
+                    scrollToEl = $('.products');
+                }
+
+                $('html').animate({ scrollTop: scrollToEl.offset().top });
             },
             error: function(error) {
                 console.error('Помилка при відправленні запиту:', error);
