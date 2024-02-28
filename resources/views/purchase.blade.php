@@ -251,7 +251,6 @@
         address2Field = document.querySelector("#address2");
         postalField = document.querySelector("#postcode");
         autocomplete = new google.maps.places.Autocomplete(address1Field, {
-
             fields: ["address_components", "geometry"],
             types: ["address"],
         });
@@ -286,11 +285,17 @@
                     postcode = `${postcode}-${component.long_name}`;
                     break;
                 }
+
                 case "locality":
                     document.querySelector("#locality").value = component.long_name;
                     break;
 
+                case "country":
+                    $('#RegionSelect').val(component.long_name);
+                    break;
             }
+
+            console.log(componentType);
         }
 
         address1Field.value = address1;
