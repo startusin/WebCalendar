@@ -34,18 +34,18 @@ class PurchaseController extends Controller
         return response()->json(['message' => 'Successfully updated'], 200);
     }
 
-    public function getAllPurchases()
+    public function getAllPurchases(Request $request)
     {
-        $userId = auth()->user()->id;
+        $userId = $request->calendar_user->id;
 
         $purchases = Bookings::with('slots')
             ->with('bookingProducts')
             ->whereHas('slots', function ($query) use ($userId) {
                 $query->where('calendar_id', $userId);
             })->get()
-            ->map(function ($booking) {
+            ->map(function ($booking) use ($request) {
                 $totalSoldPrice = $booking->bookingProducts->sum('sold_price');
-                $totalSum = ($totalSoldPrice * auth()->user()->settings['vat'] / 100) +$totalSoldPrice;
+                $totalSum = ($totalSoldPrice * $request->calendar_user->settings['vat'] / 100) +$totalSoldPrice;
                 $year = substr($booking->created_at, 2, 2);
                 $month = date('m', strtotime($booking->created_at));
                 $id = str_pad($booking->id, 4, '0', STR_PAD_LEFT);

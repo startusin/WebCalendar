@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,15 @@ class CustomerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->role == 'customer') {
+        if (auth()->user()->role == 'customer' || auth()->user()->role == 'invited') {
+            $calendarUser = auth()->user();
+
+            if ($calendarUser->role === 'invited') {
+                $calendarUser = User::findOrFail($calendarUser->invited_by);
+            }
+
+            request()->merge(['calendar_user' => $calendarUser]);
+
             return $next($request);
         }
         return abort(404);

@@ -19,124 +19,147 @@
                 </li>
             @endif
 
-            @if (auth()->user()->role == 'customer')
-                <li class="nav-item">
-                    <a href="{{route('customer.slot.view')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-calendar-days text-dark"></i>
-                        <p class="text-dark">
-                            Slot
-                        </p>
-                    </a>
-                </li>
+            @if (auth()->user()->role == 'customer' || auth()->user()->role == 'invited')
+                @if (!in_array('slot', auth()->user()->excluded_permissions ?? []))
+                    <li class="nav-item">
+                        <a href="{{route('customer.slot.view')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-calendar-days text-dark"></i>
+                            <p class="text-dark">
+                                Slot
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item ">
-                    <a href="{{route('customer.product.index')}}" class="nav-link">
-                        <i class="nav-icon fa-brands fa-product-hunt text-dark"></i>
-                        <p class="text-dark">
-                            Product
-                        </p>
-                    </a>
-                </li>
+                @if (!in_array('product', auth()->user()->excluded_permissions ?? []))
+                    <li class="nav-item ">
+                        <a href="{{route('customer.product.index')}}" class="nav-link">
+                            <i class="nav-icon fa-brands fa-product-hunt text-dark"></i>
+                            <p class="text-dark">
+                                Product
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item">
-                    <a href="{{route('customer.price.view')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-dollar-sign text-dark"></i>
-                        <p class="text-dark">
-                            Custom Prices
-                        </p>
-                    </a>
-                </li>
+                @if (!in_array('custom_prices', auth()->user()->excluded_permissions ?? []))
+                    <li class="nav-item">
+                        <a href="{{route('customer.price.view')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-dollar-sign text-dark"></i>
+                            <p class="text-dark">
+                                Custom Prices
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item">
-                    <a href="{{route('customer.promocode.index')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-money-bill text-dark"></i>
-                        <p class="text-dark">
-                            Promocode
-                        </p>
-                    </a>
-                </li>
+                @if (!in_array('promocode', auth()->user()->excluded_permissions ?? []))
+                    <li class="nav-item">
+                        <a href="{{route('customer.promocode.index')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-money-bill text-dark"></i>
+                            <p class="text-dark">
+                                Promocode
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item">
-                    <a href="{{route('customer.brunch.index')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-coffee text-dark"></i>
-                        <p class="text-dark">
-                            Brunch
-                        </p>
-                    </a>
-                </li>
+                @if (!in_array('brunch', auth()->user()->excluded_permissions ?? []))
+                    <li class="nav-item">
+                        <a href="{{route('customer.brunch.index')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-coffee text-dark"></i>
+                            <p class="text-dark">
+                                Brunch
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item">
-                    <a href="{{route('calendarSettings.edit')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
-                        <p class="text-dark">
-                            Settings
-                        </p>
-                    </a>
-                </li>
+                @if (!in_array('history_purchases', auth()->user()->excluded_permissions ?? []))
+                    <li class="nav-item">
+                        <a href="{{route('purchase.index')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-clock-rotate-left text-dark"></i>
+                            <p class="text-dark">
+                                History purchases
+                            </p>
+                        </a>
+                    </li>
+                @endif
 
-                <li class="nav-item">
-                    <a href="{{route('customer.embedded.index')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
-                        <p class="text-dark">
-                            Embedded Code
-                        </p>
-                    </a>
-                </li>
+                @if (auth()->user()->role !== 'invited')
+                    <li class="nav-item">
+                        <a href="{{route('calendarSettings.edit')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                            <p class="text-dark">
+                                Settings
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{route('purchase.index')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-clock-rotate-left text-dark"></i>
-                        <p class="text-dark">
-                            History purchases
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('customer.embedded.index')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                            <p class="text-dark">
+                                Embedded Code
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{route('translations.edit')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-language text-dark"></i>
-                        <p class="text-dark">
-                            Translations
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('translations.edit')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-language text-dark"></i>
+                            <p class="text-dark">
+                                Translations
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{route('emails.edit')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-envelope text-dark"></i>
-                        <p class="text-dark">
-                            Emails
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('emails.edit')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-envelope text-dark"></i>
+                            <p class="text-dark">
+                                Emails
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{route('sms.edit')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-envelope text-dark"></i>
-                        <p class="text-dark">
-                            SMS
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('sms.edit')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-envelope text-dark"></i>
+                            <p class="text-dark">
+                                SMS
+                            </p>
+                        </a>
+                    </li>
 
 
-                <li class="nav-item">
-                    <a href="{{route('makeOrder')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-envelope text-dark"></i>
-                        <p class="text-dark">
-                            Make order
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('makeOrder')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-envelope text-dark"></i>
+                            <p class="text-dark">
+                                Make order
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="{{route('getFormsSettings')}}" class="nav-link">
-                        <i class="nav-icon fa-solid fa-gear text-dark"></i>
-                        <p class="text-dark">
-                            Forms Settings
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{route('getFormsSettings')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-gear text-dark"></i>
+                            <p class="text-dark">
+                                Forms Settings
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('customer.team.index')}}" class="nav-link">
+                            <i class="nav-icon fa-solid fa-person-booth text-dark"></i>
+                            <p class="text-dark">
+                                Team
+                            </p>
+                        </a>
+                    </li>
+                @endif
             @endif
         </ul>
 

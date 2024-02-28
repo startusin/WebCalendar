@@ -26,10 +26,9 @@ class PromocodeController extends Controller
             ->firstOrFail();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $promocodes = PromoCode::whereIn('product_id',Product::where('calendar_id', auth()->user()->id)->pluck('id'))
-            ->get();
+        $promocodes = PromoCode::whereIn('product_id',Product::where('calendar_id', $request->calendar_user->id)->pluck('id'))->get();
         return view('customer.promocode.index', compact('promocodes'));
     }
 
@@ -40,9 +39,9 @@ class PromocodeController extends Controller
         return $promocode;
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        $products = Product::where('calendar_id', $request->calendar_user->id)->get();
         return view('customer.promocode.create', compact('products'));
     }
 
@@ -63,9 +62,9 @@ class PromocodeController extends Controller
     }
 
 
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
-        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        $products = Product::where('calendar_id', $request->calendar_user->id)->get();
         $promocode = PromoCode::findOrFail($id);
         $promocode['datetime'] = implode(' - ',[$promocode['start_date']->format('m/d/Y H:i:s'), $promocode['end_date']->format('m/d/Y H:i:s')]);//Треба пофіксити
         return view('customer.promocode.edit', compact('promocode', 'products'));

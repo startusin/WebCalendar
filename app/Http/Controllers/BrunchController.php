@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Validator;
 
 class BrunchController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $brunches = Brunch::where('calendar_id', auth()->user()->id)->get();
+        $brunches = Brunch::where('calendar_id', $request->calendar_user->id)->get();
 
         return view('customer.brunch.index', compact('brunches'));
     }
@@ -30,7 +30,7 @@ class BrunchController extends Controller
             "excluded_days" =>['required', 'array']
         ])->validated();
 
-        $data['calendar_id'] = auth()->user()->id;
+        $data['calendar_id'] = $request->calendar_user->id;
 
         Brunch::create($data);
 
@@ -60,7 +60,7 @@ class BrunchController extends Controller
             "excluded_days" =>['required', 'array']
         ])->validated();
 
-        $data['calendar_id'] = auth()->user()->id;
+        $data['calendar_id'] = $request->calendar_user->id;
 
         $brunch = Brunch::findOrFail($data['id']);
         $brunch->update($data);

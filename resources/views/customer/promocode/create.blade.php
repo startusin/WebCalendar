@@ -29,7 +29,7 @@
 
                         <form action="{{route('customer.promocode.store')}}" method="POST" class="w-25">
                             @csrf
-                            <input name="calendar_id" value="{{auth()->user()->id}}" hidden >
+                            <input name="calendar_id" value="{{request()->calendar_user->id}}" hidden >
 
                             <div class="form-group">
                                 <label>Promocode</label>

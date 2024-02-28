@@ -25,7 +25,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'languages'
+        'alias',
+        'languages',
+        'excluded_permissions',
+        'invited_by'
     ];
 
     /**
@@ -47,6 +50,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'languages' => 'array',
+        'excluded_permissions' => 'array',
     ];
 
     public function products(): HasMany

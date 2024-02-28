@@ -124,6 +124,15 @@ use Illuminate\Support\Facades\Route;
                 Route::delete('delete/{id}', [\App\Http\Controllers\BrunchController::class, 'delete'])->name('customer.brunch.delete');
             });
 
+            Route::group(['prefix' => 'team'], function () {
+                Route::get('/', [\App\Http\Controllers\TeamController::class, 'index'])->name('customer.team.index');
+                Route::get('create', [\App\Http\Controllers\TeamController::class, 'create'])->name('customer.team.create');
+                Route::get('edit/{user}', [\App\Http\Controllers\TeamController::class, 'edit'])->name('customer.team.edit');
+                Route::post('store', [\App\Http\Controllers\TeamController::class, 'store'])->name('customer.team.store');
+                Route::put('update', [\App\Http\Controllers\TeamController::class, 'update'])->name('customer.team.update');
+                Route::delete('delete/{id}', [\App\Http\Controllers\TeamController::class, 'delete'])->name('customer.team.delete');
+            });
+
             Route::group(['prefix' => 'price'], function () {
                 Route::get('/', [\App\Http\Controllers\PricesController::class, 'index'])->name('customer.price.index');
                 Route::get('/view', [\App\Http\Controllers\PricesController::class, 'view'])->name('customer.price.view');

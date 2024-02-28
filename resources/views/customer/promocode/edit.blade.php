@@ -30,7 +30,7 @@
                         <form action="{{route('customer.promocode.update')}}" method="POST" class="w-25">
                             @csrf
                             @method('PUT')
-                            <input name="calendar_id" value="{{auth()->user()->id}}" hidden >
+                            <input name="calendar_id" value="{{request()->calendar_user->id}}" hidden >
                             <input name="id" value="{{$promocode->id}}" hidden >
 
                             <div class="form-group">

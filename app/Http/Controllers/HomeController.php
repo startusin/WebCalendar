@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
-    public function languages()
+    public function languages(Request $request)
     {
-        return Languages::getMyLanguages(auth()->user()->languages);
+        return Languages::getMyLanguages($request->calendar_user->languages);
     }
     /**
      * Show the application dashboard.

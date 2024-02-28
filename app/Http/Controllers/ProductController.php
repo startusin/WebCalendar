@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::where('calendar_id', auth()->user()->id)
+        $products = Product::where('calendar_id', $request->calendar_user->id)
             ->orderBy('priority')
             ->get();
 
         return view('customer.product.index', compact('products'));
     }
 
-    public function getMyProducts()
+    public function getMyProducts(Request $request)
     {
-        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        $products = Product::where('calendar_id', $request->calendar_user->id)->get();
         return $products;
     }
 
@@ -30,9 +30,9 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $langs = Languages::getMyLanguages(auth()->user()->languages);
+        $langs = Languages::getMyLanguages($request->calendar_user->languages);
 
         return view('customer.product.create',compact('langs'));
     }
@@ -75,9 +75,9 @@ class ProductController extends Controller
         return redirect()->route('customer.product.index');
     }
 
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
-        $langs = Languages::getMyLanguages(auth()->user()->languages);
+        $langs = Languages::getMyLanguages($request->calendar_user->languages);
 
         $product = Product::findOrFail($id);
 

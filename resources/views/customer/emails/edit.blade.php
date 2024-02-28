@@ -38,7 +38,7 @@
                             <div class="card-body table-responsive p-0">
                                 <form id="formEmails" method="POST" action="{{route('emails.update')}}">
                                     @csrf
-                                    <input name="calendar_id" value="{{auth()->user()->id}}"  hidden>
+                                    <input name="calendar_id" value="{{request()->calendar_user->id}}"  hidden>
 
                                     <div class="form-group">
                                         <label>Name</label>

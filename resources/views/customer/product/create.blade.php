@@ -27,7 +27,7 @@
 
                         <form action="{{route('customer.product.store')}}" method="POST" class="w-25">
                             @csrf
-                            <input name="calendar_id" value="{{auth()->user()->id}}" hidden>
+                            <input name="calendar_id" value="{{request()->calendar_user->id}}" hidden>
                             @error('custom_validation')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror

@@ -61,7 +61,7 @@
                                 <label for="languages">Excluded days</label>
                                 <select class="select2" name="excluded_days[]" id="excluded_days" multiple="multiple" style="width: 100%;">
                                     @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
-                                        <option {{ in_array($day, $brunch->excluded_days) ? 'selected' : '1' }} value="{{ $day }}">{{ $day }}</option>
+                                        <option {{ in_array($day, $brunch->excluded_days ?? []) ? 'selected' : '1' }} value="{{ $day }}">{{ $day }}</option>
                                     @endforeach
                                 </select>
                                 @error('excluded_days')

@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class PricesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $prices = ProductPrice::whereIn('product_id', Product::where('calendar_id', auth()->user()->id)->pluck('id'))->get();
+        $prices = ProductPrice::whereIn('product_id', Product::where('calendar_id', $request->calendar_user->id)->pluck('id'))->get();
 
         return view('customer.price.index', compact('prices'));
     }
@@ -31,9 +31,9 @@ class PricesController extends Controller
         return response()->json($prices);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        $products = Product::where('calendar_id', $request->calendar_user->id)->get();
 
         return view('customer.price.create', compact('products'));
     }
@@ -81,9 +81,9 @@ class PricesController extends Controller
         return response()->noContent();
     }
 
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
-        $products = Product::where('calendar_id', auth()->user()->id)->get();
+        $products = Product::where('calendar_id', $request->calendar_user->id)->get();
         $price = ProductPrice::findOrFail($id);
         $price['datetime'] = implode(' - ',[$price['start_date']->format('m/d/Y H:i:s'), $price['end_date']->format('m/d/Y H:i:s')]);
 

@@ -16,11 +16,11 @@ class SlotController extends Controller
 {
     private $slotService;
 
-    public function __construct(SlotService $slotService)
+    public function __construct(SlotService $slotService, Request $request)
     {
         $this->slotService = $slotService;
     }
-    
+
     public function show($id)
     {
         $slot = CustomSlot::find($id);
@@ -28,12 +28,10 @@ class SlotController extends Controller
         return $slot;
     }
 
-
-
-    public function view()
+    public function view(Request $request)
     {
-        $languages = array_flip(Languages::getMyLanguages(auth()->user()->languages));
-        $Fullslots = CustomSlot::where('calendar_id', auth()->user()->id)->first();
+        $languages = array_flip(Languages::getMyLanguages($request->calendar_user->languages));
+        $Fullslots = CustomSlot::where('calendar_id', $request->calendar_user->id)->first();
         $slots = null;
         if (!$Fullslots) {
             $slots = [];

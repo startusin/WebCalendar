@@ -30,7 +30,7 @@
 
                                 <div id="tableContainer"></div>
                                 <meta name="csrf-token" content="{{ csrf_token() }}">
-                                <input name="calendar_id" value="{{auth()->user()->id}}" hidden/>
+                                <input name="calendar_id" value="{{request()->calendar_user->id}}" hidden/>
 
                                 <table class="table table-hover text-nowrap">
                                     <thead>

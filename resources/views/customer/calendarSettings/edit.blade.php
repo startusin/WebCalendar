@@ -28,7 +28,7 @@
                             @csrf
                             <meta name="csrf-token" content="{{ csrf_token() }}">
                             @method('PUT')
-                            <input name="calendar_id" value="{{auth()->user()->id}}" hidden >
+                            <input name="calendar_id" value="{{request()->calendar_user->id}}" hidden >
 
                             <div class="row">
                                 @foreach($langs as $key => $language)
