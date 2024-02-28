@@ -83,6 +83,10 @@ class TeamController extends Controller
             "excluded_permissions" => ['array']
         ])->validated();
 
+        if (!$data['excluded_permissions']) {
+            $data['excluded_permissions'] = [];
+        }
+
         $user = User::findOrFail($data['id']);
         $user->update($data);
 
