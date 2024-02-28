@@ -529,7 +529,7 @@ $(document).ready(function () {
 
         html += '<div style="text-align: right; margin-right: 5px;  margin-top: 30px; font-weight: bold;">' +
             '<div>Total Without VAT: ' + totalNoVat + '</div>' +
-            '<div>VAT (' + vat + '%): ' + vat + '</div>' +
+            '<div>VAT (' + parseFloat($('.modal-body').data('vat')) + '%): ' + vat + '</div>' +
             '<div>Total (VAT Included): ' + totalWithVat + '</div>' +
         '</div>';
 
