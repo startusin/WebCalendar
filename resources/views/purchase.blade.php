@@ -236,7 +236,7 @@
 @endsection
 @push('js')
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=&callback=initAutocomplete&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{ env('GAPI_KEY') }}&callback=initAutocomplete&libraries=places&v=weekly"
     defer
 ></script>
 
