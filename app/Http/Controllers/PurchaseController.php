@@ -368,7 +368,7 @@ class PurchaseController extends Controller
         $productPrices = ProductPrice::where('product_id', $product->id)->get();
 
         foreach ($productPrices as $range) {
-            if ((int)$range['price']['participants'] <= (int)$quantity) {
+            if ((int)$range['price']['participants'] ?? 0 <= (int)$quantity) {
 //                var_dump((int)$range['price']['participants']);
 //                var_dump((int)$quantity);
                 if ($lang === $range->price['language']) {
