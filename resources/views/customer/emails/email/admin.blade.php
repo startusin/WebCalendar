@@ -38,7 +38,7 @@
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p15b">
-                                                                <h2 style="font-size: 30px; margin-top: 5px; margin-bottom: 0;" align="center">Mardi 8 juin 2024<br>11h45</h2>
+                                                                <h2 style="font-size: 30px; margin-top: 5px; margin-bottom: 0; text-align: center;" align="center">Mardi 8 juin 2024<br>11h45</h2>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p25b">
@@ -52,7 +52,7 @@
                                                                     Téléphone : <u>07 85 12 46 74</u><br>
                                                                     Payment via Bank Card (359634)<br>
                                                                 </p>
-                                                                <p align="center" style="margin-bottom: 26px; margin-top: 17px; font-size: 12px;">
+                                                                <p align="center" style="margin-bottom: 26px; margin-top: 17px; font-size: 12px; text-align: center;">
                                                                     <strong>Date de la réservation :</strong><br>
                                                                     3 février 2024 à 16:15<br>
                                                                 </p>

@@ -34,7 +34,7 @@
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p10b">
-                                                                <h2 align="center" style="font-size: 25px; margin-bottom: 0;">La date approche !</h2>
+                                                                <h2 align="center" style="font-size: 25px; margin-bottom: 0; text-align: center;">La date approche !</h2>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text">
