@@ -365,7 +365,7 @@ class PurchaseController extends Controller
         $months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
         $productArr = $product->toArray();
-        $productPrices = ProductPrice::where('product_id', $product->id)->get();
+        $productPrices = ProductPrice::where('product_id', $product->id)->orderBy('id', 'desc')->get();
 
         foreach ($productPrices as $range) {
             $participants = $range['price']['participants'] ?? 0;
