@@ -6,8 +6,7 @@
     <script>
         tinymce.init({
             selector: '.email-templates',
-            height: '480',
-            plugins: 'advcode'
+            height: '480'
         });
     </script>
 

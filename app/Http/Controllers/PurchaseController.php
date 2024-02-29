@@ -45,7 +45,7 @@ class PurchaseController extends Controller
             })->get()
             ->map(function ($booking) use ($request) {
                 $totalSoldPrice = $booking->bookingProducts->sum('sold_price');
-                $totalSum = ($totalSoldPrice * $request->calendar_user->settings['vat'] / 100) +$totalSoldPrice;
+                $totalSum = $totalSoldPrice;
                 $year = substr($booking->created_at, 2, 2);
                 $month = date('m', strtotime($booking->created_at));
                 $id = str_pad($booking->id, 4, '0', STR_PAD_LEFT);
