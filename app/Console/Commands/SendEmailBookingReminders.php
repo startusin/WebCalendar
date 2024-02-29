@@ -18,24 +18,25 @@ use Twilio\Rest\Client;
 
 class SendEmailBookingReminders extends Command
 {
-    const CRON_TIME_MINUTES = 10;
-
     protected $signature = 'send-email-booking-reminders';
     protected $description = 'Send email reminders for upcoming bookings';
 
     public function handle()
     {
-        //$configTime = 60;
         $bookedSlots = BookedSlots::with('booking')
             ->whereHas('booking', function ($query) {
                 $query->where('payment_status', 'paid');
             })->get();
+
         foreach ($bookedSlots as $slot) {
             $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
             $configTime = $settings->remind_time;
-            $notificationEndTime = Carbon::now()->addMinutes($configTime - self::CRON_TIME_MINUTES);
-            $notificationTime = Carbon::now()->addMinutes($configTime);
-            if ($slot->start_date > $notificationEndTime && $slot->start_date < $notificationTime) {
+
+            $reminderTimeStart = $slot->created_at->copy()->subMinutes($configTime);
+            $reminderTimeEnd = $slot->created_at->copy();
+            $currentTime = Carbon::now();
+
+            if (!$slot->booking->sent_email && $currentTime->isBetween($reminderTimeStart, $reminderTimeEnd)) {
                 $this->sendNotification($slot);
             }
         }

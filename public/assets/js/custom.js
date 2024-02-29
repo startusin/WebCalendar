@@ -8,6 +8,7 @@ $(document).ready(function () {
     let rememberDate = {};
     let currentSlotOnView = {};
     let currentLanguage;
+    let startTime;
     console.log(getCookie('currentDate'));
     function getCookie(name) {
         var cookies = document.cookie.split(';');
@@ -300,7 +301,7 @@ $(document).ready(function () {
         let dateFromClick = $(this).text();
         let timestamp = $(this).data('id');
         let language = $(this).data('language');
-        let startTime = $(this).data('start');
+        startTime = $(this).data('start');
         let endTime = $(this).data('end');
         CurrentLang = language;
         let itemObject = {
@@ -468,6 +469,31 @@ $(document).ready(function () {
         });
     });
 
+    // $(document).ready(function(){
+    //     $('.left-icon, .right-icon').on('click', function() {
+    //         let quantity = parseInt($(this).siblings('.count-of-product').text());
+    //         console.log(CurrentLang);
+    //         let ProductId =  $(this).data('id');
+    //
+    //         let dataToSend = {
+    //             quantity: quantity,
+    //             language: CurrentLang,
+    //             productId: ProductId
+    //         }
+    //         $.ajax({
+    //             url: '/checkPriceForOneProduct',
+    //             method: 'GET',
+    //             data: dataToSend,
+    //             success: function (response) {
+    //
+    //             },
+    //             error: function (error) {
+    //
+    //             }
+    //         });
+    //     });
+    // });
+
 
 
 
@@ -513,18 +539,20 @@ $(document).ready(function () {
         var html = '<table class="w-100 table mt-4"><tr>' +
             '<th scope="col">Title</th><th scope="col">Price</th><th scope="col">Quantity</th><th scope="col">VAT</th><th scope="col">Total</th>' +
             '</tr>';
-
+        console.log('products');
+        console.log(products);
         products.forEach(function(item) {
-            totalWithVat += (item.product.price[lang] * item.quantity);
+            price = item.sold_price/item.quantity;
+            totalWithVat += (price * item.quantity);
 
-            html += '<tr><td>' + (item.product.title[lang] || '-') + '</td><td>' + (item.product.price[lang] || '-') + '</td><td>' + item.quantity + '</td><td>' + ((item.product.price[lang] * item.quantity) / (parseFloat($('.modal-body').data('vat')))) + '</td><td>' + (item.product.price[lang] * item.quantity) + '</td></tr>';
+            html += '<tr><td>' + (item.product.title[lang] || '-') + '</td><td>' + (price || '-') + '</td><td>' + item.quantity + '</td><td>' + (((price * item.quantity) * (parseFloat($('.modal-body').data('vat')))) / 100) + '</td><td>' + (price * item.quantity) + '</td></tr>';
         });
 
         html += '</table>';
 
         totalWithVat = totalWithVat.toFixed(2);
 
-        let vat = (totalWithVat / parseFloat($('.modal-body').data('vat'))).toFixed(2);
+        let vat = ((totalWithVat * parseFloat($('.modal-body').data('vat'))).toFixed(2))/100;
         let totalNoVat = (totalWithVat - vat).toFixed(2);
 
         html += '<div style="text-align: right; margin-right: 5px;  margin-top: 30px; font-weight: bold;">' +
@@ -584,6 +612,7 @@ $(document).ready(function () {
                 $('#SlotStarted').text(moment.utc(dateTime).format('DD/MM/YYYY HH:mm'));
 
                 $('#SentMail').text(response.sent_email!=null?moment.utc(response.sent_email).format('DD/MM/YYYY HH:mm'):"Not Sent");
+                $('#SentSMS').text(response.sent_sms!=null?moment.utc(response.sent_sms).format('DD/MM/YYYY HH:mm'):"Not Sent");
 
 
                 let csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -672,7 +701,7 @@ $(document).ready(function () {
 
         });
 
-
+        console.log(productPriceId);
         let queryString = $.param({
             slots: array,
             productIdsQuantity: dataIds,
@@ -985,8 +1014,44 @@ $(document).ready(function () {
 
             currentValue.text(newCount);
 
-            UpdateTotalValue(CurrentLang);
-            EnabledOrDisabledButton();
+
+
+            let quantity = parseInt($(this).siblings('.count-of-product').text());
+            let ProductId =  $(this).data('id');
+            let productPriceElement = $('.product-price[data-id="' + ProductId + '"]');
+
+
+            let dataToSend = {
+                quantity: newCount,
+                language: CurrentLang,
+                productId: ProductId,
+                startTime: startTime
+            }
+            $.ajax({
+                url: '/checkPriceForOneProduct',
+                method: 'GET',
+                data: dataToSend,
+                success: function (item) {
+                    console.log(item);
+                    productPriceElement.data("price", item.price);
+
+                    for (let key in item.price) {
+                        if (key === CurrentLang)
+                        {
+                            console.log("Kety:"+key);
+                            console.log("Kety:"+item.price[key]);
+                            productPriceElement.text(item.price[key]+"€");
+                        }
+                    }
+
+                    UpdateTotalValue(CurrentLang);
+                    EnabledOrDisabledButton();
+                },
+                error: function (error) {
+
+                }
+            });
+
         }
     });
 
@@ -997,8 +1062,43 @@ $(document).ready(function () {
         if (newCount >= 0) {
             currentValue.text(newCount);
         }
-        UpdateTotalValue(CurrentLang);
-        EnabledOrDisabledButton();
+
+
+        let quantity = parseInt($(this).siblings('.count-of-product').text());
+        let ProductId =  $(this).data('id');
+        let productPriceElement = $('.product-price[data-id="' + ProductId + '"]');
+
+
+        let dataToSend = {
+            quantity: newCount,
+            language: CurrentLang,
+            productId: ProductId,
+            startTime: startTime
+        }
+        $.ajax({
+            url: '/checkPriceForOneProduct',
+            method: 'GET',
+            data: dataToSend,
+            success: function (item) {
+                console.log(item);
+                productPriceElement.data("price", item.price);
+
+                for (let key in item.price) {
+                    if (key === CurrentLang)
+                    {
+                        console.log("Kety:"+key);
+                        console.log("Kety:"+item.price[key]);
+                        productPriceElement.text(item.price[key]+"€");
+                    }
+                }
+                UpdateTotalValue(CurrentLang);
+                EnabledOrDisabledButton();
+            },
+            error: function (error) {
+
+            }
+        });
+
 
     });
 

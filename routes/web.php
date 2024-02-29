@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('/brunches', [\App\Http\Controllers\PurchaseController::class, 'loadBrunches'])->name('loadBrunches');
     Route::get('/checkprice', [\App\Http\Controllers\PurchaseController::class, 'checkprice'])->name('checkprice');
+    Route::get('/checkPriceForOneProduct', [\App\Http\Controllers\PurchaseController::class, 'checkPriceForOneProduct'])->name('checkPriceForOneProduct');
     Route::get('/purchase', [\App\Http\Controllers\PurchaseController::class, 'index'])->name('purchase');
     Route::post('/makeSlot', [\App\Http\Controllers\PurchaseController::class, 'makeSlot'])->name('makeSlot');
     Route::post('/storeOrder', [\App\Http\Controllers\PurchaseController::class, 'storeOrder'])->name('storeOrder');

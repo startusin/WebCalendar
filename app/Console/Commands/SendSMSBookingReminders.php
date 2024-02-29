@@ -24,7 +24,6 @@ class SendSMSBookingReminders extends Command
 
     public function handle()
     {
-        //$configTime = 60;
         $bookedSlots = BookedSlots::with('booking')
             ->whereHas('booking', function ($query) {
                 $query->where('payment_status', 'paid');
@@ -33,10 +32,11 @@ class SendSMSBookingReminders extends Command
             $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
             $configTime = $settings->sms_remind_time;
 
-            $notificationEndTime = Carbon::now()->addMinutes($configTime - self::CRON_TIME_MINUTES);
-            $notificationTime = Carbon::now()->addMinutes($configTime);
-            if ($slot->start_date > $notificationEndTime && $slot->start_date < $notificationTime) {
+            $reminderTimeStart = $slot->created_at->copy()->subMinutes($configTime);
+            $reminderTimeEnd = $slot->created_at->copy();
+            $currentTime = Carbon::now();
 
+            if (!$slot->booking->sent_sms && $currentTime->isBetween($reminderTimeStart, $reminderTimeEnd)) {
                 $this->sendNotification($slot);
             }
         }
@@ -45,9 +45,11 @@ class SendSMSBookingReminders extends Command
     protected function sendNotification(BookedSlots $slot)
     {
         $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
+
         if ($settings) {
             $language = $settings->language;
             $booking = $slot->booking;
+            $DateNow = Carbon::now();
 
             $message = $settings->sms_reminder[$language];
             $start_date = $slot->start_date;
@@ -64,6 +66,8 @@ class SendSMSBookingReminders extends Command
 
             if ($response->successful()) {
                 echo 'Request successful. Response: ' . $response->body();
+                $booking->sent_sms = $DateNow;
+                $booking->save();
             } else {
                 echo 'Request failed. Status Code: ' . $response->status();
             }

@@ -91,6 +91,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="col-auto col-form-label font-weight-bold">Is sent SMS</label>
+                                            <div class="col-sm-12">
+                                                <p id="SentSMS"></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
