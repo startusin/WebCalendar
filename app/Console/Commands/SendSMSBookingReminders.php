@@ -32,8 +32,8 @@ class SendSMSBookingReminders extends Command
             $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
             $configTime = $settings->sms_remind_time;
 
-            $reminderTimeStart = $slot->created_at->copy()->subMinutes($configTime);
-            $reminderTimeEnd = $slot->created_at->copy();
+            $reminderTimeStart = $slot->start_date->copy()->subMinutes($configTime);
+            $reminderTimeEnd = $slot->start_date->copy();
             $currentTime = Carbon::now();
 
             if (!$slot->booking->sent_sms && $currentTime->isBetween($reminderTimeStart, $reminderTimeEnd)) {
