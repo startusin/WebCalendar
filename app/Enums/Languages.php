@@ -24,4 +24,13 @@ enum Languages : string
     {
         return  array_search($lang, self::getLanguages());
     }
+
+    public static function getTranslateLanguage($key, $lang) {
+        $Dictionary['en']['en'] = "English";
+        $Dictionary['fr']['en'] = "English";
+        $Dictionary['en']['fr'] = "Anglais";
+        $Dictionary['fr']['fr'] = "Français";
+
+        return $Dictionary[$key][$lang];
+    }
 }

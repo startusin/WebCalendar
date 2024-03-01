@@ -297,7 +297,7 @@ $(document).ready(function () {
 
 
 
-
+        let calendarId = $('.container').data('calendar-id');
         let dateFromClick = $(this).text();
         let timestamp = $(this).data('id');
         let language = $(this).data('language');
@@ -367,6 +367,7 @@ $(document).ready(function () {
             startTime: startTime,
             endTime: endTime,
             productIds: productIds,
+            calendarId: calendarId
         };
 
         $('.products-area').addClass('d-none');
@@ -993,6 +994,7 @@ $(document).ready(function () {
 
     $(document).on('click', '.product-navigation .left-icon', function () {
         const activeButton = $('.event-time.active');
+        let calendarId = $('.container').data('calendar-id');
 
         if (activeButton.length > 0) {
             let totalQty = 0;
@@ -1025,7 +1027,8 @@ $(document).ready(function () {
                 quantity: newCount,
                 language: CurrentLang,
                 productId: ProductId,
-                startTime: startTime
+                startTime: startTime,
+                calendarId: calendarId
             }
             $.ajax({
                 url: '/checkPriceForOneProduct',
@@ -1056,6 +1059,8 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.product-navigation .right-icon', function () {
+        let calendarId = $('.container').data('calendar-id');
+
         let productId = $(this).data('id');
         let currentValue = $(this).closest('.product-navigation').find('.count-of-product');
         var newCount =  parseInt(currentValue.text()) - 1;
@@ -1069,11 +1074,13 @@ $(document).ready(function () {
         let productPriceElement = $('.product-price[data-id="' + ProductId + '"]');
 
 
+
         let dataToSend = {
             quantity: newCount,
             language: CurrentLang,
             productId: ProductId,
-            startTime: startTime
+            startTime: startTime,
+            calendarId: calendarId
         }
         $.ajax({
             url: '/checkPriceForOneProduct',

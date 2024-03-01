@@ -101,11 +101,13 @@ $(document).ready(function() {
 
 
     function productSelector(selectedProduct, lang, MyProducts) {
-
         let select = document.createElement('select');
         select.className = "newSelect form-control";
         select.name = "product";
-
+        let option = document.createElement('option');
+        option.text = 'All Products';
+        option.value = 0;
+        select.appendChild(option);
         for (let product in MyProducts) {
             let option = document.createElement('option');
             for (let key in MyProducts[product].title){
@@ -115,10 +117,9 @@ $(document).ready(function() {
             }
             option.value = MyProducts[product].id;
             select.appendChild(option);
-            console.log("PRODUCT " + product);
 
             if (selectedProduct === MyProducts[product].id) {
-                console.log("SDSD");
+
                 option.setAttribute('selected', 'selected');
             }
         }

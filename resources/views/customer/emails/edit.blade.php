@@ -54,6 +54,7 @@
                                         <li>{:LOGOTYPE:}</li>
                                         <li>{:ITEMS:}</li>
                                         <li>{:LANGUAGE:}</li>
+                                        <li>{:STARTSLOT:}</li>
                                     </ul>
 
                                     @foreach ($languages as $language)
@@ -103,6 +104,7 @@
                                         <li>{:PRICE:}</li>
                                         <li>{:TOTAL_PRICE:}</li>
                                         <li>{:LANGUAGE:}</li>
+                                        <li>{:STARTSLOT:}</li>
                                     </ul>
 
                                     @foreach ($languages as $language)

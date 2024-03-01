@@ -26,8 +26,7 @@ class PricesController extends Controller
 
     public function allCustomPrice(){
         $id = (request()->input('calendar_id'));
-        $products = Product::where('calendar_id', $id)->get()->pluck('id');
-        $prices = ProductPrice::whereIn('product_id', $products)->with('product')->get();
+        $prices = ProductPrice::where('calendar_id', $id)->with('product')->get();
         return response()->json($prices);
     }
 

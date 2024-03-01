@@ -116,16 +116,17 @@ class PurchaseController extends Controller
     public function checkprice(Request $request)
     {
         $data = $request->all();
+
         $startDate = new \DateTime($data['startTime']);
         $endDate = new \DateTime($data['endTime']);
-
+        $calendar_id = $data['calendarId'];
         $ProductPrice = [];
 
         if (isset($data['productIds'])) {
             foreach ($data['productIds'] as $item) {
                 $product = Product::find($item);
 
-                $productArr = $this->calculateProductPrice($product, $data['CurrentLang'], $startDate);
+                $productArr = $this->calculateProductPrice($product, $data['CurrentLang'], $startDate, $calendar_id);
 
                 array_push($ProductPrice, $productArr);
             }
@@ -139,8 +140,9 @@ class PurchaseController extends Controller
         $data = $request->all();
         $startDate = new \DateTime($data['startTime']);
         $product = Product::find($data['productId']);
+        $calendar_id = $data['calendarId'];
 
-        $ProductPrice = $this->calculateProductPrice($product, $data['language'], $startDate, $data['quantity']);;
+        $ProductPrice = $this->calculateProductPrice($product, $data['language'], $startDate, $calendar_id, $data['quantity']);;
        // dd($ProductPrice);
 
         return $ProductPrice;
@@ -230,8 +232,9 @@ class PurchaseController extends Controller
 
         $productData = [];
 
+        $calendar_id = $data['calendarId'];
         foreach ($products as $item) {
-            $price = $this->calculateProductPrice($item, $slots['language'], $slots['startDateSlot'], $item['quantity']);
+            $price = $this->calculateProductPrice($item, $slots['language'], $slots['startDateSlot'], $calendar_id, $item['quantity']);
 
             $totalQuantity += (int)$item['quantity'];
             $sousSum += (int)$item['quantity'] * (float)$price['price'][$slots['language']];
@@ -304,11 +307,12 @@ class PurchaseController extends Controller
             return $booking;
         }
 
+        $calendar_id = $data['calendarId'];
         foreach ($data['ProductQuantity'] as $id => $item) {
             $product = Product::find($id);
             $language = $data['slots']->language;
             $date = new \DateTime($data['slots']->startDateSlot->date);
-            $productPrice = $this->calculateProductPrice($product, $language, $date, $item['productQuantity']);
+            $productPrice = $this->calculateProductPrice($product, $language, $date, $calendar_id, $item['productQuantity']);
 
             $promoPrice = PromoCode::find((int)$item['productPromo']);
             $soldPrice = $promoPrice['price'] ?? (int)$item['productQuantity'] * (float)$productPrice['price'][$language];
@@ -359,13 +363,20 @@ class PurchaseController extends Controller
         return $brunchCollected;
     }
 
-    private function calculateProductPrice(Product $product, string $lang, \DateTime $date, $quantity = 0)
+    private function calculateProductPrice(Product $product, string $lang, \DateTime $date, $calendar_id, $quantity = 0)
     {
         $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         $months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
         $productArr = $product->toArray();
-        $productPrices = ProductPrice::where('product_id', $product->id)->orderBy('id', 'desc')->get();
+
+        $productPrices = ProductPrice::where('calendar_id', $calendar_id)
+            ->where(function ($query) use ($product) {
+                $query->where('product_id', $product->id)
+                    ->orWhere('product_id', 0);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
 
         foreach ($productPrices as $range) {
             $participants = $range['price']['participants'] ?? 0;

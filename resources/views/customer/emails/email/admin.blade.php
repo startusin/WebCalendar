@@ -38,7 +38,7 @@
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p15b">
-                                                                <h2 style="font-size: 30px; margin-top: 5px; margin-bottom: 0; text-align: center;" align="center">Mardi 8 juin 2024<br>11h45</h2>
+                                                                <h2 style="font-size: 30px; margin-top: 5px; margin-bottom: 0; text-align: center;" align="center">{:STARTSLOT:}</h2>
                                                             </td>
                                                         </tr><tr>
                                                             <td align="left" class="esd-block-text es-p25b">
