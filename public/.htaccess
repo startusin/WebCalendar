@@ -1,9 +1,23 @@
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
+Header set Access-Control-Allow-Credentials "true"
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
+
+    RewriteCond %{HTTP_HOST} ^(^.*)\.app.snap-booking.com$ [NC]
+    RewriteRule ^index.php$ https://app.snap-booking.com/calendar/%1 [P,L]
+
+    RewriteCond %{HTTP_HOST} ^(^.*)\.app.snap-booking.com$ [NC]
+    RewriteRule ^login$ https://app.snap-booking.com/login [R=301,L]
+
+    RewriteCond %{HTTP_HOST} ^(^.*)\.app.snap-booking.com$ [NC]
+    RewriteRule ^(.*)$ https://app.snap-booking.com/$1 [P,L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
