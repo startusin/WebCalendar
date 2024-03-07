@@ -27,7 +27,6 @@ class User extends Authenticatable
         'role',
         'alias',
         'languages',
-        'custom_domain',
         'excluded_permissions',
         'invited_by'
     ];

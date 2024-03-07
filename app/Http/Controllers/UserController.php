@@ -35,7 +35,6 @@ class UserController extends Controller
         $data['role'] = Role::customer;
         $user = User::create($data);
         $user['alias'] = $user->id;
-        $user['custom_domain'] = $user->id;
         $user->save();
         return redirect()->route('admin.user.index');
     }

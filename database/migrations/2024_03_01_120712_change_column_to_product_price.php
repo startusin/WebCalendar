@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('custom_domain')->after('alias')->nullable();
+        Schema::table('product_prices', function (Blueprint $table) {
+            $table->dropForeign('product_prices_product_id_foreign');
         });
     }
 
@@ -21,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('custom_domain');
-        });
+
     }
 };

@@ -31,7 +31,7 @@ class HomeController extends Controller
     {
         $admin = $request->get('direct-booking') === 'true';
 
-        $user = User::where('alias', $alias)->orWhere('custom_domain', $alias)->first();
+        $user = User::where('alias', $alias)->first();
 
         if (!$user) {
             abort(404);
