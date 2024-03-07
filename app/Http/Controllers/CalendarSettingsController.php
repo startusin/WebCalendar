@@ -102,13 +102,15 @@ class CalendarSettingsController extends Controller
             'es-interval' => ['numeric'],
             'language' => ['string'],
             'vat' => ['numeric'],
-            'alias' =>  'unique:users,alias,' . auth()->user()->id
+            'alias' =>  'unique:users,alias,' . auth()->user()->id,
+            'custom_domain' =>  'unique:users,custom_domain,' . auth()->user()->id
         ])->validated();
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
         $user = User::find(auth()->user()->id);
         if ($user) {
             $user['alias'] = $data['alias'];
+            $user['custom_domain'] = $data['custom_domain'];
             $user->save();
         }
         $IntervalLang = [];

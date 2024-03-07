@@ -43,27 +43,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="row">
-                                <div class="col-sm-{{ 12 / count($langs) }}">
-                                    <div class="form-group">
-                                        <label>Alias for calendar</label>
-                                        <input type="text" name="alias" value="{{auth()->user()->alias??""}}" class="form-control" required >
-                                        @error('alias')
-                                        <div class="text-danger">{{@$message}}</div>
-                                        @enderror
-                                    </div>
-                                </div>
 
-                                <div class="col-sm-{{ 12 / count($langs) }}">
-                                    <div class="form-group">
-                                        <label>VAT</label>
-                                        <input type="number" name="vat" value="{{$settings['vat']??0}}" class="form-control" required >
-                                        @error('vat')
-                                        <div class="text-danger">{{@$message}}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="row">
                                 @foreach($langs as $key => $language)
@@ -105,6 +85,41 @@
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-{{ 12 / count($langs) }}">
+                                    <div class="form-group">
+                                        <label>Alias for calendar</label>
+                                        <input type="text" name="alias" value="{{auth()->user()->alias??""}}" class="form-control" required >
+                                        @error('alias')
+                                        <div class="text-danger">{{@$message}}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-{{ 12 / count($langs) }}">
+                                    <div class="form-group">
+                                        <label>Custom domain</label>
+                                        <input type="text" name="custom_domain" value="{{auth()->user()->custom_domain??""}}" class="form-control" required >
+                                        @error('custom_domain')
+                                        <div class="text-danger">{{@$message}}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-sm-{{ 12 / count($langs) }}">
+                                    <div class="form-group">
+                                        <label>VAT</label>
+                                        <input type="number" name="vat" value="{{$settings['vat']??0}}" class="form-control" required >
+                                        @error('vat')
+                                        <div class="text-danger">{{@$message}}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
