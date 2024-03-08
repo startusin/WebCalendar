@@ -24,7 +24,7 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 p-0">
                         <div class="card">
                             <div class="card-body table-responsive p-0">
 
@@ -37,14 +37,14 @@
                                     <tr>
                                         <th class="col-2">Type</th>
                                         <th class="col-1">Language</th>
-                                        <th class="col-1">Start</th>
-                                        <th class="col-1">End</th>
+                                        <th class="col-2">Start</th>
+                                        <th class="col-2">End</th>
                                         <th class="col-1">From Hours</th>
                                         <th class="col-1">To Hours</th>
                                         <th class="col-1">Calc</th>
                                         <th class="col-1 text-center">Price</th>
                                         <th class="col-1">Product</th>
-                                        <th class="col-1">Min. Participant Total</th>
+                                        <th class="col-1">Min. Participant</th>
                                         <th class="col-1">Actions</th>
                                     </tr>
                                     </thead>
@@ -57,9 +57,9 @@
 
                                 <!-- /.card-body -->
                             </div>
-                            <button class="col-2 btn btn-primary mt-3 ml-4 mb-3"  id="CreateBT">Add Row</button>
-                        </div>
 
+                        </div>
+                        <button class="col-2 btn btn-primary mt-3 ml-4 mb-3"  id="CreateBT">Add Row</button>
 
                     </div>
                     <!-- /.row -->

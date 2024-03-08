@@ -403,14 +403,14 @@ $(document).ready(function() {
             '</td>' +
             '<td>' +
             '<div>' +
-            '<div class="row Start">' +
+            '<div class="Start">' +
             start.outerHTML+
             '</div>' +
             '</div>' +
             '</td>' +
             '<td>' +
             '<div>' +
-            '<div class="row End">' +
+            '<div class="End">' +
             end.outerHTML+
             '</div>' +
             '</div>' +
@@ -591,14 +591,14 @@ $(document).ready(function() {
             '</td>' +
             '<td>' +
             '<div>' +
-            '<div class="row Start">' +
+            '<div class="Start">' +
             '<select name="start" class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>' +
             '</div>' +
             '</div>' +
             '</td>' +
             '<td>' +
             '<div>' +
-            '<div class="row End">' +
+            '<div class="End">' +
             '<select name="end" class="newSelect form-control "><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select>' +
             '</div>' +
             '</div>' +

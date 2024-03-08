@@ -24,7 +24,7 @@
                 <div class="col-1">
                     <a href="{{route('admin.user.create')}}" class="btn btn-primary">Create</a>
                 </div>
-                <div class="col-12">
+                <div class="col-12 mt-2">
 
                     <div class="card">
 

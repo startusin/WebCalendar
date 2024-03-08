@@ -24,7 +24,7 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 p-0">
                         <div class="card">
                             <div class="card-body table-responsive p-0">
 
@@ -55,8 +55,8 @@
 
                                 <!-- /.card-body -->
                         </div>
-                            <button class="col-2 btn btn-primary mt-3 ml-4 mb-3"  id="CreateBT">Add Row</button>
                     </div>
+                        <button class="col-2 btn btn-primary mt-3 ml-4 mb-3"  id="CreateBT">Add Row</button>
 
 
                 </div>

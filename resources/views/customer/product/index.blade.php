@@ -79,7 +79,7 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
-                        <button class="btn btn-primary SaveProducts">Save priority</button>
+                        <button class="btn btn-primary mt-2 SaveProducts">Save priority</button>
                     </div>
                 </div>
                 <!-- /.row -->

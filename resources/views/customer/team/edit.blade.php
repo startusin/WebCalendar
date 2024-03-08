@@ -51,7 +51,7 @@
 
                             <div class="form-group">
                                 <label for="languages">Excluded permissions</label>
-                                <select class="select2" name="excluded_permissions[]" id="excluded_permissions" multiple="multiple" style="width: 100%;">
+                                <select class="form-select js-choice" name="excluded_permissions[]" id="excluded_permissions" multiple="multiple" style="width: 100%;" data-options='{"removeItemButton":true,"placeholder":true}'>
                                     @foreach(['slot', 'product', 'custom_prices', 'brunch', 'history_purchases', 'promocode'] as $permission)
                                         <option {{ in_array($permission, $user->excluded_permissions ?? []) ? 'selected' : '1' }} value="{{ $permission }}">{{ $permission }}</option>
                                     @endforeach
@@ -60,7 +60,7 @@
 
                             <input type="number" value="{{$user->id}}" name="id" class="form-control" hidden>
 
-                            <input type="submit" class="btn btn-primary" value="Edit">
+                            <input type="submit" class="btn mt-2 btn-primary" value="Edit">
                         </form>
                     </div>
 

@@ -93,7 +93,7 @@
 
                             <div class="form-group">
                                 <label>Languages</label>
-                                <select class="select2" name="language" style="width: 100%;">
+                                <select class="form-control" name="language" style="width: 100%;">
                                     @foreach($languages as $key => $language)
                                         <option value="{{ $language }}">
                                             {{ $key }}
@@ -108,7 +108,7 @@
 
                             <div class="form-group">
                                 <label>Available</label>
-                                <select class="select2" name="is_available" style="width: 100%;">
+                                <select class="form-control" name="is_available" style="width: 100%;">
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>

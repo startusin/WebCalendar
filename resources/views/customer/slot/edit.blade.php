@@ -96,7 +96,7 @@
 
                             <div class="form-group">
                                 <label>Languages</label>
-                                <select class="select2" name="language" style="width: 100%;">
+                                <select class="form-control" name="language" style="width: 100%;">
                                     @foreach($languages as $key => $language)
                                         <option {{ $slot->language == $language ? 'selected' : ''}} value="{{ $language }}">
                                             {{ $key }}
@@ -110,7 +110,7 @@
 
                             <div class="form-group">
                                 <label>Available</label>
-                                <select class="select2" name="is_available" style="width: 100%;">
+                                <select class="form-control" name="is_available" style="width: 100%;">
                                     <option {{$slot->is_available == 0 ? 'selected': ''}} value="0">No</option>
                                     <option {{$slot->is_available == 1 ? 'selected': ''}} value="1">Yes</option>
                                 </select>

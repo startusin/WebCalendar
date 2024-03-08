@@ -66,7 +66,7 @@
                                 @enderror
                             </div>
 
-                            <input type="submit" class="btn btn-primary" value="Create">
+                            <input type="submit" class="btn mt-2  btn-primary" value="Create">
                         </form>
                     </div>
 

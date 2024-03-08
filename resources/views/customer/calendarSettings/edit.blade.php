@@ -125,7 +125,7 @@
 
                             <div class="form-group">
                                 <label>Default Languages</label>
-                                <select class="select2" name="language" style="width: 100%;">
+                                <select class="form-select js-choice" name="language" style="width: 100%;">
                                     @foreach($langs as $key => $language)
                                         <option {{ $settings['language'] == $key ? 'selected' : ''}} value="{{ $key }}">
                                             {{ $language }}
@@ -139,7 +139,7 @@
 
                             <div class="form-group">
                                 <label for="languages">Excluded days</label>
-                                <select class="select2" name="excluded_days[]" id="excluded_days" multiple="multiple" style="width: 100%;">
+                                <select class="form-select js-choice" name="excluded_days[]" data-options='{"removeItemButton":true,"placeholder":true}' id="excluded_days" multiple="multiple" style="width: 100%;">
                                     @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
                                         <option {{ in_array($day, $settings['excluded_days'] ?? []) ? 'selected' : '1' }} value="{{ $day }}">{{ $day }}</option>
                                     @endforeach
@@ -183,8 +183,7 @@
 
                             <div class="input-group mt-3 mb-3">
                                 <div class="custom-file">
-                                    <input type="file" name="bg_image" id="bg_image" class="custom-file-input">
-                                    <label class="custom-file-label">File</label>
+                                    <input type="file" name="bg_image" id="bg_image" class="form-control">
                                 </div>
                                 <div class="input-group-append">
                                     <span class="input-group-text">Upload</span>
@@ -201,8 +200,7 @@
 
                             <div class="input-group mt-3 mb-3">
                                 <div class="custom-file">
-                                    <input type="file" name="logo" id="logo" class="custom-file-input">
-                                    <label class="custom-file-label">File</label>
+                                    <input type="file" name="logo" id="logo" class="form-control">
                                 </div>
                                 <div class="input-group-append">
                                     <span class="input-group-text">Upload</span>
@@ -218,8 +216,7 @@
 
                             <div class="input-group mt-3 mb-3">
                                 <div class="custom-file">
-                                    <input type="file" name="banner" id="banner" class="custom-file-input">
-                                    <label class="custom-file-label">File</label>
+                                    <input type="file" name="banner" id="banner" class="form-control">
                                 </div>
                                 <div class="input-group-append">
                                     <span class="input-group-text">Upload</span>

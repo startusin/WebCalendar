@@ -11,29 +11,13 @@
     </script>
 
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Edit Emails</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-12 mt-2">
 
-                        <div class="card">
+                        <div class="card p-2 m-2">
                             <div class="card-body table-responsive p-0">
                                 <form id="formEmails" method="POST" action="{{route('emails.update')}}">
                                     @csrf
@@ -121,21 +105,21 @@
 
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">Customer satisfaction title - {{ $language }}</h5>
-                                        <input type="text" class="w-100" name="title-email-cs_{{ $language }}" value="{{ $settings->cs_email_title[$language] ?? 'Customer satisfaction message' }}">
+                                        <input type="text" class="form-control" name="title-email-cs_{{ $language }}" value="{{ $settings->cs_email_title[$language] ?? 'Customer satisfaction message' }}">
                                     @endforeach
 
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">Purchase title - {{ $language }}</h5>
-                                        <input type="text" class="w-100" name="title-email-purchase_{{ $language }}" value="{{ $settings->purchase_email_title[$language] ?? 'Purchase message' }}">
+                                        <input type="text" class="form-control" name="title-email-purchase_{{ $language }}" value="{{ $settings->purchase_email_title[$language] ?? 'Purchase message' }}">
                                     @endforeach
 
                                     @foreach ($languages as $language)
                                         <h5 class="text-center mt-4 mb-3">Purchase admin title - {{ $language }}</h5>
-                                        <input type="text" class="w-100" name="title-admin-purchase_{{ $language }}" value="{{ $settings->admin_email_title[$language] ?? 'Purchase admin message' }}">
+                                        <input type="text" class="form-control" name="title-admin-purchase_{{ $language }}" value="{{ $settings->admin_email_title[$language] ?? 'Purchase admin message' }}">
                                     @endforeach
 
                                     <h5 class="text-center mt-4 mb-3">Remind time (minutes)</h5>
-                                    <input type="number" class="w-100" name="remind-time" value="{{ $settings->remind_time ?? '60' }}">
+                                    <input type="number" class="form-control" name="remind-time" value="{{ $settings->remind_time ?? '60' }}">
                                 </form>
 
                             </div>

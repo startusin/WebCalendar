@@ -59,7 +59,7 @@
 
                             <div class="form-group">
                                 <label for="languages">Excluded days</label>
-                                <select class="select2" name="excluded_days[]" id="excluded_days" multiple="multiple" style="width: 100%;">
+                                <select class="form-select js-choice" name="excluded_days[]" id="excluded_days" multiple="multiple" style="width: 100%;"  data-options='{"removeItemButton":true,"placeholder":true}'>
                                     @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
                                         <option {{ in_array($day, $brunch->excluded_days ?? []) ? 'selected' : '1' }} value="{{ $day }}">{{ $day }}</option>
                                     @endforeach
@@ -69,7 +69,7 @@
                                 @enderror
                             </div>
 
-                            <input type="submit" class="btn btn-primary" value="Edit">
+                            <input type="submit" class="btn mt-2 btn-primary" value="Edit">
                         </form>
                     </div>
 

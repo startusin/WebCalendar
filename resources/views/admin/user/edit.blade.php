@@ -69,8 +69,8 @@
 
                             <div class="form-group">
                                 <label>Languages</label>
-                                <select class="select2" name="languages[]" multiple="multiple" data-placeholder="Вибрати теги"
-                                        style="width: 100%;" required>
+                                <select class="form-select js-choice" name="languages[]" multiple="multiple" data-placeholder="Вибрати теги"
+                                        style="width: 100%;" required data-options='{"removeItemButton":true,"placeholder":true}'>
                                     @foreach($languages as $key => $language)
                                         <option {{in_array($language,  $user->languages) ? 'selected' : '1'}} value="{{ $language }}">
                                             {{ $key }}
@@ -82,7 +82,7 @@
                                 @enderror
                             </div>
 
-                            <input type="submit" class="btn btn-primary" value="Edit">
+                            <input type="submit" class="btn mt-2 btn-primary" value="Edit">
                         </form>
                     </div>
 

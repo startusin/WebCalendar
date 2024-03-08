@@ -54,7 +54,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Product</label>
-                                <select class="select2" name="product_id" style="width: 100%;">
+                                <select class="form-select js-choice" name="product_id" style="width: 100%;">
                                     @foreach($products as $product)
                                         @foreach($product['title'] as $lg => $item)
                                             @if(\Illuminate\Support\Facades\Cookie::get('locale') == $lg)
@@ -70,7 +70,7 @@
                                 @enderror
                             </div>
 
-                            <input type="submit" class="btn btn-primary" value="Edit">
+                            <input type="submit" class="btn mt-2  btn-primary" value="Edit">
                         </form>
                     </div>
 

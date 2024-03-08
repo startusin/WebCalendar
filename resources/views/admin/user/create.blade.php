@@ -65,7 +65,7 @@
 
                         <div class="form-group">
                             <label for="languages">Languages</label>
-                            <select class="select2" name="languages[]" id="languages" multiple="multiple" style="width: 100%;" required>
+                            <select class="form-select js-choice" name="languages[]" id="languages" multiple="multiple" style="width: 100%;" required data-options='{"removeItemButton":true,"placeholder":true}'>
                                 @foreach($languages as $key => $language)
                                     <option value="{{ $language }}">
                                         {{ $key }}
@@ -77,7 +77,7 @@
                             @enderror
                         </div>
 
-                        <input type="submit" class="btn btn-primary" value="Create">
+                        <input type="submit" class="btn mt-2 btn-primary" value="Create">
                     </form>
                 </div>
 

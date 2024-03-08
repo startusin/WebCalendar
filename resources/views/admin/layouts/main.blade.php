@@ -1,90 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-bs-theme="light" lang="en-US" dir="ltr">
+
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-    <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="{{asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')}}">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="{{asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="{{asset('plugins/jqvmap/jqvmap.min.css')}}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
-    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{asset('plugins/daterangepicker/daterangepicker.css')}}">
-    <!-- summernote -->
-    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Falcon | Dashboard &amp; Web App Template</title>
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
+    <link rel="manifest" href="assets/img/favicons/manifest.json">
+    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="{{asset('assets/js/config.js')}}"></script>
+    <script src="vendors/simplebar/simplebar.min.js"></script>
+
+    <script src="vendors/select2/select2.min.css"></script>
+    <script src="vendors/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css"></script>
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+
+
+
+    <script src="{{asset('assets/js/config.js')}}"></script>
+    <script src="{{asset('assets/vendors/simplebar/simplebar.min.js')}}"></script>
+
+    <style class="anchorjs"></style>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <link href="{{asset('assets/vendors/simplebar/simplebar.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/theme-rtl.css')}}" rel="stylesheet" id="style-rtl" disabled="true">
+    <link href="{{asset('assets/css/theme.css')}}" rel="stylesheet" id="style-default">
+    <link href="{{asset('assets/css/user-rtl.css')}}" rel="stylesheet" id="user-style-rtl" disabled="true">
+    <link href="{{asset('assets/css/user.css')}}" rel="stylesheet" id="user-style-default">
+    <link href="{{asset('assets/vendors/choices/choices.min.css')}}" rel="stylesheet" />
+
+    <script>
+        var isRTL = JSON.parse(localStorage.getItem('isRTL'));
+        if (isRTL) {
+            var linkDefault = document.getElementById('style-default');
+            var userLinkDefault = document.getElementById('user-style-default');
+            linkDefault.setAttribute('disabled', true);
+            userLinkDefault.setAttribute('disabled', true);
+            document.querySelector('html').setAttribute('dir', 'rtl');
+        } else {
+            var linkRTL = document.getElementById('style-rtl');
+            var userLinkRTL = document.getElementById('user-style-rtl');
+            linkRTL.setAttribute('disabled', true);
+            userLinkRTL.setAttribute('disabled', true);
+        }
+    </script>
 
     <link rel="stylesheet" href="{{asset('assets/css/custoadmin.css')}}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+    <script src="{{asset('assets/vendors/select2/select2.min.css')}}"></script>
+    <script src="{{asset('vendors/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css')}}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
 
-    <!-- Preloader -->
-    <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
+
+<body>
+
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+    <div class="container" data-layout="container">
+        <script>
+            var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+            if (isFluid) {
+                var container = document.querySelector('[data-layout]');
+                container.classList.remove('container');
+                container.classList.add('container-fluid');
+            }
+        </script>
+        @include('admin.Include.sidebar')
+        <div class="content">
+            <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand" style="justify-content: space-between;">
+                <h5>Admin Panel</h5>
+                <li class=" nav-item d-none d-sm-inline-block">
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <input  class="btn btn-primary" type="submit" value="Logout">
+                    </form>
+                </li>
+            </nav>
+
+            @yield('content')
+        </div>
     </div>
-
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light d-flex justify-content-between">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-        </ul>
-
-        <!-- Right navbar links -->
-        <ul class="navbar-nav">
-
-            <li class=" nav-item d-none d-sm-inline-block">
-                <form action="{{route('logout')}}" method="post">
-                    @csrf
-                    <input  class="btn btn-primary" type="submit" value="Logout">
-                </form>
-            </li>
-        </ul>
-    </nav>
-    <!-- /.navbar -->
-
-    <!-- Main Sidebar Container -->
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
 
 
-    @include('admin.Include.sidebar')
-    @yield('content')
 
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-        <strong>Admin-Panel</strong>
 
-    </footer>
+<!-- ===============================================-->
+<!--    JavaScripts-->
+<!-- ===============================================-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+
+<script src="{{asset('assets/vendors/popper/popper.min.js')}}"></script>
+<script src="{{asset('assets/vendors/bootstrap/bootstrap.min.js')}}"></script>
+<script src="{{asset('assets/vendors/anchorjs/anchor.min.js')}}"></script>
+<script src="{{asset('assets/vendors/is/is.min.js')}}"></script>
+<script src="{{asset('assets/vendors/prism/prism.js')}}"></script>
+<script src="{{asset('assets/vendors/fontawesome/all.min.js')}}"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+<script src="{{asset('assets/vendors/lodash/lodash.min.js')}}"></script>
+<script src="{{asset('assets/vendors/list.js/list.min.js')}}"></script>
+<script src="{{asset('assets/js/theme.js')}}"></script>
+
+<script src="{{asset('assets/vendors/choices/choices.min.js')}}"></script>
+
+<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
 <script>
     $(function() {
@@ -127,32 +182,11 @@
     $.widget.bridge('uibutton', $.ui.button);
     $( "#sortable" ).sortable();
 </script>
-<!-- Bootstrap 4 -->
-<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<!-- ChartJS -->
-<script src="{{asset('plugins/chart.js/Chart.min.js')}}"></script>
-<!-- Sparkline -->
-<script src="{{asset('plugins/sparklines/sparkline.js')}}"></script>
-<!-- JQVMap -->
-<script src="{{asset('plugins/jqvmap/jquery.vmap.min.js')}}"></script>
-<script src="{{asset('plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
-<!-- jQuery Knob Chart -->
-<script src="{{asset('plugins/jquery-knob/jquery.knob.min.js')}}"></script>
-<!-- daterangepicker -->
+
 <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
 <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="{{asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
-<!-- Summernote -->
-<script src="{{asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
-<!-- overlayScrollbars -->
-<script src="{{asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{asset('dist/js/adminlte.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{asset('dist/js/demo.js')}}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
+
+
 <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
 <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
 
@@ -175,6 +209,9 @@
 <!-- Day.js  -->
 <script src="/path/to/cdn/dayjs.min.js"></script>
 
+<script src="{{asset('vendors/jquery/jquery.min.js')}}"></script>
+<script src="{{asset('vendors/select2/select2.min.js')}}"></script>
+<script src="{{asset('vendors/select2/select2.full.min.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('assets/js/uploadPhoto.js')}}"></script>
 @stack('js')

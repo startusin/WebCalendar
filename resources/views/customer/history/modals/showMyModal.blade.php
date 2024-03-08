@@ -111,8 +111,8 @@
                             <div class="col-12 ml-2" id="order-comments"></div>
 
                             <div class="w-100 comment-form">
-                                <textarea class="w-100 new-comment-content" placeholder="Comment"></textarea>
-                                <button class="post-comment">Post Comment</button>
+                                <textarea class="w-100 form-control new-comment-content" placeholder="Comment"></textarea>
+                                <button class="mt-2 btn btn-primary post-comment">Post Comment</button>
                             </div>
                         </div>
                     </div>
