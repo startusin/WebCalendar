@@ -193,10 +193,11 @@ class CalendarSettingsController extends Controller
             $calendarSettings->update($dataForUpdateOrCreate);
         }
 
-        $settings = FormSettings::all();
+        $settings = FormSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->get();
         $lenght = count( $settings);
+
         if ($lenght == 0) {
-            $calendar_id = auth()->user()->id;
+            $calendar_id =  auth()->user()->invited_by ?? auth()->user()->id;
             foreach ($this->formsSettingsService->GetAllKeys() as $key => $isRequired){
                 FormSettings::create([
                     'key' => $key,
@@ -215,7 +216,7 @@ class CalendarSettingsController extends Controller
 
     public function getFormsSettings()
     {
-        $settings = FormSettings::all();
+        $settings = FormSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->get();
         return view('customer.formSettings.index', compact('settings'));
     }
     public function changeFormSettings(Request $request)

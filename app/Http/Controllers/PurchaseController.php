@@ -183,7 +183,6 @@ class PurchaseController extends Controller
         foreach ($user->formSettings as $item) {
             $formSettings["$item->key"] = $item->is_required;
         }
-
         if (isset($data['type']) && $data['type'] === 'branch') {
             $brunch = Brunch::findOrFail((int)$data['branchId']);
 
@@ -199,9 +198,6 @@ class PurchaseController extends Controller
                 'amount' => (float)$totalSum * 100,
                 'currency' => 'eur',
                 'automatic_payment_methods' => ['enabled' => true],
-//                'metadata' => [
-//                    'test' => '24353'
-//                ]
             ]);
 
             return view('purchase', compact('calendarId', 'vat', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
