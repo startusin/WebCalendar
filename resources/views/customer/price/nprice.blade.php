@@ -41,10 +41,10 @@
                                         <th class="col-2">End</th>
                                         <th class="col-1">From Hours</th>
                                         <th class="col-1">To Hours</th>
-                                        <th class="col-1">Calc</th>
+                                        <th class="col-2">Calc</th>
                                         <th class="col-1 text-center">Price</th>
                                         <th class="col-1">Product</th>
-                                        <th class="col-1">Min. Participant</th>
+                                        <th class="col-1">Min.Client</th>
                                         <th class="col-1">Actions</th>
                                     </tr>
                                     </thead>

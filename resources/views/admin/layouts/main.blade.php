@@ -95,14 +95,39 @@
         </script>
         @include('admin.Include.sidebar')
         <div class="content">
-            <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand" style="justify-content: space-between;">
-                <h5>Admin Panel</h5>
-                <li class=" nav-item d-none d-sm-inline-block">
-                    <form action="{{route('logout')}}" method="post">
-                        @csrf
-                        <input  class="btn btn-primary" type="submit" value="Logout">
-                    </form>
-                </li>
+            <nav class="navbar navbar-light navbar-glass navbar-top " style="justify-content: space-between;">
+
+
+                <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+                    <li class="nav-item ps-2 pe-0">
+                        <div class="dropdown theme-control-dropdown"><a class="nav-link d-flex align-items-center dropdown-toggle fa-icon-wait fs-9 pe-1 py-0" href="#" role="button" id="themeSwitchDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-sun fs-7" data-fa-transform="shrink-2" data-theme-dropdown-toggle-icon="light"></span><span class="fas fa-moon fs-7" data-fa-transform="shrink-3" data-theme-dropdown-toggle-icon="dark"></span><span class="fas fa-adjust fs-7" data-fa-transform="shrink-2" data-theme-dropdown-toggle-icon="auto"></span></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-caret border py-0 mt-3" aria-labelledby="themeSwitchDropdown">
+                                <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                    <button class="dropdown-item d-flex align-items-center gap-2" type="button" value="light" data-theme-control="theme"><span class="fas fa-sun"></span>Light<span class="fas fa-check dropdown-check-icon ms-auto text-600"></span></button>
+                                    <button class="dropdown-item d-flex align-items-center gap-2" type="button" value="dark" data-theme-control="theme"><span class="fas fa-moon" data-fa-transform=""></span>Dark<span class="fas fa-check dropdown-check-icon ms-auto text-600"></span></button>
+                                    <button class="dropdown-item d-flex align-items-center gap-2" type="button" value="auto" data-theme-control="theme"><span class="fas fa-adjust" data-fa-transform=""></span>Auto<span class="fas fa-check dropdown-check-icon ms-auto text-600"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-item dropdown"><a class="nav-link pe-0 ps-2" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-xl">
+                                <img class="rounded-circle" src="{{asset("assets/images/user.png")}}" alt="" />
+
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
+                            <div class="bg-white dark__bg-1000 rounded-2 py-2">
+                                <form id="logout-form" action="{{ route('logout') }}" method="post" style="display: none;">
+                                    @csrf
+                                </form>
+                                <a href="#" onclick="document.getElementById('logout-form').submit(); return false;" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </nav>
 
             @yield('content')

@@ -25,3 +25,8 @@
 .content{
     padding-top: 0;
 }
+
+.MyZeroPadding{
+    padding-left: 0;
+    padding-right: 0;
+}

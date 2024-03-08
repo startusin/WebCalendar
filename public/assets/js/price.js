@@ -424,7 +424,7 @@ $(document).ready(function() {
             '</td>' +
             '<td>' +
             '<div>' +
-            '<input value="'+ MyObj.price.value+'" type="number"  name="value" class="form-control" required >' +
+            '<input value="'+ MyObj.price.value+'" type="number"  name="value" class="form-control MyZeroPadding" required >' +
             '</div>' +
             '</td>' +
             '<td>' +
@@ -612,7 +612,7 @@ $(document).ready(function() {
             '</td>' +
             '<td>' +
             '<div>' +
-            '<input type="number" name="value" class="form-control" required >' +
+            '<input type="number" name="value" class="form-control MyZeroPadding" required >' +
             '</div>' +
             '</td>' +
             '<td>' +
