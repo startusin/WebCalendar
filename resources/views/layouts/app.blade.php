@@ -63,7 +63,7 @@
 <!--    Main Content-->
 <!-- ===============================================-->
 <main class="main" id="top">
-    <div class="container" data-layout="container">
+    <div class="container-fluid">
         <script>
             var isFluid = JSON.parse(localStorage.getItem('isFluid'));
             if (isFluid) {
