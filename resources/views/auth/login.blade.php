@@ -29,7 +29,7 @@
                                 <p class="ColorTextForLogin">Vous n’avez pas de compte ?<br><a
                                         class="text-decoration-underline ColorTextForLogin"
                                         href="https://www.bookwithmargot.com/creer-un-compte" style="color: #29074B">C’est parti</a></p>
-                                <p class="mb-0 mt-4 mt-md-5 fs-10 fw-semi-bold ColorTextForLogin opacity-75"> Lire nos mentions <a
+                                <p class="mb-0 mt-4 mt-md-5 px-4 fs-10 fw-semi-bold ColorTextForLogin opacity-75"> Lire nos mentions <a
                                         class="text-decoration-underline ColorTextForLogin" href="https://www.bookwithmargot.com/mentions-legales"  style="color: #29074B">legales</a> et nos <a
                                         class="text-decoration-underline ColorTextForLogin" href="https://www.bookwithmargot.com/conditions-generales-de-vente"  style="color: #29074B">conditions générales de vente </a></p>
                             </div>
@@ -67,7 +67,7 @@
                                         @enderror
                                     </div>
                                     <div class="row flex-between-center">
-                                        <div class="col-auto">
+                                        <div class="col-sm-6 pe-sm-0">
                                             <div class="form-check mb-0">
                                                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
@@ -76,9 +76,9 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-sm-6 ps-sm-0 text-end">
                                             @if (Route::has('password.request'))
-                                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                                <a class="btn btn-link reset-link px-0" href="{{ route('password.request') }}">
                                                     J’ai oublié mon mot de passe
                                                 </a>
                                             @endif

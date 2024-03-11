@@ -24,7 +24,7 @@
                                 <p class="ColorTextForLogin">Vous n’avez pas de compte ?<br><a
                                         class="text-decoration-underline ColorTextForLogin"
                                         href="https://www.bookwithmargot.com/creer-un-compte" style="color: #29074B">C’est parti</a></p>
-                                <p class="mb-0 mt-4 mt-md-5 fs-10 fw-semi-bold ColorTextForLogin opacity-75"> Lire nos mentions <a
+                                <p class="mb-0 mt-4 mt-md-5 px-4 fs-10 fw-semi-bold ColorTextForLogin opacity-75"> Lire nos mentions <a
                                         class="text-decoration-underline ColorTextForLogin" href="https://www.bookwithmargot.com/mentions-legales"  style="color: #29074B">legales</a> et nos <a
                                         class="text-decoration-underline ColorTextForLogin" href="https://www.bookwithmargot.com/conditions-generales-de-vente"  style="color: #29074B">conditions générales de vente </a></p>
                             </div>

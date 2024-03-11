@@ -13,7 +13,6 @@
     <!-- ===============================================-->
     <title>Falcon | Dashboard &amp; Web App Template</title>
 
-
     <!-- ===============================================-->
     <!--    Favicons-->
     <!-- ===============================================-->
@@ -39,6 +38,9 @@
     <link href="../../../assets/css/theme.css" rel="stylesheet" id="style-default">
     <link href="../../../assets/css/user-rtl.css" rel="stylesheet" id="user-style-rtl">
     <link href="../../../assets/css/user.css" rel="stylesheet" id="user-style-default">
+
+    <link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
+
     <script>
         var isRTL = JSON.parse(localStorage.getItem('isRTL'));
         if (isRTL) {
