@@ -407,7 +407,7 @@ $(document).ready(function () {
                 $('.products-area').removeClass('d-none');
                 $('.button-order').removeClass('d-none');
 
-                let scrollToEl = $('.brunches');
+                let scrollToEl = $('.brunches:visible');
 
                 if (scrollToEl.length <= 0) {
                     scrollToEl = $('.products');
@@ -992,9 +992,17 @@ $(document).ready(function () {
 
 
 
-    $(document).on('click', '.product-navigation .left-icon', function () {
+    $(document).on('click', '.product-navigation .left-icon', function (e) {
         const activeButton = $('.event-time.active');
         let calendarId = $('.container').data('calendar-id');
+
+        const productCounter = $(e.currentTarget).closest('.product-navigation-container').find('.count-of-product');
+        const selfCount = parseInt(productCounter.text(), 10);
+        const maxCount = parseInt(productCounter.data('max'), 10);
+
+        if (selfCount >= maxCount) {
+            return;
+        }
 
         if (activeButton.length > 0) {
             let totalQty = 0;

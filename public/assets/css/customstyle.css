@@ -427,8 +427,8 @@ color: #000 !important;
 }
 
 .bootstrap-calendar-day.has-events.active {
-background-color: var(--calendar-primary-color);
-color: #000 !important;
+    background-color: var(--calendar-primary-color);
+    color: #fff !important;
 }
 
 .js-count-events, .js-day-name {
@@ -691,13 +691,23 @@ padding: 20px;
 }
 
 .makesPurchase {
-background: var(--calendar-secondary-color);
+    background: var(--calendar-primary-color);
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
 }
 
-@media screen and (max-width:480px) {
-.myDisp {
-    flex: 50%;
+.makesPurchase:hover {
+    background: var(--calendar-primary-color);
+    opacity: .9;
 }
+
+.makesPurchase svg {
+    margin-right: 8px;
+}
+
+.makesPurchase span {
+    text-decoration: underline;
 }
 
 .button-order {
@@ -864,4 +874,30 @@ justify-content: end;
     pointer-events: none;
     opacity: 0.7;
     background-color: #dad9da;
+}
+
+@media (max-width: 767px) {
+    body {
+        background-image: none !important;
+    }
+
+    .product-item-price span {
+        width: auto;
+        padding: 5px 7px;
+    }
+
+    .product-item-count span {
+        width: auto;
+        padding: 5px 9px;
+    }
+
+    .promocode-apply button {
+        font-size: 13px;
+        height: 36px;
+    }
+
+    .total-item-price span {
+        width: auto;
+        padding: 5px 7px;
+    }
 }
