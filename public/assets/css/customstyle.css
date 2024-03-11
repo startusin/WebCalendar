@@ -457,8 +457,10 @@ margin-bottom: 20px;
 }
 
 .event-time.active, .event-time:hover {
-text-decoration: none;
-border: 1px var(--calendar-primary-color) solid;
+    text-decoration: none;
+    border: 1px var(--calendar-primary-color) solid;
+    background-color: var(--calendar-primary-color);
+    color: #fff !important;
 }
 
 .event-time.inactive {
