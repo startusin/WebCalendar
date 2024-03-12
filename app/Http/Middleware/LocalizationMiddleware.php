@@ -21,7 +21,6 @@ class LocalizationMiddleware
     {
         if (Cookie::has('locale')) {
             $locale = Cookie::get('locale');
-            dd(2);
             App::setLocale($locale);
         } else {
             $user = $request->route('user');
