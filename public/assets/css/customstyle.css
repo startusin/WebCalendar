@@ -793,6 +793,9 @@ justify-content: end;
     font-weight: 400;
     font-style: normal;
 }
+.paddingModal{
+    margin: 0 90px;
+}
 
 .description-Success{
     max-width: 500px;
@@ -861,6 +864,13 @@ justify-content: end;
         bottom: 10px;
         width: 95%;
     }
+    .paddingModal{
+         margin: 0 15px;
+    }
+    .under-line{
+        display: none;
+    }
+
 
 }
 @media (max-width: 434px) {

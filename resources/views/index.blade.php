@@ -169,7 +169,7 @@
         </div>
         @if(isset($user->settings->footer_text[$locale]))
         <div class="mt-2">
-            <span  style="white-space: pre;"> {{$user->settings->footer_text[$locale]}} </span>
+            <span  style="white-space: pre-wrap;"> {{$user->settings->footer_text[$locale]}} </span>
         </div>
         @endif
         @if(isset($user->settings->policy_1['title'][$locale]))
