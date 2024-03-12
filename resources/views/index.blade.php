@@ -150,7 +150,7 @@
                     </div>
                 @endforeach
             </div>
-            <div class="under-line">
+
             <div class="row d-flex flex-nowrap align-items-center  button-order">
                 <div id="ViewCurrentSlot" class="col-6" >
                     3 janvier 2024 | 17h45
@@ -162,7 +162,10 @@
                     0.00€
                 </div>
             </div>
+            @if(isset($user->settings->footer_text[$locale]))
+            <div class="under-line">
             </div>
+            @endif
         </div>
         @if(isset($user->settings->footer_text[$locale]))
         <div class="mt-2">
