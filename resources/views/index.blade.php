@@ -164,11 +164,15 @@
             </div>
             </div>
         </div>
+        @if(isset($user->settings->footer_text[$locale]))
         <div class="mt-2">
             <span  style="white-space: pre;"> {{$user->settings->footer_text[$locale]}} </span>
         </div>
+        @endif
+        @if(isset($user->settings->policy_1['title'][$locale]))
         <div class="d-flex gap-2 mt-4 under-line">
-        <div>
+
+            <div>
             <a class="showButtonContent btn" href="#"
                data-text="{{$user->settings->policy_1['content'][$locale]}}"
                data-title="{{$user->settings->policy_1['title'][$locale]}}"
@@ -176,6 +180,8 @@
                data-target="#showMyModal"
                style=" background-color: white; border-radius: 15px;">{{$user->settings->policy_1['title'][$locale]}}</a>
         </div>
+            @endif
+            @if(isset($user->settings->policy_2['title'][$locale]))
         <div>
             <a class="showButtonContent btn" href="#"
                data-text="{{$user->settings->policy_2['content'][$locale]}}"
@@ -184,7 +190,10 @@
                data-target="#showMyModal"
                style=" background-color: white; border-radius: 15px;">{{$user->settings->policy_2['title'][$locale]}}</a>
         </div>
-        <div>
+            @endif
+                @if(isset($user->settings->policy_3['title'][$locale]))
+
+                <div>
             <a class="showButtonContent btn" href="#"
                data-text="{{$user->settings->policy_3['content'][$locale]}}"
                data-title="{{$user->settings->policy_3['title'][$locale]}}"
@@ -192,6 +201,7 @@
                data-target="#showMyModal"
                style=" background-color: white; border-radius: 15px;">{{$user->settings->policy_3['title'][$locale]}}</a>
         </div>
+                @endif
         </div>
     </div>
     @include('showMyModal')
