@@ -228,6 +228,20 @@
                             </a>
                         </li>
 
+
+
+                        <li class="nav-item">
+                            <!-- label-->
+                            <a class="nav-link" href="{{route('privacy.index')}}" role="button">
+                                <div class="d-flex align-items-center">
+                                <span class="nav-link-icon">
+                                   <i class="nav-icon fa-solid fa-gear"></i>
+                                </span>
+                                    <span class="nav-link-text ps-1">Privacy Policy Settings</span>
+                                </div>
+                            </a>
+                        </li>
+
                 @endif
             @endif
             </ul>

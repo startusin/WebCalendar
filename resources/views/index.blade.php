@@ -150,8 +150,8 @@
                     </div>
                 @endforeach
             </div>
-
-            <div class="mt-3 mb-2 mb-md-5 row d-flex flex-nowrap align-items-center d-none button-order">
+            <div class="under-line">
+            <div class="row d-flex flex-nowrap align-items-center  button-order">
                 <div id="ViewCurrentSlot" class="col-6" >
                     3 janvier 2024 | 17h45
                 </div>
@@ -162,8 +162,39 @@
                     0.00€
                 </div>
             </div>
+            </div>
+        </div>
+        <div class="mt-2">
+            <span  style="white-space: pre;"> {{$user->settings->footer_text[$locale]}} </span>
+        </div>
+        <div class="d-flex gap-2 mt-4 under-line">
+        <div>
+            <a class="showButtonContent btn" href="#"
+               data-text="{{$user->settings->policy_1['content'][$locale]}}"
+               data-title="{{$user->settings->policy_1['title'][$locale]}}"
+               data-toggle="modal"
+               data-target="#showMyModal"
+               style=" background-color: white; border-radius: 15px;">{{$user->settings->policy_1['title'][$locale]}}</a>
+        </div>
+        <div>
+            <a class="showButtonContent btn" href="#"
+               data-text="{{$user->settings->policy_2['content'][$locale]}}"
+               data-title="{{$user->settings->policy_2['title'][$locale]}}"
+               data-toggle="modal"
+               data-target="#showMyModal"
+               style=" background-color: white; border-radius: 15px;">{{$user->settings->policy_2['title'][$locale]}}</a>
+        </div>
+        <div>
+            <a class="showButtonContent btn" href="#"
+               data-text="{{$user->settings->policy_3['content'][$locale]}}"
+               data-title="{{$user->settings->policy_3['title'][$locale]}}"
+               data-toggle="modal"
+               data-target="#showMyModal"
+               style=" background-color: white; border-radius: 15px;">{{$user->settings->policy_3['title'][$locale]}}</a>
+        </div>
         </div>
     </div>
+    @include('showMyModal')
 
     <div style="display: none">
         time: {{ now() }}
@@ -181,6 +212,14 @@
     @endif
 @endsection
 @push('js')
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).on('click', '.showButtonContent', function () {
+            $('#Title').text( $(this).data('title'));
+            $('#Content').text( $(this).data('text'));
+        });
+    </script>
     <script>
         $(document).ready(function() {
             let currentDate = new Date();

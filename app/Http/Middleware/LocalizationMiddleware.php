@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -20,10 +21,13 @@ class LocalizationMiddleware
     {
         if (Cookie::has('locale')) {
             $locale = Cookie::get('locale');
+            dd(2);
             App::setLocale($locale);
         } else {
             $user = $request->route('user');
-            $locale = $user->settings->language ?? 'en';
+            $user = User::find($user);
+            $locale = $user->settings['language'] ?? 'en';
+
             Cookie::queue(Cookie::forever('locale', $locale));
             App::setLocale($locale);
         }

@@ -65,6 +65,11 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'customer'], function () {
 
+            Route::get('/getPrivacy', [\App\Http\Controllers\CalendarSettingsController::class, 'getPrivacy'])->name('privacy.index');
+            Route::post('/setPrivacy', [\App\Http\Controllers\CalendarSettingsController::class, 'setPrivacy'])->name('privacy.store');
+
+
+
             Route::get('/getFormsSettings', [\App\Http\Controllers\CalendarSettingsController::class, 'getFormsSettings'])->name('getFormsSettings');
             Route::put('/changeFormSettings', [\App\Http\Controllers\CalendarSettingsController::class, 'changeFormSettings'])->name('changeFormSettings');
 

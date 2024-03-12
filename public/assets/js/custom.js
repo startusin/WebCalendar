@@ -588,7 +588,6 @@ $(document).ready(function () {
 
     $(document).on('click', '.showPurchase', function () {
         let route = $(this).data('route');
-
         $.ajax({
             url: route,
             success: function (response) {
