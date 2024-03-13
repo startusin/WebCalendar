@@ -25,7 +25,7 @@ class LocalizationMiddleware
         } else {
             $user = $request->route('user');
             $user = User::find($user);
-            $locale = $user->settings['language'] ?? 'en';
+            $locale = $user?->settings['language'] ?? 'en';
 
             Cookie::queue(Cookie::forever('locale', $locale));
             App::setLocale($locale);
