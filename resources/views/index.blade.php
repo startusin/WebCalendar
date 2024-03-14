@@ -28,7 +28,7 @@
                     <ul class="dropdown-menu language-selector-list">
                         @foreach ($user->languages as $lang)
                             <li>
-                                <a class="dropdown-item my-1" href="{{ route('setLang', $lang )}}">
+                                <a class="dropdown-item my-1" href="/locale/{{ $lang }}">
                                     <img src="/assets/flags/{{ $lang }}.png"
                                          class="flag-icon me-2"/> {{ \App\Enums\Languages::getStringLanguage($lang) }}
                                 </a>
