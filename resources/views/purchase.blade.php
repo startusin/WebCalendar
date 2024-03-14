@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <select class="form-select"  id="RegionSelect"  name="RegionSelect" aria-label="Floating label select example">
+                            <select class="form-select" id="RegionSelect"  name="RegionSelect" aria-label="Floating label select example">
                                 @foreach($countries as $item)
                                     <option value="{{ $item->country['name'][Cookie::get('locale')] ?? $item->country->alpha_code }}" data-code="{{ $item->country->alpha_code }}" selected>{{$item->country['name'][Cookie::get('locale')]}}</option>
                                 @endforeach

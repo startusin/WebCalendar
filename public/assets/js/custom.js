@@ -225,11 +225,12 @@ $(document).ready(function () {
         setActive();
     });
 
-    $(document).on('click', '.bootstrap-calendar-day', function () {
-
+    $(document).on('click', '.bootstrap-calendar-day', function (event, autoclick = false) {
         let element = document.querySelector('.js-events');
 
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!autoclick) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         currentDate = $(this).data('date');
 
@@ -243,7 +244,6 @@ $(document).ready(function () {
             }
             if ($(element).hasClass('active')){
                 selectTimeDate = $(element).data('id');
-                console.log(selectTimeDate);
             }
         });
     });
