@@ -4,18 +4,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('calendar_settings', function (Blueprint $table) {
-            $table->json('footer_text')->nullable();
-            $table->json('policy_1')->nullable();
-            $table->json('policy_2')->nullable();
-            $table->json('policy_3')->nullable();
+            $table->string('custom_styles')->nullable();
+            $table->string('custom_script')->nullable();
         });
     }
 
@@ -25,10 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('calendar_settings', function (Blueprint $table) {
-            $table->dropColumn('footer_text');
-            $table->dropColumn('policy_1');
-            $table->dropColumn('policy_2');
-            $table->dropColumn('policy_3');
+            $table->dropColumn('custom_styles');
+            $table->dropColumn('custom_script');
         });
     }
 };

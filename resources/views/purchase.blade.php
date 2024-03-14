@@ -40,8 +40,8 @@
                     <div class="col-12">
                         <div class="form-floating mb-3">
                             <select class="form-select"  id="RegionSelect"  name="RegionSelect" aria-label="Floating label select example">
-                                @foreach($user->settings['countries'] as $item)
-                                    <option value="{{$item}}" selected>{{$item}}</option>
+                                @foreach($countries as $item)
+                                    <option value="{{ $item->country['name'][Cookie::get('locale')] ?? $item->country->alpha_code }}" data-code="{{ $item->country->alpha_code }}" selected>{{$item->country['name'][Cookie::get('locale')]}}</option>
                                 @endforeach
                             </select>
                             <label for="floatingSelect">{{$user->translations['translations']['works-with-selectes'][Cookie::get('locale')]??""}}</label>
@@ -298,7 +298,9 @@
                     break;
 
                 case "country":
-                    $('#RegionSelect').val(component.long_name);
+                    console.log(component.short_name);
+                    console.log($('#RegionSelect option[data-code="' + component.short_name + '"]').attr('value'));
+                    $('#RegionSelect').val($('#RegionSelect option[data-code="' + component.short_name + '"]').attr('value'));
                     break;
             }
 

@@ -237,7 +237,7 @@ class CalendarSettingsController extends Controller
 
     public function getPrivacy()
     {
-        $settings = auth()->user()->settings;
+        $settings = CalendarSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->first();
         return view('customer.privacy.index', compact('settings'));
     }
 
@@ -252,7 +252,6 @@ class CalendarSettingsController extends Controller
 
         $PolicyTitle3 = [];
         $PolicyContent3 = [];
-        //dd($request->all());
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'footer_text') !== false) {
                 $LangKey = explode("-", $key);
@@ -306,6 +305,30 @@ class CalendarSettingsController extends Controller
         $settings->policy_1 = $Policy1;
         $settings->policy_2 = $Policy2;
         $settings->policy_3 = $Policy3;
+        $settings->save();
+        return redirect()->back();
+    }
+
+
+
+    public function getStyles()
+    {
+        $settings = CalendarSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->first();
+
+        return view('customer.styles.index', compact('settings'));
+    }
+
+    public function setStyles(Request $request)
+    {
+        $data = $request->all();
+
+        $settings = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
+        if (!$settings)
+        {
+            abort(404);
+        }
+        $settings['custom_styles'] = $data['custom_styles']??"";
+        $settings['custom_script'] = $data['custom_script']??"";
         $settings->save();
         return redirect()->back();
     }

@@ -63,7 +63,26 @@ use Illuminate\Support\Facades\Route;
             Route::delete('delete/{user}', [\App\Http\Controllers\UserController::class, 'delete'])->name('admin.user.delete');
         });
 
+        Route::group(['prefix' => 'country', 'middleware' => 'admin'], function () {
+            Route::get('/', [\App\Http\Controllers\CountryController::class, 'index'])->name('admin.country.index');
+            Route::get('create', [\App\Http\Controllers\CountryController::class, 'create'])->name('admin.country.create');
+            Route::post('store', [\App\Http\Controllers\CountryController::class, 'store'])->name('admin.country.store');
+            Route::get('edit/{country}', [\App\Http\Controllers\CountryController::class, 'edit'])->name('admin.country.edit');
+            Route::put('update', [\App\Http\Controllers\CountryController::class, 'update'])->name('admin.country.update');
+            Route::delete('delete/{country}', [\App\Http\Controllers\CountryController::class, 'delete'])->name('admin.country.delete');
+        });
+
         Route::group(['middleware' => 'customer'], function () {
+
+
+            Route::get('/getCalendarCountries', [\App\Http\Controllers\CalendarCountryController::class, 'index'])->name('customer.calendarCountry.index');
+            Route::put('/setCalendarCountry', [\App\Http\Controllers\CalendarCountryController::class, 'setCountry'])->name('customer.calendarCountry.set');
+            Route::put('/countries/changePriority', [\App\Http\Controllers\CalendarCountryController::class, 'changePriority']);
+
+            Route::get('/getStyles', [\App\Http\Controllers\CalendarSettingsController::class, 'getStyles'])->name('styles.index');
+            Route::post('/setStyles', [\App\Http\Controllers\CalendarSettingsController::class, 'setStyles'])->name('styles.store');
+
+
 
             Route::get('/getPrivacy', [\App\Http\Controllers\CalendarSettingsController::class, 'getPrivacy'])->name('privacy.index');
             Route::post('/setPrivacy', [\App\Http\Controllers\CalendarSettingsController::class, 'setPrivacy'])->name('privacy.store');

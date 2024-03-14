@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BookedBrunch;
 use App\Models\BookedSlots;
 use App\Models\Brunch;
+use App\Models\CalendarCountry;
 use App\Models\CustomSlot;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
@@ -157,6 +158,11 @@ class PurchaseController extends Controller
 
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);
+        $countries = CalendarCountry::with('country')
+            ->where('calendar_id', $user->id)
+            ->where('is_enabled', 1)
+            ->orderBy('priority')
+            ->get();
         $vat = $user->settings['vat'];
         $stripe = new StripeClient(env('STRIPE_SECRET'));
 
@@ -200,7 +206,7 @@ class PurchaseController extends Controller
                 'automatic_payment_methods' => ['enabled' => true],
             ]);
 
-            return view('purchase', compact('calendarId', 'vat', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings'));
+            return view('purchase', compact('calendarId', 'vat', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'brunchId', 'brunchPrice', 'user', 'intent', 'admin', 'formSettings', 'countries'));
         }
 
         $products = Product::whereIn('id', array_keys($data['productIdsQuantity']))->get();
@@ -247,7 +253,7 @@ class PurchaseController extends Controller
             'automatic_payment_methods' => ['enabled' => true],
         ]);
 
-        return view('purchase', compact('calendarId', 'vat', 'products', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings'));
+        return view('purchase', compact('calendarId', 'vat', 'products', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings', 'countries'));
     }
 
     public function storeOrder(Request $request)
