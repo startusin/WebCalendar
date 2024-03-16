@@ -169,7 +169,9 @@
         </div>
         @if(isset($user->settings->footer_text[$locale]))
         <div class="mt-2">
-            <span  style="white-space: pre-wrap;"> {{$user->settings->footer_text[$locale]}} </span>
+            <?php
+            echo  $user->settings->footer_text[$locale];
+            ?>
         </div>
         @endif
         @if(isset($user->settings->policy_1['title'][$locale]))
@@ -230,7 +232,7 @@
     <script>
         $(document).on('click', '.showButtonContent', function () {
             $('#Title').text( $(this).data('title'));
-            $('#Content').text( $(this).data('text'));
+            $('#Content').html( $(this).data('text'));
         });
     </script>
     <script>

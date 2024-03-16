@@ -41,7 +41,7 @@
                         <div class="form-floating mb-3">
                             <select class="form-select" id="RegionSelect"  name="RegionSelect" aria-label="Floating label select example">
                                 @foreach($countries as $item)
-                                    <option value="{{ $item->country['name'][Cookie::get('locale')] ?? $item->country->alpha_code }}" data-code="{{ $item->country->alpha_code }}" selected>{{$item->country['name'][Cookie::get('locale')]}}</option>
+                                    <option value="{{ $item->country['name'][Cookie::get('locale')] ?? $item->country->alpha_code }}" data-code="{{ $item->country->alpha_code }}" >{{$item->country['name'][Cookie::get('locale')]}}</option>
                                 @endforeach
                             </select>
                             <label for="floatingSelect">{{$user->translations['translations']['works-with-selectes'][Cookie::get('locale')]??""}}</label>
