@@ -5,14 +5,14 @@
             background-image: url('{{isset($user) &&  isset($user->settings['bg_image'])? asset('storage/' .  $user->settings['bg_image']):"" }}');
             background-size: cover;
         }
-        .MyContainer {
+        .my-container {
             background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
-        .PurchaseContainer{
+        .purchase-container{
             background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
     </style>
-    <div class="container MyContainer main-container" data-calendar-id="{{ $user->id }}" data-direct-booking="{{$admin ? 'true' : 'false'}}">
+    <div class="container my-container main-container" data-calendar-id="{{ $user->id }}" data-direct-booking="{{$admin ? 'true' : 'false'}}">
         <div class="row justify-content-center">
             <header class="d-block my-header pb-md-4 mt-md-4 mb-md-3 text-center position-relative">
                 <img src="{{$logo!=null ? asset('storage/' . $logo): '/demologo.png' }}" class="calendar-logo"/>

@@ -424,7 +424,7 @@ $(document).ready(function() {
             '</td>' +
             '<td>' +
             '<div>' +
-            '<input value="'+ MyObj.price.value+'" type="number"  name="value" class="form-control MyZeroPadding" required >' +
+            '<input value="'+ MyObj.price.value+'" type="number"  name="value" class="form-control my-zero-padding" required >' +
             '</div>' +
             '</td>' +
             '<td>' +
@@ -612,7 +612,7 @@ $(document).ready(function() {
             '</td>' +
             '<td>' +
             '<div>' +
-            '<input type="number" name="value" class="form-control MyZeroPadding" required >' +
+            '<input type="number" name="value" class="form-control my-zero-padding" required >' +
             '</div>' +
             '</td>' +
             '<td>' +
@@ -725,10 +725,10 @@ $(document).ready(function() {
                 var name = $(this).attr('name');
                 var value = $(this).val();
                 if (value === "") {
-                    $(this).addClass('customError');
+                    $(this).addClass('my-custom-error');
                     isCanSend = false;
                 } else {
-                    $(this).removeClass('customError');
+                    $(this).removeClass('my-custom-error');
                 }
                 rowData[name] = value;
             });

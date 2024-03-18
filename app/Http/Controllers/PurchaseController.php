@@ -121,7 +121,7 @@ class PurchaseController extends Controller
         $startDate = new \DateTime($data['startTime']);
         $endDate = new \DateTime($data['endTime']);
         $calendar_id = $data['calendarId'];
-        $ProductPrice = [];
+        $productPrice = [];
 
         if (isset($data['productIds'])) {
             foreach ($data['productIds'] as $item) {
@@ -129,11 +129,11 @@ class PurchaseController extends Controller
 
                 $productArr = $this->calculateProductPrice($product, $data['CurrentLang'], $startDate, $calendar_id);
 
-                array_push($ProductPrice, $productArr);
+                array_push($productPrice, $productArr);
             }
         }
 
-        return $ProductPrice;
+        return $productPrice;
     }
 
     public function checkpriceForOneProduct(Request $request)

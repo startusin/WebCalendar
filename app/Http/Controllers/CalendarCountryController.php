@@ -13,9 +13,9 @@ class CalendarCountryController extends Controller
         $id = auth()->user()->invited_by ?? auth()->user()->id;
         $countries = CalendarCountry::where('calendar_id', $id)->get();
 
-        $AllCountries = Country::all();
+        $allCountries = Country::all();
         if (count($countries) <= 0) {
-            foreach ($AllCountries as $item) {
+            foreach ($allCountries as $item) {
                 $country = CalendarCountry::create([
                     'calendar_id' => $id,
                     'country_id' => $item->id,
@@ -24,8 +24,8 @@ class CalendarCountryController extends Controller
             }
 
         }
-        if (count($countries) > 0 && count($countries) != count($AllCountries)) {
-            foreach ($AllCountries as $item) {
+        if (count($countries) > 0 && count($countries) != count($allCountries)) {
+            foreach ($allCountries as $item) {
                 if (!$countries->contains('country_id', $item->id)){
                     $country = CalendarCountry::create([
                         'calendar_id' => $id,

@@ -111,35 +111,35 @@ class CalendarSettingsController extends Controller
             $user['alias'] = $data['alias'];
             $user->save();
         }
-        $IntervalLang = [];
+        $intervalLang = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'interval') !== false) {
-                $LangKey = explode("-", $key);
-                $IntervalLang[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $intervalLang[$langKey[0]] = $value;
             }
         }
 
-        $Quantity = [];
+        $quantity = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'default_quantity') !== false) {
-                $LangKey = explode("-", $key);
-                $Quantity[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $quantity[$langKey[0]] = $value;
             }
         }
 
         $workingHrStart = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'working_hr_start') !== false) {
-                $LangKey = explode("-", $key);
-                $workingHrStart[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $workingHrStart[$langKey[0]] = $value;
             }
         }
 
         $workingHrEnd = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'working_hr_end') !== false) {
-                $LangKey = explode("-", $key);
-                $workingHrEnd[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $workingHrEnd[$langKey[0]] = $value;
             }
         }
 
@@ -150,7 +150,6 @@ class CalendarSettingsController extends Controller
             $data['logo'] = Storage::disk('public')->put('/images', $data['logo']);
         } elseif ( $oldData!=null &&$oldData['logo'] != null) {
             $data['logo'] = $oldData['logo'];
-            var_dump($data['logo']);
         }
         if (isset($data['banner'])) {
             if ($oldData !=null &&$oldData['banner'] != null) {
@@ -179,10 +178,10 @@ class CalendarSettingsController extends Controller
         $dataForUpdateOrCreate['bg_color'] = $data['bg_color'];
         $dataForUpdateOrCreate['bg_image'] = $data['bg_image'] ?? null;
         $dataForUpdateOrCreate['logo'] = $data['logo'] ?? null;
-        $dataForUpdateOrCreate['default_quantity'] = $Quantity;
+        $dataForUpdateOrCreate['default_quantity'] = $quantity;
         $dataForUpdateOrCreate['banner'] = $data['banner'] ?? null;
         $dataForUpdateOrCreate['excluded_days'] = $data['excluded_days'] ?? null;
-        $dataForUpdateOrCreate['interval'] = $IntervalLang;
+        $dataForUpdateOrCreate['interval'] = $intervalLang;
         $dataForUpdateOrCreate['language'] = $data['language'];
         $dataForUpdateOrCreate['vat'] = $data['vat'];
 
@@ -198,7 +197,7 @@ class CalendarSettingsController extends Controller
 
         if ($lenght == 0) {
             $calendar_id =  auth()->user()->invited_by ?? auth()->user()->id;
-            foreach ($this->formsSettingsService->GetAllKeys() as $key => $isRequired){
+            foreach ($this->formsSettingsService->getAllKeys() as $key => $isRequired){
                 FormSettings::create([
                     'key' => $key,
                     'is_required' => $isRequired,
@@ -243,68 +242,68 @@ class CalendarSettingsController extends Controller
 
     public function setPrivacy(Request $request)
     {
-        $FooterText = [];
-        $PolicyTitle1 = [];
-        $PolicyContent1 = [];
+        $footerText = [];
+        $policyTitle1 = [];
+        $policyContent1 = [];
 
-        $PolicyTitle2 = [];
-        $PolicyContent2 = [];
+        $policyTitle2 = [];
+        $policyContent2 = [];
 
-        $PolicyTitle3 = [];
-        $PolicyContent3 = [];
+        $policyTitle3 = [];
+        $policyContent3 = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'footer_text') !== false) {
-                $LangKey = explode("-", $key);
-                $FooterText[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $footerText[$langKey[0]] = $value;
             }
 
             if (strpos($key, 'policy_1_title') !== false) {
-                $LangKey = explode("-", $key);
-                $PolicyTitle1[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $policyTitle1[$langKey[0]] = $value;
             }
 
             if (strpos($key, 'policy_1_content') !== false) {
-                $LangKey = explode("-", $key);
-                $PolicyContent1[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $policyContent1[$langKey[0]] = $value;
             }
 
             if (strpos($key, 'policy_2_title') !== false) {
-                $LangKey = explode("-", $key);
-                $PolicyTitle2[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $policyTitle2[$langKey[0]] = $value;
             }
 
             if (strpos($key, 'policy_2_content') !== false) {
-                $LangKey = explode("-", $key);
-                $PolicyContent2[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $policyContent2[$langKey[0]] = $value;
             }
 
             if (strpos($key, 'policy_3_title') !== false) {
-                $LangKey = explode("-", $key);
-                $PolicyTitle3[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $policyTitle3[$langKey[0]] = $value;
             }
 
             if (strpos($key, 'policy_3_content') !== false) {
-                $LangKey = explode("-", $key);
-                $PolicyContent3[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $policyContent3[$langKey[0]] = $value;
             }
         }
-        $Policy1 = [
-            'title' => $PolicyTitle1,
-            'content' => $PolicyContent1,
+        $policy1 = [
+            'title' => $policyTitle1,
+            'content' => $policyContent1,
         ];
-        $Policy2 = [
-            'title' => $PolicyTitle2,
-            'content' => $PolicyContent2,
+        $policy2 = [
+            'title' => $policyTitle2,
+            'content' => $policyContent2,
         ];
-        $Policy3 = [
-            'title' => $PolicyTitle3,
-            'content' => $PolicyContent3,
+        $policy3 = [
+            'title' => $policyTitle3,
+            'content' => $policyContent3,
         ];
         $settings = CalendarSettings::where('calendar_id', auth()->user()->ivited_by??auth()->user()->id)->first();
-        $settings->footer_text = $FooterText;
-        $settings->policy_1 = $Policy1;
-        $settings->policy_2 = $Policy2;
-        $settings->policy_3 = $Policy3;
+        $settings->footer_text = $footerText;
+        $settings->policy_1 = $policy1;
+        $settings->policy_2 = $policy2;
+        $settings->policy_3 = $policy3;
         $settings->save();
         return redirect()->back();
     }

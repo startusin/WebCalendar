@@ -120,8 +120,6 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        $data = $request->validated();
-
         $data = Validator::make($request->all(), [
             'user_id'=> ['required'],
             "first_name" => ['required', 'string'],

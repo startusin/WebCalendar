@@ -224,7 +224,7 @@
   text-decoration: line-through;
 }
 
-.daterangepicker select.monthselect, .daterangepicker select.yearselect {
+.daterangepicker select.monthselect, .daterangepicker select.year-select {
   font-size: 12px;
   padding: 1px;
   height: auto;
@@ -237,7 +237,7 @@
   width: 56%;
 }
 
-.daterangepicker select.yearselect {
+.daterangepicker select.year-select {
   width: 40%;
 }
 

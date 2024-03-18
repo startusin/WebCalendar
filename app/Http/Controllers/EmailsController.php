@@ -28,38 +28,38 @@ class EmailsController extends Controller
         foreach ($request->all() as $key => $value) {
 
             if (strpos($key, 'cs-email') !== false) {
-                $LangKey = explode("_", $key);
-                $csEmail[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $csEmail[$langKey[1]] = $value;
             }
 
             if (strpos($key, 'purchase-email') !== false) {
-                $LangKey = explode("_", $key);
-                $purchaseEmail[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $purchaseEmail[$langKey[1]] = $value;
             }
 
             if (strpos($key, 'admin-email') !== false) {
-                $LangKey = explode("_", $key);
-                $adminEmail[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $adminEmail[$langKey[1]] = $value;
             }
 
             if (strpos($key, 'item-email') !== false) {
-                $LangKey = explode("_", $key);
-                $itemEmail[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $itemEmail[$langKey[1]] = $value;
             }
 
             if (strpos($key, 'title-email-purchase') !== false) {
-                $LangKey = explode("_", $key);
-                $purchaseEmailTitle[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $purchaseEmailTitle[$langKey[1]] = $value;
             }
 
             if (strpos($key, 'title-admin-purchase') !== false) {
-                $LangKey = explode("_", $key);
-                $adminEmailTitle[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $adminEmailTitle[$langKey[1]] = $value;
             }
 
             if (strpos($key, 'title-email-cs') !== false) {
-                $LangKey = explode("_", $key);
-                $csEmailTitle[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $csEmailTitle[$langKey[1]] = $value;
             }
         }
 
@@ -96,15 +96,15 @@ class EmailsController extends Controller
 
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'sms-reminder') !== false) {
-                $LangKey = explode("_", $key);
-                $smsReminder[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $smsReminder[$langKey[1]] = $value;
             }
         }
 
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'sms-sender') !== false) {
-                $LangKey = explode("_", $key);
-                $smsSender[$LangKey[1]] = $value;
+                $langKey = explode("_", $key);
+                $smsSender[$langKey[1]] = $value;
             }
         }
 

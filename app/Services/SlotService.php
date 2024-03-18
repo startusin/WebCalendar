@@ -7,7 +7,7 @@ use DateTime;
 
 class SlotService
 {
-    public function MakeSlotForCreate(array $data): array|\Illuminate\Http\RedirectResponse
+    public function makeSlotForCreate(array $data): array|\Illuminate\Http\RedirectResponse
     {
         if ($data['time_hour_start1'] > $data['time_hour_start2'] ||
             ($data['time_hour_start1'] == $data['time_hour_start2'] && $data['time_minute_start1'] > $data['time_minute_start2'])) {
@@ -32,7 +32,7 @@ class SlotService
         return $dataForCreate;
     }
 
-    public function MakeSlotForUpdate(array $data): array|\Illuminate\Http\RedirectResponse
+    public function makeSlotForUpdate(array $data): array|\Illuminate\Http\RedirectResponse
     {
         if ($data['time_hour_start1'] > $data['time_hour_start2'] ||
             ($data['time_hour_start1'] == $data['time_hour_start2'] && $data['time_minute_start1'] > $data['time_minute_start2'])) {

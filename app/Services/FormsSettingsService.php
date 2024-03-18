@@ -4,7 +4,7 @@ namespace App\Services;
 
 class FormsSettingsService
 {
-    public function GetAllKeys() {
+    public function getAllKeys() {
         $formKeys['First_Name'] = 1;
         $formKeys['Last_Name'] = 1;
         $formKeys['Company'] = 1;

@@ -29,10 +29,10 @@
         body{
             background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
-        .MyContainer {
+        .my-container {
             background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
-        .PurchaseContainer{
+        .purchase-container{
             background-color: {{isset($user) &&  isset($user->settings['bg_color'])?$user->settings['bg_color']:"#fcf6e8" }};
         }
         .iti{

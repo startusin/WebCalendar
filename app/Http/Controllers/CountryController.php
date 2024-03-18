@@ -21,15 +21,15 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $Name = [];
+        $name = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'name') !== false) {
                 $LangKey = explode("-", $key);
-                $Name[$LangKey[0]] = $value;
+                $name[$LangKey[0]] = $value;
             }
         }
         Country::create([
-            'name' => $Name,
+            'name' => $name,
             "numeric_code" => $data['numeric_code'],
             "alpha_code" => $data['alpha_code'],
             "full_alpha_code" => $data['full_alpha_code'],
@@ -47,14 +47,14 @@ class CountryController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
-        $Name = [];
+        $name = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'name') !== false) {
                 $LangKey = explode("-", $key);
-                $Name[$LangKey[0]] = $value;
+                $name[$LangKey[0]] = $value;
             }
         }
-        $countryForUpdate['name'] = $Name;
+        $countryForUpdate['name'] = $name;
         $countryForUpdate["numeric_code"] = $data['numeric_code'];
         $countryForUpdate["alpha_code"] = $data['alpha_code'];
         $countryForUpdate["full_alpha_code"] = $data['full_alpha_code'];

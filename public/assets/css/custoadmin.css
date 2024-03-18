@@ -1,4 +1,4 @@
-.myImage {
+.my-image {
     width: 200px;
     height: 150px;
     border-radius: 10px;
@@ -11,11 +11,11 @@
 }
 
 
-.customError{
+.my-custom-error{
     border-color: red;
 }
 
-.yearselect {
+.year-select {
     display: none;
 }
 
@@ -23,11 +23,11 @@
     padding-top: 0;
 }
 
-.MyZeroPadding{
+.my-zero-padding{
     padding-left: 0;
     padding-right: 0;
 }
 
-.ColorTextForLogin {
+.color-text-for-login {
     color: #29074B;
 }

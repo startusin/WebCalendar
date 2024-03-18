@@ -177,7 +177,7 @@
                             <div>
                                 <label >Background Image</label>
                             </div>
-                            <div class="myImage BgImage">
+                            <div class="my-image BgImage">
                                 <img src="{{ isset($settings['bg_image']) ? asset('storage/' . $settings['bg_image']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 
@@ -194,7 +194,7 @@
                             <div>
                                 <label >Logotype</label>
                             </div>
-                            <div class="myImage logoImage">
+                            <div class="my-image logoImage">
                                 <img src="{{ isset($settings['logo']) ? asset('storage/' . $settings['logo']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 
@@ -210,7 +210,7 @@
                             <div>
                                 <label >Banner</label>
                             </div>
-                            <div class="myImage bannerImage">
+                            <div class="my-image bannerImage">
                                 <img src="{{ isset($settings['banner']) ? asset('storage/' . $settings['banner']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 

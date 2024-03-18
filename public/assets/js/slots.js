@@ -640,10 +640,10 @@ $(document).ready(function() {
                 console.log(IsAvailable !=0);
 
                 if ((value === "" && name!=='quantity' && IsAvailable !==0)||(value === "" && name==='quantity'&& +IsAvailable === 1)) {
-                    $(this).addClass('customError');
+                    $(this).addClass('my-custom-error');
                     isCanSend = false;
                 } else {
-                    $(this).removeClass('customError');
+                    $(this).removeClass('my-custom-error');
                 }
                 rowData[name] = value;
             });

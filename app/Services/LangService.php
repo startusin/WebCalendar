@@ -4,7 +4,7 @@ namespace App\Services;
 
 class LangService
 {
-    public function EnglishWords(&$translations)
+    public function englishWords(&$translations)
     {
         $translations['indicate-your']['en'] = "Indicate your dates and times";
         $translations['choise1']['en'] = 'Choisissez une date et une heure de visite';
@@ -40,7 +40,7 @@ class LangService
     }
 
 
-    public function FranceWords(&$translations)
+    public function franceWords(&$translations)
     {
         $translations['indicate-your']['fr'] = "Indiques vos dates et holralres";
         $translations['choise1']['fr'] = 'Choisissez une date et une heure de visite';

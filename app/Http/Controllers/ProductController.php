@@ -40,36 +40,36 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $TitleL = [];
-        $ShortDL = [];
-        $DescriptL = [];
-        $PriceL = [];
+        $titleL = [];
+        $shortDL = [];
+        $descriptL = [];
+        $priceL = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'title') !== false) {
-                $LangKey = explode("_", $key);
-                $TitleL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $titleL[$langKey[0]] = $value;
             }
             if (strpos($key, 'description') !== false) {
-                $LangKey = explode("_", $key);
-                $DescriptL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $descriptL[$langKey[0]] = $value;
             }
             if (strpos($key, 'short_description') !== false) {
-                $LangKey = explode("_", $key);
-                $ShortDL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $shortDL[$langKey[0]] = $value;
             }
             if (strpos($key, 'price') !== false) {
-                $LangKey = explode("_", $key);
-                $PriceL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $priceL[$langKey[0]] = $value;
             }
         }
 
         $objToCreate = null;
         $objToCreate['calendar_id'] = $data['calendar_id'];
-        $objToCreate['price'] = $PriceL;
+        $objToCreate['price'] = $priceL;
         $objToCreate['max_qty'] = $data['max_qty'];
-        $objToCreate['description'] = $DescriptL;
-        $objToCreate['short_description'] = $ShortDL;
-        $objToCreate['title'] = $TitleL;
+        $objToCreate['description'] = $descriptL;
+        $objToCreate['short_description'] = $shortDL;
+        $objToCreate['title'] = $titleL;
 
         Product::create($objToCreate);
         return redirect()->route('customer.product.index');
@@ -88,38 +88,38 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
-        $TitleL = [];
-        $ShortDL = [];
-        $DescriptL = [];
-        $PriceL = [];
+        $titleL = [];
+        $shortDL = [];
+        $descriptL = [];
+        $priceL = [];
 
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'title') !== false) {
-                $LangKey = explode("_", $key);
-                $TitleL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $titleL[$langKey[0]] = $value;
             }
             if (strpos($key, 'description') !== false) {
-                $LangKey = explode("_", $key);
-                $DescriptL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $descriptL[$langKey[0]] = $value;
             }
             if (strpos($key, 'short_description') !== false) {
-                $LangKey = explode("_", $key);
-                $ShortDL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $shortDL[$langKey[0]] = $value;
             }
             if (strpos($key, 'price') !== false) {
-                $LangKey = explode("_", $key);
-                $PriceL[$LangKey[0]] = $value;
+                $langKey = explode("_", $key);
+                $priceL[$langKey[0]] = $value;
             }
         }
 
 
         $objToCreate = null;
         $objToCreate['calendar_id'] = $data['calendar_id'];
-        $objToCreate['price'] = $PriceL;
+        $objToCreate['price'] = $priceL;
         $objToCreate['max_qty'] = $data['max_qty'];
-        $objToCreate['description'] = $DescriptL;
-        $objToCreate['short_description'] = $ShortDL;
-        $objToCreate['title'] = $TitleL;
+        $objToCreate['description'] = $descriptL;
+        $objToCreate['short_description'] = $shortDL;
+        $objToCreate['title'] = $titleL;
 
         $product = Product::find($data['id']);
 

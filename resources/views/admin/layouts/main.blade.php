@@ -96,6 +96,8 @@
         @include('admin.Include.sidebar')
         <div class="content">
             <nav class="navbar navbar-light navbar-glass navbar-top " style="justify-content: space-between;">
+                <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+
                 <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
                     <li class="nav-item ps-2 pe-0">
                         <div class="dropdown theme-control-dropdown">
@@ -128,7 +130,6 @@
                     </li>
                 </ul>
             </nav>
-
             @yield('content')
         </div>
     </div>

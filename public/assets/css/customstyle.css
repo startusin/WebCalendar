@@ -2,7 +2,7 @@ body{
     font-family: 'Outfit', sans-serif;
 
 }
-.MyContainer{
+.my-container{
     margin-top: 25px;
     margin-bottom: 25px;
     width: 100%;
@@ -13,7 +13,7 @@ body{
 }
 
 @media (max-width: 991px) {
-    .MyContainer {
+    .my-container {
         margin-bottom: 0px;
         padding-bottom: 65px;
         padding-top: 0;
@@ -34,7 +34,7 @@ body{
 .calendar #days .today::after {
     background:  var(--calendar-primary-color);
 }
-.btnDisable {
+.btn-disable {
     background: #d5d5d5;
 }
 
@@ -200,7 +200,7 @@ button{
 
 
 /*Purchase*/
-.PurchaseContainer{
+.purchase-container{
     max-width: 900px;
     width: 100%;
     height: 110vh;

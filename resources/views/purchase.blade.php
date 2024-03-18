@@ -2,7 +2,7 @@
 @section('content')
     <script src="https://js.stripe.com/v3/"></script>
 
-    <div class="container PurchaseContainer">
+    <div class="container purchase-container">
         <div class="row">
             <div class="col-md-6 form-inner">
                 <form method="POST" id="form-data">

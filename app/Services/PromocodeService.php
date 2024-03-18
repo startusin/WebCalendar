@@ -4,7 +4,7 @@ namespace App\Services;
 
 class PromocodeService
 {
-    public function MakePromoForCreateOrUpdate(array $data): array
+    public function makePromoForCreateOrUpdate(array $data): array
     {
         $date = explode(' - ',$data['two-datetime']);
         unset($data['two-datetime']);

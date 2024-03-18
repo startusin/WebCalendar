@@ -19,19 +19,19 @@
                                 <!--/.bg-holder-->
 
                                 <div class="z-1 position-relative"><a
-                                        class="ColorTextForLogin mb-2 font-sans-serif fs-5 d-inline-block fw-bolder"
+                                        class="color-text-for-login mb-2 font-sans-serif fs-5 d-inline-block fw-bolder"
                                         href="../../../index.html"><img src="{{asset('images/logo.png')}}" style="max-width: 100px; max-height: 100px"></a>
-                                    <p class="opacity-75 ColorTextForLogin">Le seul outil de réservation destinée aux Châteaux, Vignobles & Brasseurs.
+                                    <p class="opacity-75 color-text-for-login">Le seul outil de réservation destinée aux Châteaux, Vignobles & Brasseurs.
                                         Visite. Dégustation. Brunch. Musée. Événements & plus.</p>
                                 </div>
                             </div>
                             <div class="mt-3 mb-4 mt-md-4 mb-md-5" data-bs-theme="light">
-                                <p class="ColorTextForLogin">Vous n’avez pas de compte ?<br><a
-                                        class="text-decoration-underline ColorTextForLogin"
+                                <p class="color-text-for-login">Vous n’avez pas de compte ?<br><a
+                                        class="text-decoration-underline color-text-for-login"
                                         href="https://www.bookwithmargot.com/creer-un-compte" style="color: #29074B">C’est parti</a></p>
-                                <p class="mb-0 mt-4 mt-md-5 px-4 fs-10 fw-semi-bold ColorTextForLogin opacity-75"> Lire nos mentions <a
-                                        class="text-decoration-underline ColorTextForLogin" href="https://www.bookwithmargot.com/mentions-legales"  style="color: #29074B">legales</a> et nos <a
-                                        class="text-decoration-underline ColorTextForLogin" href="https://www.bookwithmargot.com/conditions-generales-de-vente"  style="color: #29074B">conditions générales de vente </a></p>
+                                <p class="mb-0 mt-4 mt-md-5 px-4 fs-10 fw-semi-bold color-text-for-login opacity-75"> Lire nos mentions <a
+                                            class="text-decoration-underline color-text-for-login" href="https://www.bookwithmargot.com/mentions-legales" style="color: #29074B">legales</a> et nos <a
+                                            class="text-decoration-underline color-text-for-login" href="https://www.bookwithmargot.com/conditions-generales-de-vente" style="color: #29074B">conditions générales de vente </a></p>
                             </div>
                         </div>
                         <div class="col-md-7 d-flex flex-center">
