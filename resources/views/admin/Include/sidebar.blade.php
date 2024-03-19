@@ -25,8 +25,6 @@
 
             <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                 @if (auth()->user()->role == 'customer' || auth()->user()->role == 'invited')
-
-
                     @if (!in_array('slot', auth()->user()->excluded_permissions ?? []))
 
                     <li class="nav-item">
@@ -111,6 +109,7 @@
                     @endif
 
 
+                    @if (!in_array('sales', auth()->user()->excluded_permissions ?? []))
                     <li class="nav-item">
                         <a class="nav-link dropdown-indicator collapsed" href="#Sales" data-bs-toggle="collapse"
                            aria-expanded="false" aria-controls="dashboard">
@@ -122,8 +121,6 @@
                             </div>
                         </a>
                         <ul class="nav collapse" id="Sales" style="">
-
-
                             <li class="nav-item">
                                 <!-- label-->
                                 <a class="nav-link custom-link" id="subNewPurchase" href="{{route('makeOrder')}}">
@@ -132,7 +129,6 @@
                                     </div>
                                 </a>
                             </li>
-                            @if (!in_array('history_purchases', auth()->user()->excluded_permissions ?? []))
 
                             <li class="nav-item">
                                 <!-- label-->
@@ -142,15 +138,11 @@
                                     </div>
                                 </a>
                             </li>
-                            @endif
-
-
                         </ul>
                     </li>
+                    @endif
 
-
-
-                    @if (!(in_array('promocode', auth()->user()->excluded_permissions ?? []) && in_array('custom_prices', auth()->user()->excluded_permissions ?? [])))
+                    @if (!in_array('marketing', auth()->user()->excluded_permissions ?? []))
                     <li class="nav-item">
                         <a class="nav-link dropdown-indicator collapsed" href="#Marketing" data-bs-toggle="collapse"
                            aria-expanded="false" aria-controls="dashboard">
@@ -162,8 +154,6 @@
                             </div>
                         </a>
                         <ul class="nav collapse" id="Marketing" style="">
-
-                            @if (!in_array('promocode', auth()->user()->excluded_permissions ?? []))
                                 <li class="nav-item">
                                     <!-- label-->
                                     <a class="nav-link custom-link" id="subPromocode"
@@ -173,8 +163,7 @@
                                         </div>
                                     </a>
                                 </li>
-                            @endif
-                            @if (!in_array('custom_prices', auth()->user()->excluded_permissions ?? []))
+
                                 <li class="nav-item">
                                     <!-- label-->
                                     <a class="nav-link custom-link" id="subCustomPrices"
@@ -184,7 +173,6 @@
                                         </div>
                                     </a>
                                 </li>
-                            @endif
                         </ul>
                     </li>
                     @endif
@@ -287,6 +275,7 @@
                         </li>
                     @endif
 
+                    @if (!in_array('automation', auth()->user()->excluded_permissions ?? []))
                     <li class="nav-item">
                         <a class="nav-link dropdown-indicator collapsed" href="#Automation" data-bs-toggle="collapse"
                            aria-expanded="false" aria-controls="dashboard">
@@ -298,7 +287,6 @@
                             </div>
                         </a>
                         <ul class="nav collapse" id="Automation" style="">
-
 
                             <li class="nav-item">
                                 <!-- label-->
@@ -322,6 +310,7 @@
                         </ul>
                     </li>
 
+                    @endif
                 @endif
             </ul>
 
