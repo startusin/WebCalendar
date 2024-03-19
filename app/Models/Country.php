@@ -11,6 +11,6 @@ class Country extends Model
 
     protected $guarded = false;
     protected $casts = [
-        'name' => 'array',
+      'name' => 'array',
     ];
 }

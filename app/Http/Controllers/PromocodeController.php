@@ -55,7 +55,7 @@ class PromocodeController extends Controller
             "product_id" => ['required', 'exists:products,id'],
         ])->validated();
 
-        $dataForCreate = $this->promoService->transform($data);
+        $dataForCreate = $this->promoService->makePromoForCreateOrUpdate($data);
         PromoCode::create($dataForCreate);
 
         return redirect()->route('customer.promocode.index');
@@ -81,7 +81,7 @@ class PromocodeController extends Controller
             "product_id" => ['required', 'exists:products,id'],
         ])->validated();
 
-        $dataForUpdate = $this->promoService->transform($data);
+        $dataForUpdate = $this->promoService->makePromoForCreateOrUpdate($data);
 
         $promocode = PromoCode::find($data['id']);
 

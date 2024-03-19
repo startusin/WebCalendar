@@ -17,8 +17,23 @@ class TranslationsController extends Controller
 
     public function edit()
     {
-        $translations = Translations::where('calendar_id', auth()->user()->id)->first();
-        $translations = $translations['translations'] ?? $this->langService->getStaticPhrases();
+        $translations = Translations::where('calendar_id', auth()->user()->id)
+            ->first();
+
+        if (!$translations) {
+            foreach (auth()->user()->languages as $item) {
+                switch ($item) {
+                    case "en":
+                        $this->langService->englishWords($translations);
+                        break;
+                    case "fr":
+                        $this->langService->franceWords($translations);
+                        break;
+                }
+            }
+        } else {
+            $translations = $translations['translations'];
+        }
 
         return view('customer.translations.edit', compact('translations'));
     }

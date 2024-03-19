@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Bookings extends Model
 {
@@ -13,27 +12,27 @@ class Bookings extends Model
 
     protected $guarded = false;
 
-    public function products(): BelongsToMany
+    public function products()
     {
         return $this->belongsToMany(Product::class, 'booking_products', 'booking_id', 'product_id');
     }
 
-    public function bookingProducts(): HasMany
+    public function bookingProducts()
     {
         return $this->hasMany(BookingProduct::class, 'booking_id');
     }
 
-    public function slots(): HasMany
+    public function slots()
     {
         return $this->hasMany(BookedSlots::class, 'booking_id');
     }
 
-    public function brunches(): HasMany
+    public function brunches()
     {
         return $this->hasMany(BookedBrunch::class, 'booking_id');
     }
 
-    public function comments(): HasMany
+    public function comments()
     {
         return $this->hasMany(OrderComments::class, 'order_id');
     }

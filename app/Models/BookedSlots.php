@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BookedSlots extends Model
 {
@@ -24,8 +23,7 @@ class BookedSlots extends Model
         'end_date' => 'datetime'
     ];
 
-    public function booking(): BelongsTo
-    {
+    public function booking(){
         return $this->belongsTo(Bookings::class, 'booking_id','id');
     }
 }

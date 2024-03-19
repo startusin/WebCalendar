@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Translations extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'calendar_id',
         'translations',

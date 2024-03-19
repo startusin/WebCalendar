@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CalendarCountry extends Model
 {
@@ -12,8 +11,7 @@ class CalendarCountry extends Model
 
     protected $guarded = false;
 
-    public function country(): BelongsTo
-    {
+    public function country(){
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 }
