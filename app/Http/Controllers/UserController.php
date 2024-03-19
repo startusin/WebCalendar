@@ -63,17 +63,8 @@ class UserController extends Controller
                     'is_enabled' => true
                 ]);
             }
-        $translations = [];
-        foreach ($user->languages as $item) {
-            switch ($item) {
-                case "en":
-                    $this->langService->EnglishWords($translations);
-                    break;
-                case "fr":
-                    $this->langService->FranceWords($translations);
-                    break;
-            }
-        }
+        $translations = $this->langService->getStaticPhrases();
+
         Translations::create([
             'calendar_id' => $user->id,
             'translations' => $translations,
@@ -96,7 +87,7 @@ class UserController extends Controller
         $settings['language'] = $user->languages[0];
         CalendarSettings::create($settings);
 
-        foreach ($this->formsSettingsService->GetAllKeys() as $key => $isRequired){
+        foreach ($this->formsSettingsService->getFields() as $key => $isRequired){
             FormSettings::create([
                 'key' => $key,
                 'is_required' => $isRequired,

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Languages : string
+enum Languages: string
 {
     case English = "en";
     case French = "fr";
@@ -22,15 +22,21 @@ enum Languages : string
 
     public static function getStringLanguage(string $lang): string
     {
-        return  array_search($lang, self::getLanguages());
+        return array_search($lang, self::getLanguages());
     }
 
     public static function getTranslateLanguage($key, $lang) {
-        $Dictionary['en']['en'] = "English";
-        $Dictionary['fr']['en'] = "English";
-        $Dictionary['en']['fr'] = "Anglais";
-        $Dictionary['fr']['fr'] = "Français";
+        $dictionary = [
+            'en' => [
+                'en' => 'English',
+                'fr' => 'Anglais',
+            ],
+            'fr' => [
+                'en' => 'English',
+                'fr' => 'Français',
+            ]
+        ];
 
-        return $Dictionary[$key][$lang];
+        return $dictionary[$key][$lang];
     }
 }

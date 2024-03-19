@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -19,15 +20,15 @@ class Product extends Model
         'priority'
     ];
 
-    public function promocodes()
-    {
-        return $this->hasMany(PromoCode::class,'product_id','id');
-    }
-
     protected $casts = [
         'description' => 'array',
         'short_description' => 'array',
         'title' => 'array',
         'price' => 'array'
     ];
+
+    public function promocodes(): HasMany
+    {
+        return $this->hasMany(PromoCode::class,'product_id','id');
+    }
 }

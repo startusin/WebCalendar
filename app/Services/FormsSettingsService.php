@@ -4,16 +4,18 @@ namespace App\Services;
 
 class FormsSettingsService
 {
-    public function getAllKeys() {
-        $formKeys['First_Name'] = 1;
-        $formKeys['Last_Name'] = 1;
-        $formKeys['Company'] = 1;
-        $formKeys['Street'] = 1;
-        $formKeys['Place'] = 1;
-        $formKeys['PostalCode'] = 1;
-        $formKeys['Ville'] = 1;
-        $formKeys['PhoneInput'] = 1;
-        $formKeys['EmailInput'] = 1;
-        return $formKeys;
+    public function getFields()
+    {
+        return [
+            'First_Name' => 1,
+            'Last_Name' => 1,
+            'Company' => 1,
+            'Street' => 1,
+            'Place' => 1,
+            'PostalCode' => 1,
+            'Ville' => 1,
+            'PhoneInput' => 1,
+            'EmailInput' => 1
+        ];
     }
 }
