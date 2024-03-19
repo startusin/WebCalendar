@@ -51,9 +51,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/customstyle.css') }}">
-    <style>
-        {{$user->settings['custom_styles']}}
-    </style>
+
+    {!! $user->settings['custom_styles'] !!}
 </head>
 <body>
 
@@ -87,7 +86,8 @@
 <script src="{{asset('assets/js/custom.js')}}"></script>
 
 @stack('js')
-<script> {{$user->settings['custom_script']}}</script>
+
+{!! $user->settings['custom_script'] !!}
 </body>
 </html>
 

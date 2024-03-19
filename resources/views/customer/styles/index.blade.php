@@ -14,10 +14,10 @@
 
 
                             <label>Custom Style</label>
-                            <textarea name="custom_styles" class="form-control mt-2 " style=" min-height: 150px;">{{$settings['custom_styles']??""}}</textarea>
+                            <textarea name="custom_styles" class="form-control mt-2 " style=" min-height: 150px;">{{ $settings['custom_styles'] ?: '<style></style>' }}</textarea>
 
                             <label>Custom Script</label>
-                            <textarea name="custom_script" class="form-control mt-2 " style=" min-height: 150px;">{{$settings['custom_script']??""}}</textarea>
+                            <textarea name="custom_script" class="form-control mt-2 " style=" min-height: 150px;">{{ $settings['custom_script'] ?: '<script></script>'}}</textarea>
 
 
 
