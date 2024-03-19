@@ -15,9 +15,9 @@ class FlushPendingBookings extends Command
     public function handle()
     {
         $currentDateTime = Carbon::now();
-        $twentyMinutesAgo = $currentDateTime->subMinutes(20);
+        $twentyMinutesAgoTime = $currentDateTime->subMinutes(20);
 
-        $results = Bookings::where('created_at', '<=', $twentyMinutesAgo)
+        $results = Bookings::where('created_at', '<=', $twentyMinutesAgoTime)
             ->where('payment_status', '<>', 'paid')
             ->get();
 

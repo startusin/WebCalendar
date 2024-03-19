@@ -96,7 +96,7 @@ class SlotController extends Controller
             ]
         ])->validated();
 
-        $dateForCreate = $this->slotService->makeSlotForCreate($data);
+        $dateForCreate = $this->slotService->prepareSlot($data);
 
         CustomSlot::create($dateForCreate);
 
@@ -128,7 +128,7 @@ class SlotController extends Controller
             ]
         ])->validated();
 
-        $dataForUpdate = $this->slotService->makeSlotForUpdate($data);
+        $dataForUpdate = $this->slotService->prepareSlot($data);
         $slot = CustomSlot::findOrFail($data['slot_id']);
         $slot->update($dataForUpdate);
 

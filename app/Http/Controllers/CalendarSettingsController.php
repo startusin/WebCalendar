@@ -197,7 +197,7 @@ class CalendarSettingsController extends Controller
 
         if ($lenght == 0) {
             $calendar_id =  auth()->user()->invited_by ?? auth()->user()->id;
-            foreach ($this->formsSettingsService->getAllKeys() as $key => $isRequired){
+            foreach ($this->formsSettingsService->getFields() as $key => $isRequired){
                 FormSettings::create([
                     'key' => $key,
                     'is_required' => $isRequired,

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BookingProduct extends Model
 {
@@ -17,17 +18,17 @@ class BookingProduct extends Model
         'sold_price'
     ];
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    public function booking()
+    public function booking(): BelongsTo
     {
         return $this->belongsTo(Bookings::class, 'booking_id', 'id');
     }
 
-    public function slot()
+    public function slot(): BelongsTo
     {
         return $this->belongsTo(BookedSlots::class, 'slot_id', 'id');
     }

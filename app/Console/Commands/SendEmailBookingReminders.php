@@ -5,16 +5,11 @@ namespace App\Console\Commands;
 use App\Emails\CSEmail;
 use App\Enums\Languages;
 use App\Models\BookedSlots;
-use App\Models\BookingProduct;
 use App\Models\CalendarSettings;
-use App\Models\User;
 use Illuminate\Console\Command;
-use App\Models\Bookings;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
-use Twilio\Rest\Client;
 
 class SendEmailBookingReminders extends Command
 {
@@ -45,12 +40,14 @@ class SendEmailBookingReminders extends Command
     protected function sendNotification(BookedSlots $slot)
     {
         $settings = CalendarSettings::where('calendar_id', $slot->calendar_id)->first();
+
         if ($settings) {
             $language = $settings->language;
-            $DateNow = Carbon::now();
+            $dateNow = Carbon::now();
             $booking = $slot->booking;
 
             Carbon::setLocale($language);
+
             $dateStartSlot = $slot->start_date->isoFormat('dddd D MMMM YYYY HH[h]mm');
             $dateStartSlot = ucwords($dateStartSlot);
 
@@ -59,9 +56,12 @@ class SendEmailBookingReminders extends Command
             $csEmail = str_replace('{:LANGUAGE:}', Languages::getTranslateLanguage($slot->language, $language), $csEmail);
             $csEmail = str_replace('{:STARTSLOT:}', $dateStartSlot, $csEmail);
             $subject = $settings->cs_email_title[$language] ?? 'Customer satisfaction title';
+
             Mail::to($booking->email)->send(new CSEmail($subject, $csEmail, $settings->main_email, $settings->main_name));
-            $booking->sent_email = $DateNow;
+
+            $booking->sent_email = $dateNow;
             $booking->save();
+
             print($booking->email . ' - Sent' . "\n");
         }
     }
