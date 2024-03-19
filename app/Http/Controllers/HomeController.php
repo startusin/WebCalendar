@@ -76,38 +76,60 @@ class HomeController extends Controller
      */
     public function slots(User $user, Request $request)
     {
+        $availableSlots = [];
         $queriedSlots = [];
         $currentYear = date('Y');
 
-        $from = $request->input('from');
-        $to = $request->input('to');
+        $from = $request->get('from');
+        $to = $request->get('to');
 
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
+
         $excludingDays = $settings->excluded_days ?? [];
+
 
         $rules = CustomSlot::where('calendar_id', $user->id)->orderBy('id', 'desc')->get();
 
         $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-        foreach ($rules as $rule) {
-            switch ($rule['period_type']['dynamicSelect']) {
+        foreach ($rules as $rule)
+        {
+            switch ($rule['period_type']['dynamicSelect']){
                 case 'customs':
-                    $arr = generateCustomsSlots($from, $to, "{$currentYear}-{$rule['period_type']['start']}", "{$currentYear}-{$rule['period_type']['end']}", $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays, $rule['period_type']['language'], $rule['period_type']['quantity'], $rule['period_type']['is_available']);
-                    $queriedSlots = array_merge($queriedSlots, $arr);
+                    $startDateTime = implode('-', [$currentYear, $rule['period_type']['start']]);
+                    $endDateTime = implode('-', [$currentYear, $rule['period_type']['end']]);
+                    $arr = generateCustomsSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
-                case 'days':
-                case in_array(strtolower($rule['period_type']['dynamicSelect']), $daysOfWeek):
-                    $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays, $rule['period_type']['language'], $rule['period_type']['quantity'], $rule['period_type']['is_available']);
-                    $queriedSlots = array_merge($queriedSlots, $arr);
+                case 'days' || in_array( strtolower($rule['period_type']['dynamicSelect']), $daysOfWeek):
+                    $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'allWeeks':
-                    $arr = generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays, $rule['period_type']['language'], $rule['period_type']['quantity'], $rule['period_type']['is_available']);
-                    $queriedSlots = array_merge($queriedSlots, $arr);
+                    $arr = generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'months':
-                    $arr = generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays, $rule['period_type']['language'], $rule['period_type']['quantity'], $rule['period_type']['is_available']);
-                    $queriedSlots = array_merge($queriedSlots, $arr);
+                    $arr = generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
+                    $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
+            }
+        }
+
+        foreach ($queriedSlots as $index => $queriedSlot) {
+            foreach ($queriedSlots as $subindex => $subQueriedSlot) {
+                if ($subindex >= $index) {
+                    continue;
+                }
+
+                $start = new \DateTime($queriedSlot['start']);
+                $end = new \DateTime($queriedSlot['end']);
+                $subStart = new \DateTime($subQueriedSlot['start']);
+                $subEnd = new \DateTime($subQueriedSlot['end']);
+
+                if (($start <= $subStart) && ($end >= $subEnd) && ($queriedSlot['language'] === $subQueriedSlot['language'])) {
+                    unset($queriedSlots[$subindex]);
+                }
             }
         }
 
@@ -119,11 +141,17 @@ class HomeController extends Controller
             $queriedSlots = array_merge($queriedSlots, $resFunc);
         }
 
+        $mergedSlots = array_merge($queriedSlots, $availableSlots);
+
+        usort($mergedSlots, function ($a, $b) {
+            return $a['timestamp'] > $b['timestamp'];
+        });
 
         $transformed = [];
 
-        foreach ($queriedSlots as $slot) {
+        foreach ($mergedSlots as $slot) {
             if ($slot['start'] > Carbon::now()) {
+                $slot['calendar_id'] = $user->id;
                 $start = new \DateTime($slot['start']);
                 $end = new \DateTime($slot['end']);
 
@@ -133,11 +161,13 @@ class HomeController extends Controller
                     ->where('calendar_id', '=', $user->id)
                     ->pluck('id')
                     ->toArray();
-
                 if (!isset($slot['limit'])) {
-                    $slot['limit'] = $user->settings['default_quantity'][$slot['language']] ?? null;
+                    foreach ($user->languages as $lang) {
+                        if ($lang == $slot['language']) {
+                            $slot['limit'] = $user->settings['default_quantity'][$lang];
+                        }
+                    }
                 }
-
                 if (!$slotQuery && $slot['is_available'] == 1) {
                     $slot['booked'] = 0;
                     $transformed[] = $slot;
@@ -153,10 +183,6 @@ class HomeController extends Controller
                 }
             }
         }
-        usort($transformed, function ($a, $b) {
-            return $a['timestamp'] > $b['timestamp'];
-        });
-
         return response()->json($transformed);
     }
 
