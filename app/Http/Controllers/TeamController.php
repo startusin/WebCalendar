@@ -29,7 +29,7 @@ class TeamController extends Controller
 
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             "email" => ['required', 'string'],
             "first_name" => ['required', 'string'],
             "last_name" => ['required', 'string'],
@@ -75,7 +75,7 @@ class TeamController extends Controller
 
     public function update(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'id' => ['required', 'exists:users,id'],
             "email" => ['required', 'string'],
             "first_name" => ['required', 'string'],

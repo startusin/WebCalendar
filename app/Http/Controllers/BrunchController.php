@@ -23,11 +23,11 @@ class BrunchController extends Controller
 
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             "time" => ['required', 'string'],
             "price" => ['required', 'numeric'],
             "quantity" => ['required', 'numeric'],
-            "excluded_days" =>['required', 'array']
+            "excluded_days" => ['required', 'array']
         ])->validated();
 
         $data['calendar_id'] = $request->calendar_user->id;
@@ -52,12 +52,12 @@ class BrunchController extends Controller
 
     public function update(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'id' => ['required', 'exists:brunches,id'],
             "time" => ['required', 'string'],
             "price" => ['required', 'numeric'],
             "quantity" => ['required', 'numeric'],
-            "excluded_days" =>['required', 'array']
+            "excluded_days" => ['required', 'array']
         ])->validated();
 
         $data['calendar_id'] = $request->calendar_user->id;

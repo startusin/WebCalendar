@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Validator;
 class CalendarSettingsController extends Controller
 {
     private FormsSettingsService $formsSettingsService;
+
     public function __construct(FormsSettingsService $formsSettingsService)
     {
         $this->formsSettingsService = $formsSettingsService;
     }
 
-    public function deleteCountry(Request $request) {
+    public function deleteCountry(Request $request)
+    {
         $country = $request->input('country');
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
         $countriesArray = $settings['countries'] ?? [];
@@ -32,10 +34,12 @@ class CalendarSettingsController extends Controller
 
         $settings->countries = $countriesArray;
         $settings->save();
+
         return response()->json(['message' => 'Country deleted successfully'], 200);
     }
 
-    public function storeCountry(Request $request) {
+    public function storeCountry(Request $request)
+    {
         $country = $request->input('country');
         if ($country != null) {
             $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
@@ -44,15 +48,18 @@ class CalendarSettingsController extends Controller
             $settings['countries'] = $countriesArray;
             $settings->save();
         }
+
         return redirect()->route('calendarSettings.edit');
     }
 
-    public function createCountry() {
+    public function createCountry()
+    {
         return view('customer.calendarSettings.CreateCountry');
     }
 
-    public function edit() {
-        $langs = Languages::getMyLanguages(auth()->user()->languages);
+    public function edit()
+    {
+        $langs = Languages::getUserLanguages(auth()->user()->languages);
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
 
         if (!$settings) {
@@ -75,11 +82,12 @@ class CalendarSettingsController extends Controller
             $settings['countries'] = ['France', 'English'];
             $settings->save();
         }
+
         return view('customer.calendarSettings.edit', compact('settings', 'langs'));
     }
 
-    public function update(Request $request) {
-
+    public function update(Request $request)
+    {
         $data = Validator::make($request->all(), [
             'calendar_id' => ['required', 'numeric'],
             'primary_color' => ['string'],
@@ -103,7 +111,7 @@ class CalendarSettingsController extends Controller
             'es-interval' => ['numeric'],
             'language' => ['string'],
             'vat' => ['numeric'],
-            'alias' =>  'unique:users,alias,' . auth()->user()->id
+            'alias' => 'unique:users,alias,' . auth()->user()->id
         ])->validated();
 
         Redis::del('slots-' . $data['calendar_id']);
@@ -147,28 +155,28 @@ class CalendarSettingsController extends Controller
         }
 
         if (isset($data['logo'])) {
-            if ($oldData !=null &&$oldData['logo'] != null) {
+            if ($oldData != null && $oldData['logo'] != null) {
                 Storage::disk('public')->delete($oldData['logo']);
             }
             $data['logo'] = Storage::disk('public')->put('/images', $data['logo']);
-        } elseif ( $oldData!=null &&$oldData['logo'] != null) {
+        } elseif ($oldData != null && $oldData['logo'] != null) {
             $data['logo'] = $oldData['logo'];
         }
         if (isset($data['banner'])) {
-            if ($oldData !=null &&$oldData['banner'] != null) {
+            if ($oldData != null && $oldData['banner'] != null) {
                 Storage::disk('public')->delete($oldData['banner']);
             }
             $data['banner'] = Storage::disk('public')->put('/images', $data['banner']);
-        } elseif ( $oldData!=null &&$oldData['banner'] != null) {
+        } elseif ($oldData != null && $oldData['banner'] != null) {
             $data['banner'] = $oldData['banner'];
         }
 
         if (isset($data['bg_image'])) {
-            if ($oldData !=null &&$oldData['bg_image'] != null) {
+            if ($oldData != null && $oldData['bg_image'] != null) {
                 Storage::disk('public')->delete($oldData['bg_image']);
             }
             $data['bg_image'] = Storage::disk('public')->put('/images', $data['bg_image']);
-        } elseif ( $oldData!=null &&$oldData['bg_image'] != null) {
+        } elseif ($oldData != null && $oldData['bg_image'] != null) {
             $data['bg_image'] = $oldData['bg_image'];
         }
 
@@ -196,11 +204,11 @@ class CalendarSettingsController extends Controller
         }
 
         $settings = FormSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->get();
-        $lenght = count( $settings);
+        $lenght = count($settings);
 
         if ($lenght == 0) {
-            $calendar_id =  auth()->user()->invited_by ?? auth()->user()->id;
-            foreach ($this->formsSettingsService->getFields() as $key => $isRequired){
+            $calendar_id = auth()->user()->invited_by ?? auth()->user()->id;
+            foreach ($this->formsSettingsService->getFields() as $key => $isRequired) {
                 FormSettings::create([
                     'key' => $key,
                     'is_required' => $isRequired,
@@ -212,13 +220,15 @@ class CalendarSettingsController extends Controller
         return redirect()->route('calendarSettings.edit');
     }
 
-    public function embedded() {
+    public function embedded()
+    {
         return view('customer.calendarSettings.embedded');
     }
 
     public function getFormsSettings()
     {
         $settings = FormSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->get();
+
         return view('customer.formSettings.index', compact('settings'));
     }
 
@@ -227,19 +237,21 @@ class CalendarSettingsController extends Controller
         $data = $request->all();
         $settingsForm = FormSettings::find($data['id']);
         if ($settingsForm) {
-            if ($settingsForm['is_required'] == 0){
+            if ($settingsForm['is_required'] == 0) {
                 $settingsForm['is_required'] = 1;
-            } else{
+            } else {
                 $settingsForm['is_required'] = 0;
             }
             $settingsForm->save();
         }
+
         return response()->json(200);
     }
 
     public function getPrivacy()
     {
         $settings = CalendarSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->first();
+
         return view('customer.privacy.index', compact('settings'));
     }
 
@@ -302,15 +314,15 @@ class CalendarSettingsController extends Controller
             'title' => $policyTitle3,
             'content' => $policyContent3,
         ];
-        $settings = CalendarSettings::where('calendar_id', auth()->user()->ivited_by??auth()->user()->id)->first();
+        $settings = CalendarSettings::where('calendar_id', auth()->user()->ivited_by ?? auth()->user()->id)->first();
         $settings->footer_text = $footerText;
         $settings->policy_1 = $policy1;
         $settings->policy_2 = $policy2;
         $settings->policy_3 = $policy3;
         $settings->save();
+
         return redirect()->back();
     }
-
 
 
     public function getStyles()
@@ -325,13 +337,13 @@ class CalendarSettingsController extends Controller
         $data = $request->all();
 
         $settings = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
-        if (!$settings)
-        {
+        if (!$settings) {
             abort(404);
         }
-        $settings['custom_styles'] = $data['custom_styles']??"";
-        $settings['custom_script'] = $data['custom_script']??"";
+        $settings['custom_styles'] = $data['custom_styles'] ?? "";
+        $settings['custom_script'] = $data['custom_script'] ?? "";
         $settings->save();
+
         return redirect()->back();
     }
 }

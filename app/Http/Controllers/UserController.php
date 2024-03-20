@@ -27,26 +27,31 @@ class UserController extends Controller
     {
         $this->langService = $langService;
         $this->formsSettingsService = $formsSettingsService;
-
     }
 
-    public function index() {
+    public function index()
+    {
         $users = User::where('role', Role::customer)
-                ->get();
+            ->get();
+
         return view('admin.user.index', compact('users'));
     }
 
-    public function create() {
+    public function create()
+    {
         $languages = Languages::getLanguages();
+
         return view('admin.user.create', compact('languages'));
     }
-    public function store(Request $request) {
+
+    public function store(Request $request)
+    {
         $data = Validator::make($request->all(), [
             "first_name" => ['required', 'string'],
             "last_name" => ['required', 'string'],
             "email" => ['required', 'email', Rule::unique('users', 'email')],
             "password" => ['required', 'string'],
-            "languages" =>['required', 'array'],
+            "languages" => ['required', 'array'],
         ])->validated();
 
         $data['role'] = Role::customer;
@@ -54,15 +59,14 @@ class UserController extends Controller
         $user['alias'] = $user->id;
         $user->save();
 
-
         $AllCountries = Country::all();
-            foreach ($AllCountries as $item) {
-                $country = CalendarCountry::create([
-                    'calendar_id' => $user->id,
-                    'country_id' => $item->id,
-                    'is_enabled' => true
-                ]);
-            }
+        foreach ($AllCountries as $item) {
+            $country = CalendarCountry::create([
+                'calendar_id' => $user->id,
+                'country_id' => $item->id,
+                'is_enabled' => true
+            ]);
+        }
         $translations = $this->langService->getStaticPhrases();
 
         Translations::create([
@@ -78,7 +82,7 @@ class UserController extends Controller
         $settings['excluded_days'] = ['saturday', 'sunday'];
         $settings['logo'] = null;
         $settings['brunch_text'] = null;
-        foreach (Languages::getMyLanguages($user->languages) as $key => $lang) {
+        foreach (Languages::getUserLanguages($user->languages) as $key => $lang) {
             $settings['interval'][$key] = 60;
             $settings['default_quantity'][$key] = 3;
             $settings['working_hr_start'][$key] = '08:00';
@@ -87,51 +91,57 @@ class UserController extends Controller
         $settings['language'] = $user->languages[0];
         CalendarSettings::create($settings);
 
-        foreach ($this->formsSettingsService->getFields() as $key => $isRequired){
+        foreach ($this->formsSettingsService->getFields() as $key => $isRequired) {
             FormSettings::create([
                 'key' => $key,
                 'is_required' => $isRequired,
                 'calendar_id' => $user->id
             ]);
         }
+
         return redirect()->route('admin.user.index');
     }
 
     public function show(User $user)
     {
-        $user['languages'] = implode(', ', array_keys(array_flip(Languages::getMyLanguages($user->languages))));
+        $user['languages'] = implode(', ', array_keys(array_flip(Languages::getUserLanguages($user->languages))));
+
         return $user;
     }
 
     public function edit(User $user)
     {
         $languages = Languages::getLanguages();
-        return view('admin.user.edit', compact('user','languages'));
+
+        return view('admin.user.edit', compact('user', 'languages'));
     }
 
     public function update(UpdateRequest $request)
     {
         $data = Validator::make($request->all(), [
-            'user_id'=> ['required'],
+            'user_id' => ['required'],
             "first_name" => ['required', 'string'],
             "last_name" => ['required', 'string'],
             "email" => ['required', 'email', Rule::unique('users', 'email')->ignore($request->user_id)],
             "password" => [''],
-            "languages" =>['required', 'array']
+            "languages" => ['required', 'array']
         ])->validated();
         $user = User::find($data['user_id']);
-        if(!$user) {
+        if (!$user) {
             abort(404);
         }
         if ($data['password'] == null) {
             unset($data['password']);
         }
         $user->update($data);
+
         return redirect()->route('admin.user.index');
     }
+
     public function delete(User $user)
     {
         $user->delete();
+
         return redirect()->route('admin.user.index');
     }
 }

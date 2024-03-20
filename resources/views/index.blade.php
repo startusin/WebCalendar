@@ -30,7 +30,7 @@
                             <li>
                                 <a class="dropdown-item my-1" href="/locale/{{ $lang }}">
                                     <img src="/assets/flags/{{ $lang }}.png"
-                                         class="flag-icon me-2"/> {{ \App\Enums\Languages::getStringLanguage($lang) }}
+                                         class="flag-icon me-2"/> {{ \App\Enums\Languages::getLanguageLabel($lang) }}
                                 </a>
                             </li>
                         @endforeach

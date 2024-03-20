@@ -25,23 +25,23 @@ class SlotController extends Controller
     public function show($id)
     {
         $slot = CustomSlot::find($id);
-        $slot['language'] = Languages::getStringLanguage($slot['language']);
+        $slot['language'] = Languages::getLanguageLabel($slot['language']);
+
         return $slot;
     }
 
     public function view(Request $request)
     {
-        $languages = array_flip(Languages::getMyLanguages($request->calendar_user->languages));
+        $languages = array_flip(Languages::getUserLanguages($request->calendar_user->languages));
         $fullslots = CustomSlot::where('calendar_id', $request->calendar_user->id)->first();
         $slots = null;
         if (!$fullslots) {
             $slots = [];
-        }
-        else {
+        } else {
             $slots = $fullslots['period_type'];
         }
 
-        return view('customer.slot.index', compact('languages','slots'));
+        return view('customer.slot.index', compact('languages', 'slots'));
     }
 
     public function allCustomSlots()
@@ -52,11 +52,11 @@ class SlotController extends Controller
         return response()->json($slots);
     }
 
-    public function  createOrUpdate(Request $request)
+    public function createOrUpdate(Request $request)
     {
         $data = $request->all();
 
-        if (!isset($data['alldata'])){
+        if (!isset($data['alldata'])) {
             $data['alldata'] = [];
         }
 
@@ -76,13 +76,14 @@ class SlotController extends Controller
 
     public function create()
     {
-        $languages = array_flip(Languages::getMyLanguages(auth()->user()->languages));
+        $languages = array_flip(Languages::getUserLanguages(auth()->user()->languages));
+
         return view('customer.slot.create', compact('languages'));
     }
 
     public function store(Request $request)
     {
-        $myLang = array_flip(Languages::getMyLanguages(auth()->user()->languages));
+        $userLanguages = array_flip(Languages::getUserLanguages(auth()->user()->languages));
         $data = Validator::make($request->all(), [
             "slot_id" => ['required'],
             "quantity" => ['required'],
@@ -94,7 +95,7 @@ class SlotController extends Controller
             'is_available' => ['required'],
             "language" => [
                 'required',
-                Rule::in($myLang),
+                Rule::in($userLanguages),
             ]
         ])->validated();
 
@@ -108,13 +109,14 @@ class SlotController extends Controller
     public function edit($id)
     {
         $slot = CustomSlot::find($id);
-        $languages = array_flip(Languages::getMyLanguages(auth()->user()->languages));
+        $languages = array_flip(Languages::getUserLanguages(auth()->user()->languages));
 
-        return view('customer.slot.edit', compact('slot','languages'));
+        return view('customer.slot.edit', compact('slot', 'languages'));
     }
+
     public function update(Request $request)
     {
-        $myLang = array_flip(Languages::getMyLanguages(auth()->user()->languages));
+        $userLang = array_flip(Languages::getUserLanguages(auth()->user()->languages));
         $data = Validator::make($request->all(), [
             "slot_id" => ['required'],
             "quantity" => ['required'],
@@ -126,7 +128,7 @@ class SlotController extends Controller
             "is_available" => ['required'],
             "language" => [
                 'required',
-                Rule::in($myLang),
+                Rule::in($userLang),
             ]
         ])->validated();
 
@@ -141,6 +143,7 @@ class SlotController extends Controller
     {
         $slot = CustomSlot::find($id);
         $slot->delete();
+
         return redirect()->route('customer.slot.index');
     }
 }

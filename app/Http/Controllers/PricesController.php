@@ -20,13 +20,14 @@ class PricesController extends Controller
 
     public function view()
     {
-
         return view('customer.price.nprice');
     }
 
-    public function allCustomPrice(){
+    public function allCustomPrice()
+    {
         $id = (request()->input('calendar_id'));
         $prices = ProductPrice::where('calendar_id', $id)->with('product')->get();
+
         return response()->json($prices);
     }
 
@@ -39,7 +40,7 @@ class PricesController extends Controller
 
     public function store(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             "price" => ['required', 'numeric'],
             "two-datetime" => ['required', 'string'],
             "product_id" => ['required', 'exists:products,id'],
@@ -61,13 +62,13 @@ class PricesController extends Controller
     {
         $data = $request->all();
 
-        if (!isset($data['alldata'])){
+        if (!isset($data['alldata'])) {
             $data['alldata'] = [];
         }
 
         ProductPrice::where(['calendar_id' => $data['calendar_id']])->delete();
 
-        foreach ($data['alldata'] as $item){
+        foreach ($data['alldata'] as $item) {
             $product_id = $item['product'];
             unset($item['product']);
             $price = $item;
@@ -77,6 +78,7 @@ class PricesController extends Controller
                 'price' => $price
             ]);
         }
+
         return response()->noContent();
     }
 
@@ -84,14 +86,14 @@ class PricesController extends Controller
     {
         $products = Product::where('calendar_id', $request->calendar_user->id)->get();
         $price = ProductPrice::findOrFail($id);
-        $price['datetime'] = implode(' - ',[$price['start_date']->format('m/d/Y H:i:s'), $price['end_date']->format('m/d/Y H:i:s')]);
+        $price['datetime'] = implode(' - ', [$price['start_date']->format('m/d/Y H:i:s'), $price['end_date']->format('m/d/Y H:i:s')]);
 
         return view('customer.price.edit', compact('price', 'products'));
     }
 
     public function update(Request $request)
     {
-        $data = Validator::make($request->all(),[
+        $data = Validator::make($request->all(), [
             'id' => ['required'],
             "price" => ['required', 'numeric'],
             "two-datetime" => ['required', 'string'],

@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Languages;
-use App\Http\Resources\SlotResource;
-use App\Models\BookedBrunch;
 use App\Models\BookedSlots;
 use App\Models\BookingProduct;
-use App\Models\Brunch;
 use App\Models\CalendarSettings;
 use App\Models\CustomSlot;
 use App\Models\User;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Redis;
@@ -21,7 +17,7 @@ class HomeController extends Controller
 {
     public function languages(Request $request)
     {
-        return Languages::getMyLanguages($request->calendar_user->languages);
+        return Languages::getUserLanguages($request->calendar_user->languages);
     }
     /**
      * Show the application dashboard.
@@ -31,7 +27,6 @@ class HomeController extends Controller
     public function index(Request $request, $alias)
     {
         $admin = $request->get('direct-booking') === 'true';
-
         $user = User::where('alias', $alias)->first();
 
         if (!$user) {
@@ -48,17 +43,21 @@ class HomeController extends Controller
 
         $logo = null;
         $banner = null;
+
         if (isset($user->settings['logo'])){
             $logo = $user->settings['logo'];
         }
+
         if (isset($user->settings['banner'])){
             $banner = $user->settings['banner'];
         }
+
         $locale = Cookie::get('locale');
+
         if (!$locale) {
             $locale = $user->settings['language'] ?? 'en';
-
         }
+
         return view('index', [
             'brunches' => $brunches,
             'products' => $products,
@@ -91,11 +90,8 @@ class HomeController extends Controller
         $to = $request->get('to');
 
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
-
         $excludingDays = $settings->excluded_days ?? [];
-
         $rules = CustomSlot::where('calendar_id', $user->id)->orderBy('id', 'desc')->get();
-
         $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
         foreach ($rules as $rule)
@@ -258,14 +254,14 @@ class HomeController extends Controller
         $objects = array();
         $excludedDays = transformDays($excludedDays);
 
-        $startDate = new DateTime($from);
-        $endDate = new DateTime($to);
+        $startDate = new \DateTime($from);
+        $endDate = new \DateTime($to);
 
         while ($startDate <= $endDate) {
             $currentWeekDay = $startDate->format('N'); // 1 для понеділка, 7 для неділі
             if ($currentWeekDay >= $startRangeWeek && $currentWeekDay <= $endRangeWeek && !in_array($currentWeekDay, $excludedDays)) {
-                $startDateTime = new DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
-                $endDateTime = new DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
+                $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
+                $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
                 $object = array(
                     'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
                     'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
@@ -285,8 +281,8 @@ class HomeController extends Controller
         $objects = array();
         $excludedDays = transformDays($excludedDays);
 
-        $startDate = new DateTime($from);
-        $endDate = new DateTime($to);
+        $startDate = new \DateTime($from);
+        $endDate = new \DateTime($to);
 
         while ($startDate <= $endDate) {
             $currentMonth = (int)$startDate->format('m');
@@ -294,8 +290,8 @@ class HomeController extends Controller
                 $currentDayOfWeek = (int)$startDate->format('N'); // 1 - Понеділок, 7 - Неділя
                 if (!in_array($currentDayOfWeek, $excludedDays)) {
                     // Створення об'єкту з датою початку та кінця на основі заданих годин
-                    $startDateTime = new DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
-                    $endDateTime = new DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
+                    $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
+                    $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
                     $object = array(
                         'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
                         'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
@@ -317,18 +313,18 @@ class HomeController extends Controller
     function generateCustomsSlots($from, $to, $startCustomDate, $endCustomDate, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
         $objects = array();
         $excludedDays = transformDays($excludedDays);
-        $startDate = new DateTime($from);
-        $endDate = new DateTime($to);
+        $startDate = new \DateTime($from);
+        $endDate = new \DateTime($to);
 
-        $startCustomDateTime = new DateTime($startCustomDate);
-        $endCustomDateTime = new DateTime($endCustomDate);
+        $startCustomDateTime = new \DateTime($startCustomDate);
+        $endCustomDateTime = new \DateTime($endCustomDate);
 
         while ($startDate <= $endDate) {
             if ($startDate >= $startCustomDateTime && $startDate <= $endCustomDateTime) {
                 $currentWeekDay = $startDate->format('N'); // 1 для понеділка, 7 для неділі
                 if (!in_array($currentWeekDay, $excludedDays)) {
-                    $startDateTime = new DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
-                    $endDateTime = new DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
+                    $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
+                    $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
                     $object = array(
                         'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
                         'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),

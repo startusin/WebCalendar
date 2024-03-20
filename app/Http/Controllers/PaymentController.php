@@ -38,7 +38,6 @@ class PaymentController extends Controller
         }
 
         $isBrunch = $request->type === 'brunch' ?? false;
-        $user = User::find($booking->slots()->first()->calendar_id);
         $vat = 0;
 
         if ($isBrunch) {
@@ -108,10 +107,10 @@ class PaymentController extends Controller
 
 
                 $calendarId = $booking->slots()->first()->calendar_id;
-                $SlotLanguage = $booking->slots()->first()->language;
+                $slotLanguage = $booking->slots()->first()->language;
 
                 $dateStartSlot = $booking->slots()->first()->start_date;
-                Carbon::setLocale($SlotLanguage);
+                Carbon::setLocale($slotLanguage);
                 $dateStartSlot = $dateStartSlot->isoFormat('dddd D MMMM YYYY HH[h]mm');
                 $dateStartSlot = ucwords($dateStartSlot);
 
@@ -133,12 +132,10 @@ class PaymentController extends Controller
                         $price = number_format($bookingProduct->sold_price / $quantity, 2);
 
 
-
-
                         $itemEmailCopy = $itemEmail;
                         $itemEmailCopy = str_replace('{:TITLE:}', $bookingProduct->product->title[$language] ?? 'No Title', $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:PRICE:}', $price, $itemEmailCopy);
-                        $itemEmailCopy = str_replace('{:LANGUAGE:}', Languages::getTranslateLanguage($SlotLanguage, $language), $itemEmailCopy);
+                        $itemEmailCopy = str_replace('{:LANGUAGE:}', Languages::getTranslateLanguage($slotLanguage, $language), $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:STARTSLOT:}', $dateStartSlot, $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:QUANTITY:}', $quantity, $itemEmailCopy);
                         $itemEmailCopy = str_replace('{:TOTAL_TTC:}', $bookingProduct->sold_price, $itemEmailCopy);
@@ -151,12 +148,12 @@ class PaymentController extends Controller
 
                     $purchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $purchaseEmail);
                     $purchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $purchaseEmail);
-                    $purchaseEmail = str_replace('{:LANGUAGE:}',  Languages::getTranslateLanguage($SlotLanguage, $language), $purchaseEmail);
+                    $purchaseEmail = str_replace('{:LANGUAGE:}', Languages::getTranslateLanguage($slotLanguage, $language), $purchaseEmail);
                     $purchaseEmail = str_replace('{:STARTSLOT:}', $dateStartSlot, $purchaseEmail);
                     $purchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo) : '/demologo.png') . '" />', $purchaseEmail);
 
                     $adminPurchaseEmail = str_replace('{:TOTAL_PRICE:}', $total, $adminPurchaseEmail);
-                    $adminPurchaseEmail = str_replace('{:LANGUAGE:}',  Languages::getTranslateLanguage($SlotLanguage, $language), $adminPurchaseEmail);
+                    $adminPurchaseEmail = str_replace('{:LANGUAGE:}', Languages::getTranslateLanguage($slotLanguage, $language), $adminPurchaseEmail);
                     $adminPurchaseEmail = str_replace('{:STARTSLOT:}', $dateStartSlot, $adminPurchaseEmail);
                     $adminPurchaseEmail = str_replace('{:ITEMS:}', $productsHTML, $adminPurchaseEmail);
                     $adminPurchaseEmail = str_replace('{:LOGOTYPE:}', '<img style="margin: auto; margin-top: 20px; max-width: 250px;" src="' . ($settings->logo ? asset('storage/' . $settings->logo) : '/demologo.png') . '" />', $adminPurchaseEmail);
@@ -240,9 +237,6 @@ class PaymentController extends Controller
         return [
             'price' => (float)$request->totalSum * 100
         ];
-
-//        $user = User::find((int)$request->calendar_id);
-//        return view('customer.payment.success', compact('user'));
     }
 
     private function makeSlot(array $data)
@@ -314,7 +308,7 @@ class PaymentController extends Controller
         return $booking;
     }
 
-    private function calculateProductPrice(Product $product, string $lang, \DateTime $date, $calendar_id,$quantity = 0)
+    private function calculateProductPrice(Product $product, string $lang, \DateTime $date, $calendar_id, $quantity = 0)
     {
         $daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         $months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];

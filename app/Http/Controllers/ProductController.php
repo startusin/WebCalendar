@@ -21,20 +21,22 @@ class ProductController extends Controller
     public function getMyProducts(Request $request)
     {
         $products = Product::where('calendar_id', $request->calendar_user->id)->get();
+
         return $products;
     }
 
     public function show($id)
     {
         $product = Product::findOrFail($id);
+
         return $product;
     }
 
     public function create(Request $request)
     {
-        $langs = Languages::getMyLanguages($request->calendar_user->languages);
+        $langs = Languages::getUserLanguages($request->calendar_user->languages);
 
-        return view('customer.product.create',compact('langs'));
+        return view('customer.product.create', compact('langs'));
     }
 
     public function store(Request $request)
@@ -72,12 +74,13 @@ class ProductController extends Controller
         $objToCreate['title'] = $titleL;
 
         Product::create($objToCreate);
+
         return redirect()->route('customer.product.index');
     }
 
     public function edit(Request $request, int $id)
     {
-        $langs = Languages::getMyLanguages($request->calendar_user->languages);
+        $langs = Languages::getUserLanguages($request->calendar_user->languages);
 
         $product = Product::findOrFail($id);
 
@@ -123,11 +126,11 @@ class ProductController extends Controller
 
         $product = Product::find($data['id']);
 
-        if (!$product)
-        {
+        if (!$product) {
             abort(404);
         }
         $product->update($objToCreate);
+
         return redirect()->route('customer.product.index');
     }
 
@@ -135,6 +138,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
+
         return redirect()->route('customer.product.index');
     }
 
@@ -148,6 +152,7 @@ class ProductController extends Controller
                 $product->save();
             }
         }
+
         return response()->json('200');
     }
 }

@@ -35,26 +35,26 @@
 
                             @foreach($product['title'] as $key => $value)
                                 <div class="form-group">
-                                    <label>Title {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <label>Title {{\App\Enums\Languages::getLanguageLabel($key)}}</label>
                                     <input type="text" name="{{$key}}_title" class="form-control" value="{{$value}}" required >
                                 </div>
                             @endforeach
                             @foreach($product['short_description'] as $key => $value)
                                 <div class="form-group">
-                                    <label for="description">Short Description  {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <label for="description">Short Description  {{\App\Enums\Languages::getLanguageLabel($key)}}</label>
                                     <textarea class="form-control" id="short_description" name="{{$key}}_short_description"  required>{{$value}}</textarea>
                                 </div>
                             @endforeach
                             @foreach($product['description'] as $key => $value)
                             <div class="form-group">
-                                    <label for="description">Description  {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <label for="description">Description  {{\App\Enums\Languages::getLanguageLabel($key)}}</label>
                                     <textarea class="form-control" id="description" name="{{$key}}_description"  required>{{$value}}</textarea>
                                 </div>
                             @endforeach
 
                             @foreach($product['price'] as $key => $value)
                                 <div class="form-group">
-                                    <label for="description">Price {{\App\Enums\Languages::getStringLanguage($key)}}</label>
+                                    <label for="description">Price {{\App\Enums\Languages::getLanguageLabel($key)}}</label>
                                     <input class="form-control" type="number" step="0.01" value="{{$value}}" name="{{$key}}_price" required>
                                 </div>
                             @endforeach

@@ -10,7 +10,7 @@ class WebhookController extends CashierController
     /**
      * Handle Stripe webhooks for subscription events.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handleWebhook(Request $request)

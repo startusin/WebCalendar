@@ -9,19 +9,21 @@ use Illuminate\Support\Facades\Session;
 
 class LocalizationController extends Controller
 {
-    public function setLang($locale) {
-
+    public function setLang($locale)
+    {
         App::setLocale($locale);
         Cookie::queue(Cookie::forever('locale', $locale));
-        return redirect()->back();
 
+        return redirect()->back();
     }
 
-    public function getCurrentLanguage() {
+    public function getCurrentLanguage()
+    {
         $locale = 'en';
         if (Cookie::has('locale')) {
             $locale = Cookie::get('locale');
         }
+
         return $locale;
     }
 }

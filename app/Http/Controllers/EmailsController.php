@@ -88,11 +88,11 @@ class EmailsController extends Controller
     }
 
 
-    public function updateSms(Request $request) {
-
+    public function updateSms(Request $request)
+    {
         $smsReminder = [];
         $smsSender = [];
-        $sms_remind_time = $request->input('sms-remind-time')??60;
+        $smsRemindTime = $request->input('sms-remind-time') ?? 60;
 
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'sms-reminder') !== false) {
@@ -111,8 +111,9 @@ class EmailsController extends Controller
         $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
         $settings->sms_reminder = $smsReminder;
         $settings->sms_sender = $smsSender;
-        $settings->sms_remind_time = $sms_remind_time;
+        $settings->sms_remind_time = $smsRemindTime;
         $settings->save();
+
         return response()->redirectToRoute('sms.edit');
     }
 }

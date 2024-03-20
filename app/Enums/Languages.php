@@ -15,12 +15,12 @@ enum Languages: string
         ];
     }
 
-    public static function getMyLanguages(array $myLang): array
+    public static function getUserLanguages(array $myLang): array
     {
         return array_intersect_key(array_flip(self::getLanguages()), array_flip($myLang));
     }
 
-    public static function getStringLanguage(string $lang): string
+    public static function getLanguageLabel(string $lang): string
     {
         return array_search($lang, self::getLanguages());
     }

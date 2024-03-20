@@ -34,6 +34,7 @@ class PurchaseController extends Controller
         $booking->update([
             'payment_status' => $data['status']
         ]);
+
         return response()->json(['message' => 'Successfully updated'], 200);
     }
 
@@ -56,7 +57,7 @@ class PurchaseController extends Controller
 
                 $paymentLinkEnd = $booking->type == 'brunch' ? "?type=brunch" : "";
                 $paymentLinkStart = "/payment/" . $booking->id;
-                //$paymentLinkStart = \request()->getHttpHost()."/payment/".$booking->id;
+
                 return (object)[
                     'created_at' => $booking->created_at,
                     'booking' => $booking,
@@ -68,7 +69,6 @@ class PurchaseController extends Controller
             });
 
         $sortBy = \request()->input('SortBy');
-        // dd(\request()->all());
         if ($sortBy == 'asc') {
             $sortBy = 'desc';
             $purchases = $purchases->sortBy(\request()->input('SortName'));
@@ -76,8 +76,6 @@ class PurchaseController extends Controller
             $sortBy = 'asc';
             $purchases = $purchases->sortByDesc(\request()->input('SortName'));
         }
-        //dd($sortBy);
-
         $search = \request()->input('search') ?? "";
         $purchases = collect($purchases)->filter(function ($item) use ($search) {
             return stripos($item->status, $search) !== false ||
@@ -119,7 +117,6 @@ class PurchaseController extends Controller
         $data = $request->all();
 
         $startDate = new \DateTime($data['startTime']);
-        $endDate = new \DateTime($data['endTime']);
         $calendar_id = $data['calendarId'];
         $productPrice = [];
 
@@ -144,7 +141,6 @@ class PurchaseController extends Controller
         $calendar_id = $data['calendarId'];
 
         $ProductPrice = $this->calculateProductPrice($product, $data['language'], $startDate, $calendar_id, $data['quantity']);;
-       // dd($ProductPrice);
 
         return $ProductPrice;
     }
@@ -256,11 +252,6 @@ class PurchaseController extends Controller
         return view('purchase', compact('calendarId', 'vat', 'products', 'slots', 'totalQuantity', 'sousSum', 'totalSum', 'isBrunch', 'user', 'productData', 'intent', 'admin', 'formSettings', 'countries'));
     }
 
-    public function storeOrder(Request $request)
-    {
-        dd($request->all());
-    }
-
     public function makeSlot(Request $request)
     {
         $data = $request->all();
@@ -328,6 +319,7 @@ class PurchaseController extends Controller
                 'sold_price' => $soldPrice
             ]);
         }
+
         return $booking;
     }
 
@@ -384,8 +376,6 @@ class PurchaseController extends Controller
             $participants = $range['price']['participants'] ?? 0;
 
             if ((int)$participants <= (int)$quantity) {
-//                var_dump((int)$range['price']['participants']);
-//                var_dump((int)$quantity);
                 if ($lang === $range->price['language']) {
                     $hour = $date->format('H:i');
                     $startTime = \DateTime::createFromFormat('H:i', $range->price['fromHour']);

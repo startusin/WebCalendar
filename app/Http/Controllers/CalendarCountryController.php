@@ -26,7 +26,7 @@ class CalendarCountryController extends Controller
         }
         if (count($countries) > 0 && count($countries) != count($allCountries)) {
             foreach ($allCountries as $item) {
-                if (!$countries->contains('country_id', $item->id)){
+                if (!$countries->contains('country_id', $item->id)) {
                     $country = CalendarCountry::create([
                         'calendar_id' => $id,
                         'country_id' => $item->id,
@@ -36,6 +36,7 @@ class CalendarCountryController extends Controller
             }
         }
         $countries = CalendarCountry::with('country')->where('calendar_id', $id)->orderBy('priority')->get();
+
         return view('customer.calendarCountry.index', compact('countries'));
     }
 
@@ -54,6 +55,7 @@ class CalendarCountryController extends Controller
         }
         $calendarCountry['is_enabled'] = $calendarCountry['is_enabled'] == false ? true : false;
         $calendarCountry->save();
+
         return response()->json(200);
     }
 
@@ -67,6 +69,7 @@ class CalendarCountryController extends Controller
                 $country->save();
             }
         }
+
         return response()->json('200');
     }
 }

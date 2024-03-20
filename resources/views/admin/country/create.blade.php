@@ -33,7 +33,7 @@
                         @foreach(\App\Enums\Languages::getLanguages() as $item)
 
                         <div class="form-group">
-                            <label>Name {{\App\Enums\Languages::getStringLanguage($item)}}</label>
+                            <label>Name {{\App\Enums\Languages::getLanguageLabel($item)}}</label>
                             <input type="text" name="{{$item}}-name" class="form-control" required>
                         </div>
 

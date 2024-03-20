@@ -10,6 +10,7 @@ class CountryController extends Controller
     public function index()
     {
         $countries = Country::all();
+
         return view('admin.country.index', compact('countries'));
     }
 
@@ -24,10 +25,11 @@ class CountryController extends Controller
         $name = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'name') !== false) {
-                $LangKey = explode("-", $key);
-                $name[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $name[$langKey[0]] = $value;
             }
         }
+
         Country::create([
             'name' => $name,
             "numeric_code" => $data['numeric_code'],
@@ -50,8 +52,8 @@ class CountryController extends Controller
         $name = [];
         foreach ($request->all() as $key => $value) {
             if (strpos($key, 'name') !== false) {
-                $LangKey = explode("-", $key);
-                $name[$LangKey[0]] = $value;
+                $langKey = explode("-", $key);
+                $name[$langKey[0]] = $value;
             }
         }
         $countryForUpdate['name'] = $name;
@@ -64,11 +66,14 @@ class CountryController extends Controller
         }
         $country->update($countryForUpdate);
         $country->save();
+
         return redirect()->route('admin.country.index');
     }
 
-    public function delete(Country $country) {
+    public function delete(Country $country)
+    {
         $country->delete();
+
         return redirect()->route('admin.country.index');
     }
 }
