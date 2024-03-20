@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Bookings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class FlushPendingBookings extends Command
 {
@@ -17,12 +18,19 @@ class FlushPendingBookings extends Command
         $currentDateTime = Carbon::now();
         $twentyMinutesAgoTime = $currentDateTime->subMinutes(20);
 
-        $results = Bookings::where('created_at', '<=', $twentyMinutesAgoTime)
+        $results = Bookings::with('slots')->where('created_at', '<=', $twentyMinutesAgoTime)
             ->where('payment_status', '<>', 'paid')
             ->get();
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $calendarIds = Bookings::with('slots')
+            ->where('created_at', '<=', $twentyMinutesAgoTime)
+            ->where('payment_status', '<>', 'paid')
+            ->get()
+            ->flatMap(function ($booking) {
+                return $booking->slots->pluck('calendar_id');
+            });
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         foreach ($results as $result) {
             if ($result->type === 'product') {
                 $result->bookingProducts()->delete();
@@ -35,6 +43,9 @@ class FlushPendingBookings extends Command
             }
 
             $result->delete();
+        }
+        foreach ($calendarIds as $id) {
+            Redis::del('slots-' . $id);
         }
     }
 }

@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\View;
 use Stripe\StripeClient;
 
@@ -221,12 +222,14 @@ class PaymentController extends Controller
     {
         $stripe = new StripeClient(env('STRIPE_SECRET'));
 
+
         $updatedPaymentIntent = $stripe->paymentIntents->update(
             $request->intentId,
             ['amount' => (float)$request->totalSum * 100]
         );
 
         Indent::updateOrCreate(['indent_id' => $request->intentId], ['data' => $request->meta]);
+        Redis::del('slots-' . $request->input('meta')['calendarId']);
 
         return [
             'price' => (float)$request->totalSum * 100
