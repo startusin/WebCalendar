@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
 {
@@ -76,10 +77,11 @@ class HomeController extends Controller
      */
     public function slots(User $user, Request $request)
     {
-        $debug = false;
-        $oldApproach = false;
+        $cachedSlots = Redis::get('slots-' . $user->id);
 
-        $startTime = microtime(true);
+        if ($cachedSlots && !empty($cachedSlots)) {
+            return response()->json(json_decode($cachedSlots));
+        }
 
         $availableSlots = [];
         $queriedSlots = [];
@@ -91,12 +93,6 @@ class HomeController extends Controller
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
 
         $excludingDays = $settings->excluded_days ?? [];
-
-        if ($debug) {
-            $endTime = microtime(true);
-            $executionTime = $endTime - $startTime;
-            echo "1 - Script execution time: $executionTime seconds" . '<br>';
-        }
 
         $rules = CustomSlot::where('calendar_id', $user->id)->orderBy('id', 'desc')->get();
 
@@ -126,65 +122,22 @@ class HomeController extends Controller
             }
         }
 
+        foreach ($queriedSlots as $index => $queriedSlot) {
+            foreach ($queriedSlots as $subindex => $subQueriedSlot) {
+                if ($subindex >= $index || $queriedSlot['language'] !== $subQueriedSlot['language']) {
+                    continue;
+                }
 
-        if ($debug) {
-            $endTime = microtime(true);
-            $executionTime = $endTime - $startTime;
-            echo "2 - Script execution time: $executionTime seconds" . '<br>';
-        }
+                $start = new \DateTime($queriedSlot['start']);
+                $end = new \DateTime($queriedSlot['end']);
+                $subStart = new \DateTime($subQueriedSlot['start']);
+                $subEnd = new \DateTime($subQueriedSlot['end']);
 
-
-        // OLD
-        if ($oldApproach) {
-            foreach ($queriedSlots as $index => $queriedSlot) {
-                foreach ($queriedSlots as $subindex => $subQueriedSlot) {
-                    if ($subindex >= $index) {
-                        continue;
-                    }
-
-                    $start = new \DateTime($queriedSlot['start']);
-                    $end = new \DateTime($queriedSlot['end']);
-                    $subStart = new \DateTime($subQueriedSlot['start']);
-                    $subEnd = new \DateTime($subQueriedSlot['end']);
-
-                    if (($start <= $subStart) && ($end >= $subEnd) && ($queriedSlot['language'] === $subQueriedSlot['language'])) {
-                        unset($queriedSlots[$subindex]);
-                    }
+                if (($start <= $subStart) && ($end >= $subEnd)) {
+                    unset($queriedSlots[$subindex]);
                 }
             }
         }
-        //END OLD
-
-        // NEW
-        if (!$oldApproach) {
-
-            foreach ($queriedSlots as $index => $queriedSlot) {
-                foreach ($queriedSlots as $subindex => $subQueriedSlot) {
-                    if ($subindex >= $index || $queriedSlot['language'] !== $subQueriedSlot['language']) {
-                        continue;
-                    }
-
-                    $start = new \DateTime($queriedSlot['start']);
-                    $end = new \DateTime($queriedSlot['end']);
-                    $subStart = new \DateTime($subQueriedSlot['start']);
-                    $subEnd = new \DateTime($subQueriedSlot['end']);
-
-                    if (($start <= $subStart) && ($end >= $subEnd)) {
-                        unset($queriedSlots[$subindex]);
-                    }
-                }
-            }
-
-        }
-        // END NEW
-
-
-        if ($debug) {
-            $endTime = microtime(true);
-            $executionTime = $endTime - $startTime;
-            echo "3 - Script execution time: $executionTime seconds" . '<br>';
-        }
-
 
         $dateRange = ['from' => $from, 'to' => $to];
 
@@ -201,15 +154,6 @@ class HomeController extends Controller
         });
 
         $transformed = [];
-
-
-
-        if ($debug) {
-            $endTime = microtime(true);
-            $executionTime = $endTime - $startTime;
-            echo "4 - Script execution time: $executionTime seconds" . '<br>';
-        }
-
 
         foreach ($mergedSlots as $slot) {
             if ($slot['start'] > Carbon::now()) {
@@ -246,13 +190,7 @@ class HomeController extends Controller
             }
         }
 
-
-        if ($debug) {
-            $endTime = microtime(true);
-            $executionTime = $endTime - $startTime;
-            echo "5 - Script execution time: $executionTime seconds" . '<br>';
-            die;
-        }
+        Redis::set('slots-' . $user->id, json_encode($transformed));
 
         return response()->json($transformed);
     }

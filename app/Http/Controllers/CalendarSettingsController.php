@@ -8,6 +8,7 @@ use App\Models\FormSettings;
 use App\Models\User;
 use App\Services\FormsSettingsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -105,6 +106,8 @@ class CalendarSettingsController extends Controller
             'alias' =>  'unique:users,alias,' . auth()->user()->id
         ])->validated();
 
+        Redis::del('slots-' . $data['calendar_id']);
+        
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
         $user = User::find(auth()->user()->id);
         if ($user) {

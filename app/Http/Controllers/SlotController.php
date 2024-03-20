@@ -9,6 +9,7 @@ use App\Services\SlotService;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -53,12 +54,13 @@ class SlotController extends Controller
 
     public function  createOrUpdate(Request $request)
     {
-
         $data = $request->all();
 
         if (!isset($data['alldata'])){
             $data['alldata'] = [];
         }
+
+        Redis::del('slots-' . $data['calendar_id']);
 
         CustomSlot::where(['calendar_id' => $data['calendar_id']])->delete();
 
