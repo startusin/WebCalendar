@@ -23,8 +23,9 @@ class CountryController extends Controller
     {
         $data = $request->all();
         $name = [];
+
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'name') !== false) {
+            if (str_contains($key, 'name')) {
                 $langKey = explode("-", $key);
                 $name[$langKey[0]] = $value;
             }
@@ -32,9 +33,9 @@ class CountryController extends Controller
 
         Country::create([
             'name' => $name,
-            "numeric_code" => $data['numeric_code'],
-            "alpha_code" => $data['alpha_code'],
-            "full_alpha_code" => $data['full_alpha_code'],
+            'numeric_code' => $data['numeric_code'],
+            'alpha_code' => $data['alpha_code'],
+            'full_alpha_code' => $data['full_alpha_code'],
         ]);
 
         return redirect()->route('admin.country.index');
@@ -50,20 +51,24 @@ class CountryController extends Controller
     {
         $data = $request->all();
         $name = [];
+
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'name') !== false) {
+            if (str_contains($key, 'name')) {
                 $langKey = explode("-", $key);
                 $name[$langKey[0]] = $value;
             }
         }
+
         $countryForUpdate['name'] = $name;
-        $countryForUpdate["numeric_code"] = $data['numeric_code'];
-        $countryForUpdate["alpha_code"] = $data['alpha_code'];
-        $countryForUpdate["full_alpha_code"] = $data['full_alpha_code'];
+        $countryForUpdate['numeric_code'] = $data['numeric_code'];
+        $countryForUpdate['alpha_code'] = $data['alpha_code'];
+        $countryForUpdate['full_alpha_code'] = $data['full_alpha_code'];
         $country = Country::find($data['id']);
+
         if (!$country) {
             abort(404);
         }
+
         $country->update($countryForUpdate);
         $country->save();
 

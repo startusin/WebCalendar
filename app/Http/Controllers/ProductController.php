@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\Languages;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -42,38 +41,40 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $titleL = [];
-        $shortDL = [];
-        $descriptL = [];
-        $priceL = [];
+        $titleLangs = [];
+        $shortDescriptionLangs = [];
+        $descriptionLangs = [];
+        $priceLangs = [];
+
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'title') !== false) {
+            if (str_contains($key, 'title')) {
                 $langKey = explode("_", $key);
-                $titleL[$langKey[0]] = $value;
+                $titleLangs[$langKey[0]] = $value;
             }
-            if (strpos($key, 'description') !== false) {
+
+            if (str_contains($key, 'description')) {
                 $langKey = explode("_", $key);
-                $descriptL[$langKey[0]] = $value;
+                $descriptionLangs[$langKey[0]] = $value;
             }
-            if (strpos($key, 'short_description') !== false) {
+
+            if (str_contains($key, 'short_description')) {
                 $langKey = explode("_", $key);
-                $shortDL[$langKey[0]] = $value;
+                $shortDescriptionLangs[$langKey[0]] = $value;
             }
-            if (strpos($key, 'price') !== false) {
+            if (str_contains($key, 'price')) {
                 $langKey = explode("_", $key);
-                $priceL[$langKey[0]] = $value;
+                $priceLangs[$langKey[0]] = $value;
             }
         }
 
-        $objToCreate = null;
-        $objToCreate['calendar_id'] = $data['calendar_id'];
-        $objToCreate['price'] = $priceL;
-        $objToCreate['max_qty'] = $data['max_qty'];
-        $objToCreate['description'] = $descriptL;
-        $objToCreate['short_description'] = $shortDL;
-        $objToCreate['title'] = $titleL;
-
-        Product::create($objToCreate);
+        Product::create([
+            'calendar_id' => $data['calendar_id'],
+            'price' => $priceLangs,
+            'max_qty' => $data['max_qty'],
+            'description' => $descriptionLangs,
+            'short_description' => $shortDescriptionLangs,
+            'title' => $titleLangs
+        ]);
 
         return redirect()->route('customer.product.index');
     }
@@ -91,45 +92,44 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
-        $titleL = [];
-        $shortDL = [];
-        $descriptL = [];
-        $priceL = [];
+        $titleLangs = [];
+        $shortDescriptionLangs = [];
+        $descriptionLangs = [];
+        $priceLangs = [];
 
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'title') !== false) {
+            if (str_contains($key, 'title')) {
                 $langKey = explode("_", $key);
-                $titleL[$langKey[0]] = $value;
+                $titleLangs[$langKey[0]] = $value;
             }
-            if (strpos($key, 'description') !== false) {
+            if (str_contains($key, 'description')) {
                 $langKey = explode("_", $key);
-                $descriptL[$langKey[0]] = $value;
+                $descriptionLangs[$langKey[0]] = $value;
             }
-            if (strpos($key, 'short_description') !== false) {
+            if (str_contains($key, 'short_description')) {
                 $langKey = explode("_", $key);
-                $shortDL[$langKey[0]] = $value;
+                $shortDescriptionLangs[$langKey[0]] = $value;
             }
-            if (strpos($key, 'price') !== false) {
+            if (str_contains($key, 'price')) {
                 $langKey = explode("_", $key);
-                $priceL[$langKey[0]] = $value;
+                $priceLangs[$langKey[0]] = $value;
             }
         }
-
-
-        $objToCreate = null;
-        $objToCreate['calendar_id'] = $data['calendar_id'];
-        $objToCreate['price'] = $priceL;
-        $objToCreate['max_qty'] = $data['max_qty'];
-        $objToCreate['description'] = $descriptL;
-        $objToCreate['short_description'] = $shortDL;
-        $objToCreate['title'] = $titleL;
 
         $product = Product::find($data['id']);
 
         if (!$product) {
             abort(404);
         }
-        $product->update($objToCreate);
+
+        $product->update([
+            'calendar_id' => $data['calendar_id'],
+            'price' => $priceLangs,
+            'max_qty' => $data['max_qty'],
+            'description' => $descriptionLangs,
+            'short_description' => $shortDescriptionLangs,
+            'title' => $titleLangs
+        ]);
 
         return redirect()->route('customer.product.index');
     }
@@ -145,8 +145,10 @@ class ProductController extends Controller
     public function changePriority(Request $request)
     {
         $data = $request->all();
+
         foreach ($data['idsArray'] as $key => $priority) {
             $product = Product::find($key);
+
             if ($product) {
                 $product['priority'] = $priority;
                 $product->save();

@@ -26,18 +26,24 @@ class TranslationsController extends Controller
     public function update(Request $request)
     {
         $data = $request->all();
+
         unset($data['_token']);
         unset($data['_method']);
-        $objToCreateorUpdate['calendar_id'] = $data['calendar_id'];
+
+        $objData['calendar_id'] = $data['calendar_id'];
+
         unset($data['calendar_id']);
-        $Unik = [];
+
+        $translations = [];
+
         foreach ($data as $key => $item) {
             $key = explode('_', $key);
-            $Unik[$key[1]][$key[0]] = $item;
+            $translations[$key[1]][$key[0]] = $item;
         }
-        $objToCreateorUpdate['translations'] = $Unik;
-        Translations::updateOrCreate(['calendar_id' => $objToCreateorUpdate['calendar_id']],
-            $objToCreateorUpdate);
+
+        $objData['translations'] = $translations;
+
+        Translations::updateOrCreate(['calendar_id' => $objData['calendar_id']], $objData);
 
         return redirect()->back();
     }

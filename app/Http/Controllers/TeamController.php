@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Emails\InvitedEmail;
-use App\Enums\Languages;
-use App\Models\Brunch;
 use App\Models\CalendarSettings;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,10 +28,10 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(), [
-            "email" => ['required', 'string'],
-            "first_name" => ['required', 'string'],
-            "last_name" => ['required', 'string'],
-            "excluded_permissions" => ['array']
+            'email' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'excluded_permissions' => ['array']
         ])->validated();
 
         $password = Str::random(10);
@@ -77,10 +75,10 @@ class TeamController extends Controller
     {
         $data = Validator::make($request->all(), [
             'id' => ['required', 'exists:users,id'],
-            "email" => ['required', 'string'],
-            "first_name" => ['required', 'string'],
-            "last_name" => ['required', 'string'],
-            "excluded_permissions" => ['array']
+            'email' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'excluded_permissions' => ['array']
         ])->validated();
 
         if (!isset($data['excluded_permissions'])) {

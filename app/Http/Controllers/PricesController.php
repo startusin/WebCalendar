@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductPrice;
-use App\Models\PromoCode;
-use App\Services\PromocodeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,9 +39,9 @@ class PricesController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(), [
-            "price" => ['required', 'numeric'],
-            "two-datetime" => ['required', 'string'],
-            "product_id" => ['required', 'exists:products,id'],
+            'price' => ['required', 'numeric'],
+            'two-datetime' => ['required', 'string'],
+            'product_id' => ['required', 'exists:products,id'],
         ])->validated();
 
         $date = explode(' - ', $data['two-datetime']);
@@ -70,8 +68,11 @@ class PricesController extends Controller
 
         foreach ($data['alldata'] as $item) {
             $product_id = $item['product'];
+
             unset($item['product']);
+
             $price = $item;
+
             ProductPrice::create([
                 'calendar_id' => $data['calendar_id'],
                 'product_id' => $product_id,
@@ -95,9 +96,9 @@ class PricesController extends Controller
     {
         $data = Validator::make($request->all(), [
             'id' => ['required'],
-            "price" => ['required', 'numeric'],
-            "two-datetime" => ['required', 'string'],
-            "product_id" => ['required', 'exists:products,id'],
+            'price' => ['required', 'numeric'],
+            'two-datetime' => ['required', 'string'],
+            'product_id' => ['required', 'exists:products,id'],
         ])->validated();
 
         $date = explode(' - ', $data['two-datetime']);

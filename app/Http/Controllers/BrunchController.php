@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Languages;
 use App\Models\Brunch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,10 +23,10 @@ class BrunchController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(), [
-            "time" => ['required', 'string'],
-            "price" => ['required', 'numeric'],
-            "quantity" => ['required', 'numeric'],
-            "excluded_days" => ['required', 'array']
+            'time' => ['required', 'string'],
+            'price' => ['required', 'numeric'],
+            'quantity' => ['required', 'numeric'],
+            'excluded_days' => ['required', 'array']
         ])->validated();
 
         $data['calendar_id'] = $request->calendar_user->id;
@@ -54,10 +53,10 @@ class BrunchController extends Controller
     {
         $data = Validator::make($request->all(), [
             'id' => ['required', 'exists:brunches,id'],
-            "time" => ['required', 'string'],
-            "price" => ['required', 'numeric'],
-            "quantity" => ['required', 'numeric'],
-            "excluded_days" => ['required', 'array']
+            'time' => ['required', 'string'],
+            'price' => ['required', 'numeric'],
+            'quantity' => ['required', 'numeric'],
+            'excluded_days' => ['required', 'array']
         ])->validated();
 
         $data['calendar_id'] = $request->calendar_user->id;

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Emails\AdminPurchaseEmail;
-use App\Emails\CSEmail;
 use App\Emails\PurchaseEmail;
 use App\Enums\Languages;
 use App\Models\BookedBrunch;
@@ -23,9 +22,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Stripe\StripeClient;
-
-//use Omnipay\Omnipay;
-//use App\Models\Payment;
 
 class PaymentController extends Controller
 {
@@ -70,8 +66,6 @@ class PaymentController extends Controller
 
     public function hook(Request $request)
     {
-        $endpointSecret = 'whsec_911f7bd8f396a4b56dba81150f41f06ebe2a1ff111a2eb1f41c55aea60b38920';
-
         $payload = @file_get_contents('php://input');
         $event = json_decode($payload);
 
@@ -105,12 +99,12 @@ class PaymentController extends Controller
                 $booking->payment_status = 'paid';
                 $booking->save();
 
-
                 $calendarId = $booking->slots()->first()->calendar_id;
                 $slotLanguage = $booking->slots()->first()->language;
-
                 $dateStartSlot = $booking->slots()->first()->start_date;
+
                 Carbon::setLocale($slotLanguage);
+
                 $dateStartSlot = $dateStartSlot->isoFormat('dddd D MMMM YYYY HH[h]mm');
                 $dateStartSlot = ucwords($dateStartSlot);
 
@@ -321,6 +315,7 @@ class PaymentController extends Controller
             })
             ->orderBy('id', 'desc')
             ->get();
+
         foreach ($productPrices as $range) {
             if ((int)$range['price']['participants'] <= (int)$quantity) {
 
@@ -385,10 +380,6 @@ class PaymentController extends Controller
 
                     if ($range->price['dynamicSelect'] === 'months') {
                         $month = strtolower($date->format('F'));
-
-                        $monthsRangeStartIndex = array_search(strtolower($range->price['start']), $months);
-                        $monthsRangeEndIndex = array_search(strtolower($range->price['end']), $months);
-
                         $monthsRangeStartIndex = (int)$range->price['start'];
                         $monthsRangeEndIndex = (int)$range->price['end'];
                         $currentMonthIndex = array_search($month, $months) + 1;

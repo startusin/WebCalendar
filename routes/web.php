@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-    Route::get("/send-notification", [\App\Http\Controllers\TaskController::class, 'sendNotification'])->name('sendNotification');
-
     Route::get("/locale/{lange}", [\App\Http\Controllers\LocalizationController::class, 'setLang'])->name('setLang');
     Route::get("/currentLanguage", [\App\Http\Controllers\LocalizationController::class, 'getCurrentLanguage'])->name('getCurrentLanguage');
 

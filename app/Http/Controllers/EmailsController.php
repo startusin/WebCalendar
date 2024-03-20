@@ -27,37 +27,37 @@ class EmailsController extends Controller
 
         foreach ($request->all() as $key => $value) {
 
-            if (strpos($key, 'cs-email') !== false) {
+            if (str_contains($key, 'cs-email')) {
                 $langKey = explode("_", $key);
                 $csEmail[$langKey[1]] = $value;
             }
 
-            if (strpos($key, 'purchase-email') !== false) {
+            if (str_contains($key, 'purchase-email')) {
                 $langKey = explode("_", $key);
                 $purchaseEmail[$langKey[1]] = $value;
             }
 
-            if (strpos($key, 'admin-email') !== false) {
+            if (str_contains($key, 'admin-email')) {
                 $langKey = explode("_", $key);
                 $adminEmail[$langKey[1]] = $value;
             }
 
-            if (strpos($key, 'item-email') !== false) {
+            if (str_contains($key, 'item-email')) {
                 $langKey = explode("_", $key);
                 $itemEmail[$langKey[1]] = $value;
             }
 
-            if (strpos($key, 'title-email-purchase') !== false) {
+            if (str_contains($key, 'title-email-purchase')) {
                 $langKey = explode("_", $key);
                 $purchaseEmailTitle[$langKey[1]] = $value;
             }
 
-            if (strpos($key, 'title-admin-purchase') !== false) {
+            if (str_contains($key, 'title-admin-purchase')) {
                 $langKey = explode("_", $key);
                 $adminEmailTitle[$langKey[1]] = $value;
             }
 
-            if (strpos($key, 'title-email-cs') !== false) {
+            if (str_contains($key, 'title-email-cs')) {
                 $langKey = explode("_", $key);
                 $csEmailTitle[$langKey[1]] = $value;
             }
@@ -95,14 +95,14 @@ class EmailsController extends Controller
         $smsRemindTime = $request->input('sms-remind-time') ?? 60;
 
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'sms-reminder') !== false) {
+            if (str_contains($key, 'sms-reminder')) {
                 $langKey = explode("_", $key);
                 $smsReminder[$langKey[1]] = $value;
             }
         }
 
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'sms-sender') !== false) {
+            if (str_contains($key, 'sms-sender')) {
                 $langKey = explode("_", $key);
                 $smsSender[$langKey[1]] = $value;
             }

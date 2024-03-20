@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Languages;
-use App\Models\BookedSlots;
 use App\Models\CustomSlot;
 use App\Services\SlotService;
-use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -34,12 +31,7 @@ class SlotController extends Controller
     {
         $languages = array_flip(Languages::getUserLanguages($request->calendar_user->languages));
         $fullslots = CustomSlot::where('calendar_id', $request->calendar_user->id)->first();
-        $slots = null;
-        if (!$fullslots) {
-            $slots = [];
-        } else {
-            $slots = $fullslots['period_type'];
-        }
+        $slots = !$fullslots ? [] : $fullslots['period_type'];
 
         return view('customer.slot.index', compact('languages', 'slots'));
     }
@@ -85,23 +77,21 @@ class SlotController extends Controller
     {
         $userLanguages = array_flip(Languages::getUserLanguages(auth()->user()->languages));
         $data = Validator::make($request->all(), [
-            "slot_id" => ['required'],
-            "quantity" => ['required'],
-            "datetimes" => ['required'],
-            "time_hour_start1" => ['required'],
-            "time_minute_start1" => ['required'],
-            "time_hour_start2" => ['required'],
-            "time_minute_start2" => ['required'],
+            'slot_id' => ['required'],
+            'quantity' => ['required'],
+            'datetimes' => ['required'],
+            'time_hour_start1' => ['required'],
+            'time_minute_start1' => ['required'],
+            'time_hour_start2' => ['required'],
+            'time_minute_start2' => ['required'],
             'is_available' => ['required'],
-            "language" => [
+            'language' => [
                 'required',
                 Rule::in($userLanguages),
             ]
         ])->validated();
 
-        $dateForCreate = $this->slotService->prepareSlot($data);
-
-        CustomSlot::create($dateForCreate);
+        CustomSlot::create($this->slotService->prepareSlot($data));
 
         return redirect()->route('customer.slot.index');
     }
@@ -118,23 +108,22 @@ class SlotController extends Controller
     {
         $userLang = array_flip(Languages::getUserLanguages(auth()->user()->languages));
         $data = Validator::make($request->all(), [
-            "slot_id" => ['required'],
-            "quantity" => ['required'],
-            "datetimes" => ['required'],
-            "time_hour_start1" => ['required'],
-            "time_minute_start1" => ['required'],
-            "time_hour_start2" => ['required'],
-            "time_minute_start2" => ['required'],
-            "is_available" => ['required'],
-            "language" => [
+            'slot_id' => ['required'],
+            'quantity' => ['required'],
+            'datetimes' => ['required'],
+            'time_hour_start1' => ['required'],
+            'time_minute_start1' => ['required'],
+            'time_hour_start2' => ['required'],
+            'time_minute_start2' => ['required'],
+            'is_available' => ['required'],
+            'language' => [
                 'required',
                 Rule::in($userLang),
             ]
         ])->validated();
 
-        $dataForUpdate = $this->slotService->prepareSlot($data);
         $slot = CustomSlot::findOrFail($data['slot_id']);
-        $slot->update($dataForUpdate);
+        $slot->update($this->slotService->prepareSlot($data));
 
         return redirect()->route('customer.slot.index');
     }

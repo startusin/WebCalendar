@@ -52,15 +52,14 @@ class PromocodeController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(), [
-            "calendar_id" => ['required', 'exists:users,id'],
-            "promocode" => ['required', 'string'],
-            "price" => ['required', 'numeric'],
-            "two-datetime" => ['required', 'string'],
-            "product_id" => ['required', 'exists:products,id'],
+            'calendar_id' => ['required', 'exists:users,id'],
+            'promocode' => ['required', 'string'],
+            'price' => ['required', 'numeric'],
+            'two-datetime' => ['required', 'string'],
+            'product_id' => ['required', 'exists:products,id'],
         ])->validated();
 
-        $dataForCreate = $this->promoService->transform($data);
-        PromoCode::create($dataForCreate);
+        PromoCode::create($this->promoService->transform($data));
 
         return redirect()->route('customer.promocode.index');
     }
@@ -79,14 +78,12 @@ class PromocodeController extends Controller
     {
         $data = Validator::make($request->all(), [
             'id' => ['required'],
-            "calendar_id" => ['required', 'exists:users,id'],
-            "promocode" => ['required', 'string'],
-            "price" => ['required', 'numeric'],
-            "two-datetime" => ['required', 'string'],
-            "product_id" => ['required', 'exists:products,id'],
+            'calendar_id' => ['required', 'exists:users,id'],
+            'promocode' => ['required', 'string'],
+            'price' => ['required', 'numeric'],
+            'two-datetime' => ['required', 'string'],
+            'product_id' => ['required', 'exists:products,id'],
         ])->validated();
-
-        $dataForUpdate = $this->promoService->transform($data);
 
         $promocode = PromoCode::find($data['id']);
 
@@ -94,7 +91,7 @@ class PromocodeController extends Controller
             abort(404);
         }
 
-        $promocode->update($dataForUpdate);
+        $promocode->update($this->promoService->transform($data));
 
         return redirect()->route('customer.promocode.index');
     }

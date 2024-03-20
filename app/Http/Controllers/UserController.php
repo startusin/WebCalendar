@@ -14,7 +14,6 @@ use App\Models\User;
 use App\Services\FormsSettingsService;
 use App\Services\LangService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -47,11 +46,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = Validator::make($request->all(), [
-            "first_name" => ['required', 'string'],
-            "last_name" => ['required', 'string'],
-            "email" => ['required', 'email', Rule::unique('users', 'email')],
-            "password" => ['required', 'string'],
-            "languages" => ['required', 'array'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            'password' => ['required', 'string'],
+            'languages' => ['required', 'array'],
         ])->validated();
 
         $data['role'] = Role::customer;
@@ -59,19 +58,17 @@ class UserController extends Controller
         $user['alias'] = $user->id;
         $user->save();
 
-        $AllCountries = Country::all();
-        foreach ($AllCountries as $item) {
-            $country = CalendarCountry::create([
+        foreach (Country::all() as $item) {
+            CalendarCountry::create([
                 'calendar_id' => $user->id,
                 'country_id' => $item->id,
                 'is_enabled' => true
             ]);
         }
-        $translations = $this->langService->getStaticPhrases();
 
         Translations::create([
             'calendar_id' => $user->id,
-            'translations' => $translations,
+            'translations' => $this->langService->getStaticPhrases(),
         ]);
 
         $settings = [];
@@ -82,12 +79,14 @@ class UserController extends Controller
         $settings['excluded_days'] = ['saturday', 'sunday'];
         $settings['logo'] = null;
         $settings['brunch_text'] = null;
+
         foreach (Languages::getUserLanguages($user->languages) as $key => $lang) {
             $settings['interval'][$key] = 60;
             $settings['default_quantity'][$key] = 3;
             $settings['working_hr_start'][$key] = '08:00';
             $settings['working_hr_end'][$key] = '20:00';
         }
+
         $settings['language'] = $user->languages[0];
         CalendarSettings::create($settings);
 
@@ -120,19 +119,23 @@ class UserController extends Controller
     {
         $data = Validator::make($request->all(), [
             'user_id' => ['required'],
-            "first_name" => ['required', 'string'],
-            "last_name" => ['required', 'string'],
-            "email" => ['required', 'email', Rule::unique('users', 'email')->ignore($request->user_id)],
-            "password" => [''],
-            "languages" => ['required', 'array']
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($request->user_id)],
+            'password' => [''],
+            'languages' => ['required', 'array']
         ])->validated();
+
         $user = User::find($data['user_id']);
+
         if (!$user) {
             abort(404);
         }
-        if ($data['password'] == null) {
+
+        if (!$data['password'] || empty($data['password'])) {
             unset($data['password']);
         }
+
         $user->update($data);
 
         return redirect()->route('admin.user.index');

@@ -19,6 +19,7 @@ class HomeController extends Controller
     {
         return Languages::getUserLanguages($request->calendar_user->languages);
     }
+
     /**
      * Show the application dashboard.
      *
@@ -69,6 +70,7 @@ class HomeController extends Controller
             'admin' => $admin
         ]);
     }
+
     /**
      * Show the application dashboard.
      *
@@ -100,19 +102,19 @@ class HomeController extends Controller
                 case 'customs':
                     $startDateTime = implode('-', [$currentYear, $rule['period_type']['start']]);
                     $endDateTime = implode('-', [$currentYear, $rule['period_type']['end']]);
-                    $arr = generateCustomsSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
+                    $arr = $this->generateCustomSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'days' || in_array( strtolower($rule['period_type']['dynamicSelect']), $daysOfWeek):
-                    $arr = generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
+                    $arr = $this->generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'allWeeks':
-                    $arr = generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
+                    $arr = $this->generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'months':
-                    $arr = generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
+                    $arr = $this->generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
             }
@@ -163,16 +165,19 @@ class HomeController extends Controller
                     ->where('calendar_id', '=', $user->id)
                     ->pluck('id')
                     ->toArray();
+
                 if (!isset($slot['limit'])) {
                     foreach ($user->languages as $lang) {
-                        if ($lang == $slot['language']) {
+                        if ($lang === $slot['language']) {
                             $slot['limit'] = $user->settings['default_quantity'][$lang];
                         }
                     }
                 }
+
                 if (!$slotQuery && $slot['is_available'] == 1) {
                     $slot['booked'] = 0;
                     $transformed[] = $slot;
+
                     continue;
                 }
 
@@ -248,48 +253,49 @@ class HomeController extends Controller
 
         return $result;
     }
-}
 
-    function generateWeeksSlots($from, $to, $startRangeWeek, $endRangeWeek, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
-        $objects = array();
-        $excludedDays = transformDays($excludedDays);
-
+    private function generateWeeksSlots($from, $to, $startRangeWeek, $endRangeWeek, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
+        $objects = [];
+        $excludedDays = $this->transformDays($excludedDays);
         $startDate = new \DateTime($from);
         $endDate = new \DateTime($to);
 
         while ($startDate <= $endDate) {
-            $currentWeekDay = $startDate->format('N'); // 1 для понеділка, 7 для неділі
+            $currentWeekDay = $startDate->format('N');
+
             if ($currentWeekDay >= $startRangeWeek && $currentWeekDay <= $endRangeWeek && !in_array($currentWeekDay, $excludedDays)) {
                 $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
                 $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
-                $object = array(
+                $object = [
                     'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
                     'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
                     'timestamp' => $startDateTime->getTimestamp(),
                     'language' => $language,
                     'limit' => $limit,
                     'is_available' => $isAvailable
-                );
+                ];
+
                 $objects[] = $object;
             }
+
             $startDate->modify('+1 day');
         }
         return $objects;
     }
 
-    function generateMonthSlots($from, $to, $startRangeMonth, $endRangeMonth, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
-        $objects = array();
-        $excludedDays = transformDays($excludedDays);
-
+    private function generateMonthSlots($from, $to, $startRangeMonth, $endRangeMonth, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
+        $objects = [];
+        $excludedDays = $this->transformDays($excludedDays);
         $startDate = new \DateTime($from);
         $endDate = new \DateTime($to);
 
         while ($startDate <= $endDate) {
             $currentMonth = (int)$startDate->format('m');
+
             if ($currentMonth >= $startRangeMonth && $currentMonth <= $endRangeMonth) {
-                $currentDayOfWeek = (int)$startDate->format('N'); // 1 - Понеділок, 7 - Неділя
+                $currentDayOfWeek = (int)$startDate->format('N');
+
                 if (!in_array($currentDayOfWeek, $excludedDays)) {
-                    // Створення об'єкту з датою початку та кінця на основі заданих годин
                     $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
                     $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
                     $object = array(
@@ -300,65 +306,70 @@ class HomeController extends Controller
                         'limit' => $limit,
                         'is_available' => $isAvailable
                     );
+                    
                     $objects[] = $object;
                 }
             }
+
             $startDate->modify('+1 day');
         }
 
         return $objects;
     }
 
-
-    function generateCustomsSlots($from, $to, $startCustomDate, $endCustomDate, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
-        $objects = array();
-        $excludedDays = transformDays($excludedDays);
+    private function generateCustomSlots($from, $to, $startCustomDate, $endCustomDate, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
+        $objects = [];
+        $excludedDays = $this->transformDays($excludedDays);
         $startDate = new \DateTime($from);
         $endDate = new \DateTime($to);
-
         $startCustomDateTime = new \DateTime($startCustomDate);
         $endCustomDateTime = new \DateTime($endCustomDate);
 
         while ($startDate <= $endDate) {
             if ($startDate >= $startCustomDateTime && $startDate <= $endCustomDateTime) {
-                $currentWeekDay = $startDate->format('N'); // 1 для понеділка, 7 для неділі
+                $currentWeekDay = $startDate->format('N');
+
                 if (!in_array($currentWeekDay, $excludedDays)) {
                     $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
                     $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
-                    $object = array(
+                    $object = [
                         'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
                         'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
                         'timestamp' => $startDateTime->getTimestamp(),
                         'language' => $language,
                         'limit' => $limit,
                         'is_available' => $isAvailable
-                    );
+                    ];
+
                     $objects[] = $object;
                 }
             }
+
             $startDate->modify('+1 day');
         }
 
         return $objects;
     }
 
-function transformDays($array) {
-    $daysMap = array(
-        'monday' => 1,
-        'tuesday' => 2,
-        'wednesday' => 3,
-        'thursday' => 4,
-        'friday' => 5,
-        'saturday' => 6,
-        'sunday' => 7
-    );
+    private function transformDays($array) {
+        $daysMap = [
+            'monday' => 1,
+            'tuesday' => 2,
+            'wednesday' => 3,
+            'thursday' => 4,
+            'friday' => 5,
+            'saturday' => 6,
+            'sunday' => 7
+        ];
 
-    $transformedDays = array();
+        $transformedDays = [];
 
-    foreach ($array as $day) {
-        if (array_key_exists(strtolower($day), $daysMap)) {
-            $transformedDays[] = $daysMap[strtolower($day)];
+        foreach ($array as $day) {
+            if (array_key_exists(strtolower($day), $daysMap)) {
+                $transformedDays[] = $daysMap[strtolower($day)];
+            }
         }
+
+        return $transformedDays;
     }
-    return $transformedDays;
 }

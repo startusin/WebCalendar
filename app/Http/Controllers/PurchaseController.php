@@ -6,7 +6,6 @@ use App\Models\BookedBrunch;
 use App\Models\BookedSlots;
 use App\Models\Brunch;
 use App\Models\CalendarCountry;
-use App\Models\CustomSlot;
 use App\Models\BookingProduct;
 use App\Models\Bookings;
 use App\Models\OrderComments;
@@ -14,11 +13,8 @@ use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\PromoCode;
 use App\Models\User;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Stripe\StripeClient;
-use function Laravel\Prompts\search;
 
 class PurchaseController extends Controller
 {
@@ -31,9 +27,7 @@ class PurchaseController extends Controller
     {
         $data = $request->all();
         $booking = Bookings::find($data['id']);
-        $booking->update([
-            'payment_status' => $data['status']
-        ]);
+        $booking->update(['payment_status' => $data['status']]);
 
         return response()->json(['message' => 'Successfully updated'], 200);
     }
@@ -46,7 +40,8 @@ class PurchaseController extends Controller
             ->with('bookingProducts')
             ->whereHas('slots', function ($query) use ($userId) {
                 $query->where('calendar_id', $userId);
-            })->get()
+            })
+            ->get()
             ->map(function ($booking) use ($request) {
                 $totalSoldPrice = $booking->bookingProducts->sum('sold_price');
                 $totalSum = $totalSoldPrice;
@@ -54,8 +49,7 @@ class PurchaseController extends Controller
                 $month = date('m', strtotime($booking->created_at));
                 $id = str_pad($booking->id, 4, '0', STR_PAD_LEFT);
                 $orderNumber = $year . $month . $id;
-
-                $paymentLinkEnd = $booking->type == 'brunch' ? "?type=brunch" : "";
+                $paymentLinkEnd = $booking->type == 'brunch' ? '?type=brunch' : '';
                 $paymentLinkStart = "/payment/" . $booking->id;
 
                 return (object)[
@@ -69,6 +63,7 @@ class PurchaseController extends Controller
             });
 
         $sortBy = \request()->input('SortBy');
+
         if ($sortBy == 'asc') {
             $sortBy = 'desc';
             $purchases = $purchases->sortBy(\request()->input('SortName'));
@@ -76,6 +71,7 @@ class PurchaseController extends Controller
             $sortBy = 'asc';
             $purchases = $purchases->sortByDesc(\request()->input('SortName'));
         }
+
         $search = \request()->input('search') ?? "";
         $purchases = collect($purchases)->filter(function ($item) use ($search) {
             return stripos($item->status, $search) !== false ||
@@ -123,7 +119,6 @@ class PurchaseController extends Controller
         if (isset($data['productIds'])) {
             foreach ($data['productIds'] as $item) {
                 $product = Product::find($item);
-
                 $productArr = $this->calculateProductPrice($product, $data['CurrentLang'], $startDate, $calendar_id);
 
                 array_push($productPrice, $productArr);
@@ -138,31 +133,28 @@ class PurchaseController extends Controller
         $data = $request->all();
         $startDate = new \DateTime($data['startTime']);
         $product = Product::find($data['productId']);
-        $calendar_id = $data['calendarId'];
+        $calendarId = $data['calendarId'];
 
-        $ProductPrice = $this->calculateProductPrice($product, $data['language'], $startDate, $calendar_id, $data['quantity']);;
-
-        return $ProductPrice;
+        return $this->calculateProductPrice($product, $data['language'], $startDate, $calendarId, $data['quantity']);
     }
 
 
     public function index(Request $request)
     {
         $data = $request->all();
-
         $admin = $request->get('direct-booking') === 'true' && auth()->user();
 
         $slotsFront = [];
         $user = User::findOrFail((int)$request->calendarId);
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $vat = $user->settings['vat'];
         $countries = CalendarCountry::with('country')
             ->where('calendar_id', $user->id)
             ->where('is_enabled', 1)
             ->orderBy('priority')
             ->get();
-        $vat = $user->settings['vat'];
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
 
-        foreach ($data['slots'] as $key => $dateTime) {
+        foreach ($data['slots'] as $dateTime) {
             foreach ($dateTime as $items) {
                 foreach ($items as $item) {
                     $slotObject = [
@@ -181,13 +173,12 @@ class PurchaseController extends Controller
         $slots = $slotsFront[0];
         $formSettings = [];
 
-
         foreach ($user->formSettings as $item) {
             $formSettings["$item->key"] = $item->is_required;
         }
+
         if (isset($data['type']) && $data['type'] === 'branch') {
             $brunch = Brunch::findOrFail((int)$data['branchId']);
-
             $isBrunch = true;
             $totalQuantity = (int)$data['branchQty'];
             $sousSum = (int)$data['branchQty'] * ($brunch->price);
@@ -224,13 +215,11 @@ class PurchaseController extends Controller
             }
         }
 
+        $productData = [];
         $totalQuantity = 0;
         $sousSum = 0;
-        $totalSum = 0;
-
-        $productData = [];
-
         $calendar_id = $data['calendarId'];
+
         foreach ($products as $item) {
             $price = $this->calculateProductPrice($item, $slots['language'], $slots['startDateSlot'], $calendar_id, $item['quantity']);
 
@@ -239,6 +228,7 @@ class PurchaseController extends Controller
 
             $productData[] = ['product' => $item, 'price' => (float)$price['price'][$slots['language']]];
         }
+
         $vat = ($sousSum * $vat / 100);
         $totalSum = $sousSum;
         $isBrunch = false;
@@ -255,10 +245,9 @@ class PurchaseController extends Controller
     public function makeSlot(Request $request)
     {
         $data = $request->all();
-        $adminValue = $data['adminValue'] ?? false;
         $data['calendarId'] = explode('?', $data['calendarId'])[0];
-
         $data['slots'] = json_decode($data['slots']);
+
         $bookedSlot = BookedSlots::create([
             'start_date' => $data['slots']->startDateSlot->date,
             'end_date' => $data['slots']->endDateSlot->date,
@@ -300,12 +289,13 @@ class PurchaseController extends Controller
             return $booking;
         }
 
-        $calendar_id = $data['calendarId'];
+        $calendarId = $data['calendarId'];
+
         foreach ($data['ProductQuantity'] as $id => $item) {
             $product = Product::find($id);
             $language = $data['slots']->language;
             $date = new \DateTime($data['slots']->startDateSlot->date);
-            $productPrice = $this->calculateProductPrice($product, $language, $date, $calendar_id, $item['productQuantity']);
+            $productPrice = $this->calculateProductPrice($product, $language, $date, $calendarId, $item['productQuantity']);
 
             $promoPrice = PromoCode::find((int)$item['productPromo']);
             $soldPrice = $promoPrice['price'] ?? (int)$item['productQuantity'] * (float)$productPrice['price'][$language];
@@ -437,10 +427,6 @@ class PurchaseController extends Controller
 
                     if ($range->price['dynamicSelect'] === 'months') {
                         $month = strtolower($date->format('F'));
-
-                        $monthsRangeStartIndex = array_search(strtolower($range->price['start']), $months);
-                        $monthsRangeEndIndex = array_search(strtolower($range->price['end']), $months);
-
                         $monthsRangeStartIndex = (int)$range->price['start'];
                         $monthsRangeEndIndex = (int)$range->price['end'];
                         $currentMonthIndex = array_search($month, $months) + 1;

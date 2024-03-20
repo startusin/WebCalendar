@@ -41,10 +41,13 @@ class CalendarSettingsController extends Controller
     public function storeCountry(Request $request)
     {
         $country = $request->input('country');
-        if ($country != null) {
+
+        if ($country) {
             $settings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
             $countriesArray = $settings['countries'] ?? [];
+
             array_push($countriesArray, $country);
+
             $settings['countries'] = $countriesArray;
             $settings->save();
         }
@@ -69,15 +72,18 @@ class CalendarSettingsController extends Controller
             $settings['excluded_days'] = ['saturday', 'sunday'];
             $settings['logo'] = null;
             $settings['brunch_text'] = null;
+
             foreach ($langs as $key => $lang) {
                 $settings['interval'][$key] = 60;
                 $settings['default_quantity'][$key] = 3;
                 $settings['working_hr_start'][$key] = '08:00';
                 $settings['working_hr_end'][$key] = '20:00';
             }
+
             $settings['countries'] = ['France', 'English'];
             $settings['language'] = 'en';
         }
+
         if ($settings['countries'] == null) {
             $settings['countries'] = ['France', 'English'];
             $settings->save();
@@ -115,103 +121,112 @@ class CalendarSettingsController extends Controller
         ])->validated();
 
         Redis::del('slots-' . $data['calendar_id']);
-        
+
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
         $user = User::find(auth()->user()->id);
+
         if ($user) {
             $user['alias'] = $data['alias'];
             $user->save();
         }
+
         $intervalLang = [];
+        $quantity = [];
+        $workingHrStart = [];
+        $workingHrEnd = [];
+
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'interval') !== false) {
+            if (str_contains($key, 'interval')) {
                 $langKey = explode("-", $key);
                 $intervalLang[$langKey[0]] = $value;
             }
         }
 
-        $quantity = [];
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'default_quantity') !== false) {
+            if (str_contains($key, 'default_quantity')) {
                 $langKey = explode("-", $key);
                 $quantity[$langKey[0]] = $value;
             }
         }
 
-        $workingHrStart = [];
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'working_hr_start') !== false) {
+            if (str_contains($key, 'working_hr_start')) {
                 $langKey = explode("-", $key);
                 $workingHrStart[$langKey[0]] = $value;
             }
         }
 
-        $workingHrEnd = [];
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'working_hr_end') !== false) {
+            if (str_contains($key, 'working_hr_end')) {
                 $langKey = explode("-", $key);
                 $workingHrEnd[$langKey[0]] = $value;
             }
         }
 
         if (isset($data['logo'])) {
-            if ($oldData != null && $oldData['logo'] != null) {
+            if ($oldData && $oldData['logo']) {
                 Storage::disk('public')->delete($oldData['logo']);
             }
+
             $data['logo'] = Storage::disk('public')->put('/images', $data['logo']);
-        } elseif ($oldData != null && $oldData['logo'] != null) {
+        } elseif ($oldData && $oldData['logo']) {
             $data['logo'] = $oldData['logo'];
         }
         if (isset($data['banner'])) {
-            if ($oldData != null && $oldData['banner'] != null) {
+            if ($oldData && $oldData['banner']) {
                 Storage::disk('public')->delete($oldData['banner']);
             }
+
             $data['banner'] = Storage::disk('public')->put('/images', $data['banner']);
-        } elseif ($oldData != null && $oldData['banner'] != null) {
+        } elseif ($oldData && $oldData['banner']) {
             $data['banner'] = $oldData['banner'];
         }
 
         if (isset($data['bg_image'])) {
-            if ($oldData != null && $oldData['bg_image'] != null) {
+            if ($oldData && $oldData['bg_image']) {
                 Storage::disk('public')->delete($oldData['bg_image']);
             }
+
             $data['bg_image'] = Storage::disk('public')->put('/images', $data['bg_image']);
-        } elseif ($oldData != null && $oldData['bg_image'] != null) {
+        } elseif ($oldData && $oldData['bg_image']) {
             $data['bg_image'] = $oldData['bg_image'];
         }
 
         $calendarSettings = CalendarSettings::where('calendar_id', auth()->user()->id)->first();
-        $dataForUpdateOrCreate['calendar_id'] = $data['calendar_id'];
-        $dataForUpdateOrCreate['primary_color'] = $data['primary_color'];
-        $dataForUpdateOrCreate['working_hr_start'] = $workingHrStart;
-        $dataForUpdateOrCreate['working_hr_end'] = $workingHrEnd;
-        $dataForUpdateOrCreate['secondary_color'] = $data['secondary_color'];
-        $dataForUpdateOrCreate['bg_color'] = $data['bg_color'];
-        $dataForUpdateOrCreate['bg_image'] = $data['bg_image'] ?? null;
-        $dataForUpdateOrCreate['logo'] = $data['logo'] ?? null;
-        $dataForUpdateOrCreate['default_quantity'] = $quantity;
-        $dataForUpdateOrCreate['banner'] = $data['banner'] ?? null;
-        $dataForUpdateOrCreate['excluded_days'] = $data['excluded_days'] ?? null;
-        $dataForUpdateOrCreate['interval'] = $intervalLang;
-        $dataForUpdateOrCreate['language'] = $data['language'];
-        $dataForUpdateOrCreate['vat'] = $data['vat'];
+
+        $calendarSettingsData = [
+            'calendar_id' => $data['calendar_id'],
+            'primary_color' => $data['primary_color'],
+            'working_hr_start' => $workingHrStart,
+            'working_hr_end' => $workingHrEnd,
+            'secondary_color' => $data['secondary_color'],
+            'bg_color' => $data['bg_color'],
+            'bg_image' => $data['bg_image'] ?? null,
+            'logo' => $data['logo'] ?? null,
+            'default_quantity' => $quantity,
+            'banner' => $data['banner'] ?? null,
+            'excluded_days' => $data['excluded_days'] ?? null,
+            'interval' => $intervalLang,
+            'language' => $data['language'],
+            'vat' => $data['vat']
+        ];
 
         if (!$calendarSettings) {
-            $dataForUpdateOrCreate['countries'] = ['English', 'France'];
-            CalendarSettings::create($dataForUpdateOrCreate);
+            $calendarSettingsData['countries'] = ['English', 'France'];
+            CalendarSettings::create($calendarSettingsData);
         } else {
-            $calendarSettings->update($dataForUpdateOrCreate);
+            $calendarSettings->update($calendarSettingsData);
         }
 
         $settings = FormSettings::where('calendar_id', auth()->user()->invited_by ?? auth()->user()->id)->get();
-        $lenght = count($settings);
 
-        if ($lenght == 0) {
+        if (count($settings) <= 0) {
             $calendar_id = auth()->user()->invited_by ?? auth()->user()->id;
-            foreach ($this->formsSettingsService->getFields() as $key => $isRequired) {
+
+            foreach ($this->formsSettingsService->getFields() as $key => $value) {
                 FormSettings::create([
                     'key' => $key,
-                    'is_required' => $isRequired,
+                    'is_required' => $value,
                     'calendar_id' => $calendar_id
                 ]);
             }
@@ -236,12 +251,9 @@ class CalendarSettingsController extends Controller
     {
         $data = $request->all();
         $settingsForm = FormSettings::find($data['id']);
+
         if ($settingsForm) {
-            if ($settingsForm['is_required'] == 0) {
-                $settingsForm['is_required'] = 1;
-            } else {
-                $settingsForm['is_required'] = 0;
-            }
+            $settingsForm['is_required'] = (int)!$settingsForm['is_required'];
             $settingsForm->save();
         }
 
@@ -260,60 +272,63 @@ class CalendarSettingsController extends Controller
         $footerText = [];
         $policyTitle1 = [];
         $policyContent1 = [];
-
         $policyTitle2 = [];
         $policyContent2 = [];
-
         $policyTitle3 = [];
         $policyContent3 = [];
+
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'footer_text') !== false) {
+            if (str_contains($key, 'footer_text')) {
                 $langKey = explode("-", $key);
                 $footerText[$langKey[0]] = $value;
             }
 
-            if (strpos($key, 'policy_1_title') !== false) {
+            if (str_contains($key, 'policy_1_title')) {
                 $langKey = explode("-", $key);
                 $policyTitle1[$langKey[0]] = $value;
             }
 
-            if (strpos($key, 'policy_1_content') !== false) {
+            if (str_contains($key, 'policy_1_content')) {
                 $langKey = explode("-", $key);
                 $policyContent1[$langKey[0]] = $value;
             }
 
-            if (strpos($key, 'policy_2_title') !== false) {
+            if (str_contains($key, 'policy_2_title')) {
                 $langKey = explode("-", $key);
                 $policyTitle2[$langKey[0]] = $value;
             }
 
-            if (strpos($key, 'policy_2_content') !== false) {
+            if (str_contains($key, 'policy_2_content')) {
                 $langKey = explode("-", $key);
                 $policyContent2[$langKey[0]] = $value;
             }
 
-            if (strpos($key, 'policy_3_title') !== false) {
+            if (str_contains($key, 'policy_3_title')) {
                 $langKey = explode("-", $key);
                 $policyTitle3[$langKey[0]] = $value;
             }
 
-            if (strpos($key, 'policy_3_content') !== false) {
+            if (str_contains($key, 'policy_3_content')) {
                 $langKey = explode("-", $key);
                 $policyContent3[$langKey[0]] = $value;
             }
         }
+
         $policy1 = [
             'title' => $policyTitle1,
             'content' => $policyContent1,
         ];
+
         $policy2 = [
             'title' => $policyTitle2,
             'content' => $policyContent2,
         ];
+
         $policy3 = [
             'title' => $policyTitle3,
             'content' => $policyContent3,
         ];
+
         $settings = CalendarSettings::where('calendar_id', auth()->user()->ivited_by ?? auth()->user()->id)->first();
         $settings->footer_text = $footerText;
         $settings->policy_1 = $policy1;
@@ -337,11 +352,13 @@ class CalendarSettingsController extends Controller
         $data = $request->all();
 
         $settings = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
+
         if (!$settings) {
             abort(404);
         }
-        $settings['custom_styles'] = $data['custom_styles'] ?? "";
-        $settings['custom_script'] = $data['custom_script'] ?? "";
+
+        $settings['custom_styles'] = $data['custom_styles'] ?? '';
+        $settings['custom_script'] = $data['custom_script'] ?? '';
         $settings->save();
 
         return redirect()->back();

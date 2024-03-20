@@ -12,11 +12,11 @@ class CalendarCountryController extends Controller
     {
         $id = auth()->user()->invited_by ?? auth()->user()->id;
         $countries = CalendarCountry::where('calendar_id', $id)->get();
-
         $allCountries = Country::all();
+
         if (count($countries) <= 0) {
             foreach ($allCountries as $item) {
-                $country = CalendarCountry::create([
+                CalendarCountry::create([
                     'calendar_id' => $id,
                     'country_id' => $item->id,
                     'is_enabled' => true
@@ -24,10 +24,11 @@ class CalendarCountryController extends Controller
             }
 
         }
-        if (count($countries) > 0 && count($countries) != count($allCountries)) {
+
+        if (count($countries) > 0 && count($countries) !== count($allCountries)) {
             foreach ($allCountries as $item) {
                 if (!$countries->contains('country_id', $item->id)) {
-                    $country = CalendarCountry::create([
+                    CalendarCountry::create([
                         'calendar_id' => $id,
                         'country_id' => $item->id,
                         'is_enabled' => true
@@ -35,6 +36,7 @@ class CalendarCountryController extends Controller
                 }
             }
         }
+
         $countries = CalendarCountry::with('country')->where('calendar_id', $id)->orderBy('priority')->get();
 
         return view('customer.calendarCountry.index', compact('countries'));
@@ -43,6 +45,7 @@ class CalendarCountryController extends Controller
     public function getAllCountries()
     {
         $countries = Country::all();
+
         return view('customer.calendarCountry.AllCountry', compact('countries'));
     }
 
@@ -50,10 +53,12 @@ class CalendarCountryController extends Controller
     {
         $data = $request->all();
         $calendarCountry = CalendarCountry::find($data['id']);
+
         if (!$calendarCountry) {
             abort(404);
         }
-        $calendarCountry['is_enabled'] = $calendarCountry['is_enabled'] == false ? true : false;
+
+        $calendarCountry['is_enabled'] = !(bool)$calendarCountry['is_enabled'];
         $calendarCountry->save();
 
         return response()->json(200);
@@ -62,8 +67,10 @@ class CalendarCountryController extends Controller
     public function changePriority(Request $request)
     {
         $data = $request->all();
+
         foreach ($data['idsArray'] as $key => $priority) {
             $country = CalendarCountry::find($key);
+
             if ($country) {
                 $country['priority'] = $priority;
                 $country->save();
