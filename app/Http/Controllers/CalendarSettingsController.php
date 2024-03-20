@@ -57,7 +57,7 @@ class CalendarSettingsController extends Controller
 
     public function createCountry()
     {
-        return view('customer.calendarSettings.CreateCountry');
+        return view('customer.calendarSettings.createCountry');
     }
 
     public function edit()
