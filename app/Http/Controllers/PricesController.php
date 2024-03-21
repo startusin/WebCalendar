@@ -59,7 +59,6 @@ class PricesController extends Controller
     public function createOrUpdate(Request $request)
     {
         $data = $request->all();
-
         if (!isset($data['alldata'])) {
             $data['alldata'] = [];
         }

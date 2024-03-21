@@ -38,7 +38,7 @@ class PromocodeController extends Controller
     {
         $promocode = PromoCode::findOrFail($id);
         $promocode['product_title'] = Product::select('title')->find($promocode->product_id);
-
+        $promocode['language'] = \request()->calendar_user->settings->language;
         return $promocode;
     }
 

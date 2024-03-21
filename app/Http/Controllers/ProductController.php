@@ -27,7 +27,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::findOrFail($id);
-
+        $product['language'] = \request()->calendar_user->settings->language;
         return $product;
     }
 

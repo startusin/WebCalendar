@@ -524,10 +524,10 @@ $(document).ready(function () {
         $.ajax({
             url: route,
             success: function (response) {
-                $('#productTitle').text(response.title);
-                $('#productShortDesc').text(response.short_description);
-                $('#productDesc').text(response.description);
-                $('#productPrice').text(response.price);
+                $('#productTitle').text(response.title[response.language]);
+                $('#productShortDesc').text(response.short_description[response.language]);
+                $('#productDesc').text(response.description[response.language]);
+                $('#productPrice').text(response.price[response.language]);
                 $('#productMaxQty').text(response.max_qty);
             }
         })
@@ -631,7 +631,7 @@ $(document).ready(function () {
                 $('#promocodePrice').text(response.price);
                 $('#promocodeStartDate').text(moment.utc(response.start_date).format('YYYY-MM-DD HH:mm:ss'));
                 $('#promocodeEndDate').text(moment.utc(response.end_date).format('YYYY-MM-DD HH:mm:ss'));
-                $('#promocodeProduct').text(response.product_title.title);
+                $('#promocodeProduct').text(response.product_title.title[response.language]);
             }
         })
     });
