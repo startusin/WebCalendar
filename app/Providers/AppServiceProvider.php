@@ -21,11 +21,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        config(['session.domain' => Request::getHost()]);
+        $cookieDomain = env('MAIN_COOKIE_DOMAIN');
+
+        config(['session.domain' => $cookieDomain]);
 
         $headers = App::make('request')->header('X-Forwarded-Host');
 
-        if ($headers && !empty($headers)) {
+        if ($headers && !empty($headers) && !str_contains($headers, $cookieDomain)) {
             config(['session.domain' => '.' . $headers]);
         }
     }
