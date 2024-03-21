@@ -78,7 +78,11 @@ class HomeController extends Controller
      */
     public function slots(User $user, Request $request)
     {
-        $cachedSlots = Redis::get('slots-' . $user->id);
+        $from = $request->get('from');
+        $to = $request->get('to');
+        $hash = md5($from . ':' . $to);
+
+        $cachedSlots = Redis::get('slots-' . $user->id . '-' . $hash);
 
         if ($cachedSlots && !empty($cachedSlots)) {
             return response()->json(json_decode($cachedSlots));
@@ -87,9 +91,6 @@ class HomeController extends Controller
         $availableSlots = [];
         $queriedSlots = [];
         $currentYear = date('Y');
-
-        $from = $request->get('from');
-        $to = $request->get('to');
 
         $settings = CalendarSettings::where('calendar_id', $user->id)->first();
         $excludingDays = $settings->excluded_days ?? [];
@@ -191,7 +192,7 @@ class HomeController extends Controller
             }
         }
 
-        Redis::set('slots-' . $user->id, json_encode($transformed));
+        Redis::set('slots-' . $user->id . '-' . $hash, json_encode($transformed));
 
         return response()->json($transformed);
     }
