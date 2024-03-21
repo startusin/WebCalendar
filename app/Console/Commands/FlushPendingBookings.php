@@ -44,8 +44,15 @@ class FlushPendingBookings extends Command
 
             $result->delete();
         }
+
         foreach ($calendarIds as $id) {
-            Redis::del('slots-' . $id);
+            $redisKeys = Redis::keys('slots-' . $id . '-*');
+
+            if (!empty($redisKeys)) {
+                foreach ($redisKeys as $redisKey) {
+                    Redis::del(str_replace('laravel_database_', '', $redisKey));
+                }
+            }
         }
     }
 }

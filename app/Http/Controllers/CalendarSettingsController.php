@@ -120,7 +120,13 @@ class CalendarSettingsController extends Controller
             'alias' => 'unique:users,alias,' . auth()->user()->id
         ])->validated();
 
-        Redis::del('slots-' . $data['calendar_id']);
+        $redisKeys = Redis::keys('slots-' . $data['calendar_id'] . '-*');
+
+        if (!empty($redisKeys)) {
+            foreach ($redisKeys as $redisKey) {
+                Redis::del(str_replace('laravel_database_', '', $redisKey));
+            }
+        }
 
         $oldData = CalendarSettings::where('calendar_id', $data['calendar_id'])->first();
         $user = User::find(auth()->user()->id);

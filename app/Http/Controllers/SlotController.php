@@ -52,7 +52,13 @@ class SlotController extends Controller
             $data['alldata'] = [];
         }
 
-        Redis::del('slots-' . $data['calendar_id']);
+        $redisKeys = Redis::keys('slots-' . $data['calendar_id'] . '-*');
+
+        if (!empty($redisKeys)) {
+            foreach ($redisKeys as $redisKey) {
+                Redis::del(str_replace('laravel_database_', '', $redisKey));
+            }
+        }
 
         CustomSlot::where(['calendar_id' => $data['calendar_id']])->delete();
 

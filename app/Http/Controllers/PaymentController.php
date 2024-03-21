@@ -229,7 +229,14 @@ class PaymentController extends Controller
         );
 
         Indent::updateOrCreate(['indent_id' => $request->intentId], ['data' => $request->meta]);
-        Redis::del('slots-' . $request->input('meta')['calendarId']);
+
+        $redisKeys = Redis::keys('slots-' . $request->input('meta')['calendarId'] . '-*');
+
+        if (!empty($redisKeys)) {
+            foreach ($redisKeys as $redisKey) {
+                Redis::del(str_replace('laravel_database_', '', $redisKey));
+            }
+        }
 
         return [
             'price' => (float)$request->totalSum * 100
