@@ -8,6 +8,7 @@ use App\Models\BookingProduct;
 use App\Models\CalendarSettings;
 use App\Models\CustomSlot;
 use App\Models\User;
+use App\Services\SlotService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Redis;
 
 class HomeController extends Controller
 {
+    private SlotService $slotService;
+
+    public function __construct(SlotService $slotService)
+    {
+        $this->slotService = $slotService;
+    }
+
     public function languages(Request $request)
     {
         return Languages::getUserLanguages($request->calendar_user->languages);
@@ -103,19 +111,19 @@ class HomeController extends Controller
                 case 'customs':
                     $startDateTime = implode('-', [$currentYear, $rule['period_type']['start']]);
                     $endDateTime = implode('-', [$currentYear, $rule['period_type']['end']]);
-                    $arr = $this->generateCustomSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
+                    $arr = $this->slotService->generateCustomSlots($from, $to, $startDateTime, $endDateTime, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'days' || in_array( strtolower($rule['period_type']['dynamicSelect']), $daysOfWeek):
-                    $arr = $this->generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
+                    $arr = $this->slotService->generateWeeksSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'allWeeks':
-                    $arr = $this->generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
+                    $arr = $this->slotService->generateWeeksSlots($from, $to, 1, 7, $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available'] );
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
                 case 'months':
-                    $arr = $this->generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
+                    $arr = $this->slotService->generateMonthSlots($from, $to, $rule['period_type']['start'], $rule['period_type']['end'], $rule['period_type']['fromHour'], $rule['period_type']['toHour'], $excludingDays,$rule['period_type']['language'],$rule['period_type']['quantity'], $rule['period_type']['is_available']);
                     $queriedSlots = array_merge($queriedSlots,$arr);
                     break;
             }
@@ -142,7 +150,7 @@ class HomeController extends Controller
 
         foreach ($user->settings->interval as $lang => $interval) {
             $availableTime = ['from' => $settings['working_hr_start'][$lang], 'to' => $settings['working_hr_end'][$lang]];
-            $resFunc = $this->generateTimeSlots($dateRange, $availableTime, $excludingDays, $interval, $queriedSlots, $user, $lang);
+            $resFunc = $this->slotService->generateTimeSlots($dateRange, $availableTime, $excludingDays, $interval, $queriedSlots, $lang);
             $queriedSlots = array_merge($queriedSlots, $resFunc);
         }
 
@@ -195,182 +203,5 @@ class HomeController extends Controller
         Redis::set('slots-' . $user->id . '-' . $hash, json_encode($transformed));
 
         return response()->json($transformed);
-    }
-
-    private function generateTimeSlots($dateRange, $availableTime, $excludingDays, $intervalMinutes, $rewritingRules, $user, $lang)
-    {
-        $result = [];
-
-        $startDate = new \DateTime($dateRange['from']);
-        $endDate = new \DateTime($dateRange['to']);
-        $startTime = new \DateTime($availableTime['from']);
-        $endTime = new \DateTime($availableTime['to']);
-        $interval = new \DateInterval("PT{$intervalMinutes}M");
-        $currentDate = clone $startDate;
-
-        while ($currentDate <= $endDate) {
-            $dayOfWeek = strtolower($currentDate->format('l'));
-
-            if (!in_array($dayOfWeek, $excludingDays)) {
-                $currentTime = clone $startTime;
-
-                while ($currentTime <= $endTime) {
-                    $timeSlotStart = clone $currentDate;
-                    $timeSlotStart->setTime($currentTime->format('H'), $currentTime->format('i'));
-
-                    $timeSlotEnd = clone $timeSlotStart;
-                    $timeSlotEnd->add($interval);
-
-                    $excludeSlot = false;
-
-                    foreach ($rewritingRules as $rule) {
-                        if ($rule['language'] == $lang) {
-                            $ruleStart = new \DateTime($rule['start']);
-                            $ruleEnd = new \DateTime($rule['end']);
-
-                            if ($timeSlotStart >= $ruleStart && $timeSlotStart <= $ruleEnd) {
-                                $excludeSlot = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!$excludeSlot) {
-                        $result[] = [
-                            'start' => $timeSlotStart->format('Y-m-d\TH:i:s.u\Z'),
-                            'end' => $timeSlotEnd->format('Y-m-d\TH:i:s.u\Z'),
-                            'timestamp' => $timeSlotStart->getTimestamp(),
-                            'language' => $lang,
-                            'is_available' => 1
-                        ];
-                    }
-
-                    $currentTime->add($interval);
-                }
-            }
-
-            $currentDate->add(new \DateInterval('P1D'));
-        }
-
-        return $result;
-    }
-
-    private function generateWeeksSlots($from, $to, $startRangeWeek, $endRangeWeek, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
-        $objects = [];
-        $excludedDays = $this->transformDays($excludedDays);
-        $startDate = new \DateTime($from);
-        $endDate = new \DateTime($to);
-
-        while ($startDate <= $endDate) {
-            $currentWeekDay = $startDate->format('N');
-
-            if ($currentWeekDay >= $startRangeWeek && $currentWeekDay <= $endRangeWeek && !in_array($currentWeekDay, $excludedDays)) {
-                $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
-                $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
-                $object = [
-                    'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
-                    'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
-                    'timestamp' => $startDateTime->getTimestamp(),
-                    'language' => $language,
-                    'limit' => $limit,
-                    'is_available' => $isAvailable
-                ];
-
-                $objects[] = $object;
-            }
-
-            $startDate->modify('+1 day');
-        }
-        return $objects;
-    }
-
-    private function generateMonthSlots($from, $to, $startRangeMonth, $endRangeMonth, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
-        $objects = [];
-        $excludedDays = $this->transformDays($excludedDays);
-        $startDate = new \DateTime($from);
-        $endDate = new \DateTime($to);
-
-        while ($startDate <= $endDate) {
-            $currentMonth = (int)$startDate->format('m');
-
-            if ($currentMonth >= $startRangeMonth && $currentMonth <= $endRangeMonth) {
-                $currentDayOfWeek = (int)$startDate->format('N');
-
-                if (!in_array($currentDayOfWeek, $excludedDays)) {
-                    $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
-                    $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
-                    $object = array(
-                        'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
-                        'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
-                        'timestamp' => $startDateTime->getTimestamp(),
-                        'language' => $language,
-                        'limit' => $limit,
-                        'is_available' => $isAvailable
-                    );
-
-                    $objects[] = $object;
-                }
-            }
-
-            $startDate->modify('+1 day');
-        }
-
-        return $objects;
-    }
-
-    private function generateCustomSlots($from, $to, $startCustomDate, $endCustomDate, $fromHour, $toHour, $excludedDays, $language, $limit, $isAvailable) {
-        $objects = [];
-        $excludedDays = $this->transformDays($excludedDays);
-        $startDate = new \DateTime($from);
-        $endDate = new \DateTime($to);
-        $startCustomDateTime = new \DateTime($startCustomDate);
-        $endCustomDateTime = new \DateTime($endCustomDate);
-
-        while ($startDate <= $endDate) {
-            if ($startDate >= $startCustomDateTime && $startDate <= $endCustomDateTime) {
-                $currentWeekDay = $startDate->format('N');
-
-                if (!in_array($currentWeekDay, $excludedDays)) {
-                    $startDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $fromHour);
-                    $endDateTime = new \DateTime($startDate->format('Y-m-d') . ' ' . $toHour);
-                    $object = [
-                        'start' => $startDateTime->format('Y-m-d\TH:i:s.u\Z'),
-                        'end' => $endDateTime->format('Y-m-d\TH:i:s.u\Z'),
-                        'timestamp' => $startDateTime->getTimestamp(),
-                        'language' => $language,
-                        'limit' => $limit,
-                        'is_available' => $isAvailable
-                    ];
-
-                    $objects[] = $object;
-                }
-            }
-
-            $startDate->modify('+1 day');
-        }
-
-        return $objects;
-    }
-
-    private function transformDays($array) {
-        $daysMap = [
-            'monday' => 1,
-            'tuesday' => 2,
-            'wednesday' => 3,
-            'thursday' => 4,
-            'friday' => 5,
-            'saturday' => 6,
-            'sunday' => 7
-        ];
-
-        $transformedDays = [];
-
-        foreach ($array as $day) {
-            if (array_key_exists(strtolower($day), $daysMap)) {
-                $transformedDays[] = $daysMap[strtolower($day)];
-            }
-        }
-
-        return $transformedDays;
     }
 }
