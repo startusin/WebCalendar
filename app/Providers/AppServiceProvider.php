@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        config(['session.domain' => '.' . Request::getHost()]);
+        config(['session.domain' => Request::getHost()]);
 
         $headers = App::make('request')->header('X-Forwarded-Host');
 
