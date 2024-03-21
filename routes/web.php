@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
     Route::get("/currentLanguage", [\App\Http\Controllers\LocalizationController::class, 'getCurrentLanguage'])->name('getCurrentLanguage');
 
 
-    Route::get('/calendar/{user}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+    Route::get('/calendar/{id}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('/makeOrder', [App\Http\Controllers\PurchaseController::class, 'makeOrder'])->name('makeOrder');
-    Route::get('/calendar/slots/{user}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
+    Route::get('/calendar/slots/{id}', [App\Http\Controllers\HomeController::class, 'slots'])->name('slots');
 
     Route::get('/calendar/emails/edit', [\App\Http\Controllers\EmailsController::class, 'edit'])->name('emails.edit');
     Route::get('/calendar/sms/edit', [\App\Http\Controllers\EmailsController::class, 'editSms'])->name('sms.edit');

@@ -43,7 +43,7 @@
             </div>
 
             <div data-bs-toggle="calendar" style="padding: 0" id="exampleCalendar"
-                 data-bs-target="{{ route('slots', ['user' => $user]) }}" class="mt-md-4"></div>
+                 data-bs-target="{{ route('slots', ['id' => $user->id]) }}" class="mt-md-4"></div>
 
             <div class="brunches d-flex flex-wrap justify-content-center d-none brunches-area">
                 <div class="col-12">

@@ -29,7 +29,6 @@ class HomeController extends Controller
     {
         $admin = $request->get('direct-booking') === 'true';
         $user = User::where('alias', $alias)->first();
-
         if (!$user) {
             abort(404);
         }
@@ -76,8 +75,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function slots(User $user, Request $request)
+    public function slots($id, Request $request)
     {
+        $user = User::find($id);
         $from = $request->get('from');
         $to = $request->get('to');
         $hash = md5($from . ':' . $to);
@@ -307,7 +307,7 @@ class HomeController extends Controller
                         'limit' => $limit,
                         'is_available' => $isAvailable
                     );
-                    
+
                     $objects[] = $object;
                 }
             }
