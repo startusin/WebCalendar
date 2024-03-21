@@ -175,18 +175,18 @@
 
 
                             <div>
-                                <label >Background Image</label>
+                                <label>Background Image</label>
                             </div>
                             <div class="my-image BgImage">
-                                <img src="{{ isset($settings['bg_image']) ? asset('storage/' . $settings['bg_image']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
+                                <div class="button-delete-image">
+                                    <a class="delete-bg-image"  data-image = "{{  $settings['bg_image'] }}" data-status ="bg" href="#" ><i style="color:red" class="fa-solid fa-x"></i></a>
+                                </div>
+                                <img src="{{ isset($settings['bg_image']) ? asset('storage/' . $settings['bg_image']) : '' }}" alt="" style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 
                             <div class="input-group mt-3 mb-3">
                                 <div class="custom-file">
                                     <input type="file" name="bg_image" id="bg_image" class="form-control">
-                                </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Upload</span>
                                 </div>
                             </div>
 
@@ -195,6 +195,9 @@
                                 <label >Logotype</label>
                             </div>
                             <div class="my-image logoImage">
+                                <div class="button-delete-image">
+                                    <a class="delete-bg-image"  data-image = "{{  $settings['logo'] }}" data-status ="lg" href="#" ><i style="color:red" class="fa-solid fa-x"></i></a>
+                                </div>
                                 <img src="{{ isset($settings['logo']) ? asset('storage/' . $settings['logo']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 
@@ -202,15 +205,15 @@
                                 <div class="custom-file">
                                     <input type="file" name="logo" id="logo" class="form-control">
                                 </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Upload</span>
-                                </div>
-                            </div>
 
+                            </div>
                             <div>
                                 <label >Banner</label>
                             </div>
                             <div class="my-image bannerImage">
+                                <div class="button-delete-image">
+                                    <a  class="delete-bg-image"  data-image="{{ $settings['banner'] }}" data-status="bn" href="#" ><i style="color:red" class="fa-solid fa-x"></i></a>
+                                </div>
                                 <img src="{{ isset($settings['banner']) ? asset('storage/' . $settings['banner']) : '' }}" alt=""  style="width: 100%; height: 100%;border-radius:10px;">
                             </div>
 
@@ -218,9 +221,7 @@
                                 <div class="custom-file">
                                     <input type="file" name="banner" id="banner" class="form-control">
                                 </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Upload</span>
-                                </div>
+
                             </div>
 
                             <input type="submit" class="btn btn-primary" value="Save">

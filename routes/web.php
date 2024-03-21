@@ -71,6 +71,7 @@ use Illuminate\Support\Facades\Route;
 
         Route::group(['middleware' => 'customer'], function () {
 
+            Route::get('/deleteImage', [\App\Http\Controllers\CalendarSettingsController::class, 'deleteImage'])->name('delete.image');
 
             Route::get('/getCalendarCountries', [\App\Http\Controllers\CalendarCountryController::class, 'index'])->name('customer.calendarCountry.index');
             Route::put('/setCalendarCountry', [\App\Http\Controllers\CalendarCountryController::class, 'setCountry'])->name('customer.calendarCountry.set');

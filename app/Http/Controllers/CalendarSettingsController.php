@@ -7,6 +7,7 @@ use App\Models\CalendarSettings;
 use App\Models\FormSettings;
 use App\Models\User;
 use App\Services\FormsSettingsService;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
@@ -15,10 +16,21 @@ use Illuminate\Support\Facades\Validator;
 class CalendarSettingsController extends Controller
 {
     private FormsSettingsService $formsSettingsService;
+    private ImageService $imageService;
 
-    public function __construct(FormsSettingsService $formsSettingsService)
+    public function __construct(FormsSettingsService $formsSettingsService, ImageService $imageService)
     {
+        $this->imageService= $imageService;
         $this->formsSettingsService = $formsSettingsService;
+    }
+
+    public function deleteImage(Request $request) {
+
+        $imagePath = $request->input('image');
+        $columnImage = $request->input('status');
+        $user = $request->input('calendar_user');
+        $settings = CalendarSettings::where('calendar_id', $user->id)->first();
+        return $this->imageService->deleteImage($columnImage, $imagePath, $settings);
     }
 
     public function deleteCountry(Request $request)
@@ -162,7 +174,6 @@ class CalendarSettingsController extends Controller
                 $workingHrEnd[$langKey[0]] = $value;
             }
         }
-
         if (isset($data['logo'])) {
             if ($oldData && $oldData['logo']) {
                 Storage::disk('public')->delete($oldData['logo']);

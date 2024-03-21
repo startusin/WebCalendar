@@ -19,13 +19,13 @@ class LocalizationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         if (Cookie::has('locale')) {
             $locale = Cookie::get('locale');
             App::setLocale($locale);
         } else {
-            $user = $request->route('user');
+            $user = User::find($request->route('user'));
             $locale = $user->settings['language'] ?? 'en';
-
             Cookie::queue(Cookie::forever('locale', $locale));
             App::setLocale($locale);
         }
